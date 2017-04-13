@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My Blog App</title>
+    <link rel="stylesheet" href="index.css"/>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            color: #222;
+            font-family: "Helvetica Neue", sans-serif;
+            font-weight: 200;
+            margin: 0 50px;
+        }
+        .react-draggable, .cursor {
+            cursor: move;
+        }
+        .no-cursor {
+            cursor: auto;
+        }
+        .cursor-y {
+            cursor: ns-resize;
+        }
+        .cursor-x {
+            cursor: ew-resize;
+        }
+        .react-draggable strong {
+            background: #ddd;
+            border: 1px solid #999;
+            border-radius: 3px;
+            display: block;
+            margin-bottom: 10px;
+            padding: 3px 5px;
+            text-align: center;
+        }
+        .box {
+            background: #fff;
+            border: 1px solid #999;
+            border-radius: 3px;
+            width: 180px;
+            height: 180px;
+            margin: 10px;
+            padding: 10px;
+            float: left;
+        }
+        .dragging{
+            transform:scale(1.2);
+            opacity: 0.5;
+        }
+        .dragged{
+            color: red;
+        }
+        .ex-over {
+            background-color: rgba(0, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+<div id="root"></div>
+
+<script src="index.js"></script>
+
+</body>
+</html>

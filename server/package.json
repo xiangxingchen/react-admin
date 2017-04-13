@@ -1,0 +1,44 @@
+{
+  "name": "restful-blog-crud",
+  "version": "1.0.0",
+  "description": "backend server based on restful api",
+  "main": "index.js",
+  "scripts": {
+    "db": "mongod -dbpath ../data",
+    "start": "nodemon ./server/index"
+  },
+  "keywords": [],
+  "author": "cx",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "bunyan": "^1.8.9",
+    "composable-middleware": "^0.3.0",
+    "compression": "^1.6.2",
+    "connect-redis": "^3.1.0",
+    "cookie-parser": "^1.4.3",
+    "cors": "^2.8.1",
+    "errorhandler": "^1.4.3",
+    "express": "^4.14.0",
+    "express-jwt": "^5.0.0",
+    "express-session": "^1.14.1",
+    "formidable": "^1.1.1",
+    "ioredis": "^2.4.0",
+    "jsonwebtoken": "^7.1.9",
+    "lodash": "^4.16.2",
+    "method-override": "^2.3.6",
+    "moment": "^2.15.1",
+    "mongoose": "^4.6.2",
+    "multer": "^1.2.0",
+    "passport": "^0.3.2",
+    "passport-github": "^1.1.0",
+    "passport-local": "^1.0.0",
+    "passport-qq": "0.0.3",
+    "passport-weibo": "^0.1.2",
+    "qiniu": "^6.1.11"
+  },
+  "devDependencies": {
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.18.0",
+    "nodemon": "^1.11.0"
+  }
+}

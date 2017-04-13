@@ -1,0 +1,31 @@
+
+.normal {
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.2em;
+    margin: 0 0 10px 0;
+    text-align: center;
+}
+
+.logoImg {
+    width: 50px;
+    height: 50px;
+    margin-right: 15px;
+}
+
+.container {
+    width: 350px;
+    height: min-content;
+}
+
+.toOther {
+    float: right;
+}
+
+.button {
+    width: 100%;
+}
