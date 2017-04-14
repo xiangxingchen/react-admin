@@ -10,9 +10,12 @@ const TreeNode = Tree.TreeNode;
 class PostEditor extends React.Component {
 
 
-    handleSubmit(e) {
+    handleSubmit = (e) => {
         e.preventDefault();
-        validateFields((error, {postTitle, postContent}) => {
+        const {isCreator,dispatch,form}=this.props;
+        form.validateFields((error, values) => {
+            console.log(values);
+            const {postTitle, postContent} = values;
             if (!error) {
                 if (isCreator) {
                     dispatch({
@@ -44,7 +47,7 @@ class PostEditor extends React.Component {
     }
     render(){
         const {form,post,dispatch,isCreator,loadingSubmit,loadingEditorContent}= this.props;
-        const {getFieldDecorator,validateFields,getFieldValue} =form;
+        const {getFieldDecorator,getFieldValue} =form;
         const tags = <Tag closable onClose={(e)=>console.log(e)}color="pink">React</Tag>;
         const customPanelStyle = {
             background: '#fff',

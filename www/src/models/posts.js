@@ -20,7 +20,7 @@ export default {
     subscriptions: {
         setup: function ({history, dispatch}) {
             history.listen(location => {
-                if (pathToRegExp('/admin/article/list').exec(location.pathname)) {
+                if (pathToRegExp('/article/list').exec(location.pathname)) {
                     dispatch({
                         type: 'fetchPostsList',
                         payload: {pageInfo: {limit: 10, page: 1}}

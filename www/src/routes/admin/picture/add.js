@@ -2,8 +2,8 @@ import React, { PropTypes } from 'react';
 import { routerRedux } from 'dva/router';
 import { connect } from 'dva';
 import { Spin, Icon, Modal, Upload, message } from 'antd';
-//import SimpleMDE from 'react-simplemde-editor';
-var SimpleMDE = require('react-simplemde-editor');
+import SimpleMDE from 'react-simplemde-editor';
+import '../../../../node_modules/react-simplemde-editor/dist/simplemde.min.css';
 const Dragger = Upload.Dragger;
 class Add extends React.Component {
     state = {

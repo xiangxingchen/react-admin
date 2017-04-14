@@ -69,6 +69,7 @@ function RouterConfig({history, app}) {
 
     return (
         <Router history={history}>
+            <Route path="/login" component={Login}/>
             <Route path="/" component={adminApp} onEnter={requireAuth}>
                 <IndexRoute component={Test}/>
                 <Route path="dashboard" component={Test}/>
@@ -93,9 +94,8 @@ function RouterConfig({history, app}) {
                 </Route>
                 <Route path="*" component={Error} />
             </Route>
-            <Route path="*" breadcrumbName="Not Found" component={props => <h1> Not Found</h1>}/>
-            <Route path="/login" component={Login}/>
             <Route path="/register" component={Register}/>
+            <Route path="*" breadcrumbName="Not Found" component={props => <h1> Not Found</h1>}/>
         </Router>
     );
 }
