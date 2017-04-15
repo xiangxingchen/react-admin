@@ -5,19 +5,20 @@ import {
     patchPost
 } from '../services/posts';
 import {message} from 'antd';
+import pathToRegExp from 'path-to-regexp';
 import {routerRedux} from 'dva/router';
 
 export default {
     namespace: 'editor',
     state: {
         post: {
-            title: null,
-            post_id: null,
-            content: '',
+            title: undefined,
+            post_id: undefined,
+            content: undefined,
             author: {},
-            created_at: null
+            created_at: undefined
         },
-        isCreator: false
+        isCreator: true
     },
     subscriptions: {},
     effects: {
@@ -52,11 +53,11 @@ export default {
             const {title, content} = payload;
             const {data} = yield call(createPost, {title, content});
 
-            //if (data) {
-            //    const {post_id} = data;
-            //    message.success('create post successfully :)');
-            //    yield put(routerRedux.push(`/posts/${post_id}`));
-            //}
+            if (data.success) {
+                const {success} = data;
+                message.success('create post successfully :)');
+                yield put(routerRedux.push(`/article/list`));
+            }
         },
         patchPost: function *({payload}, {call, put}) {
             const {title, content, post_id} = payload;
@@ -93,6 +94,18 @@ export default {
         saveCreatorInitialValue: function (state, {payload}) {
             return {
                 isCreator: true
+            };
+        },
+        changeFields: function (state, {payload}) {
+            console.log('changeFields', payload);
+            const { content, title } = payload;
+            return {
+                ...state,
+                post: {
+                    ...state.post,
+                    content,
+                    title
+                }
             };
         }
     }

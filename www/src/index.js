@@ -1,5 +1,5 @@
 import dva from 'dva';
-import {message} from 'antd';
+import { message } from 'antd';
 import { browserHistory } from 'dva/router';
 import createLoading from 'dva-loading';
 import './index.html';
@@ -7,8 +7,8 @@ import './index.css';
 
 // 1. Initialize
 const app = dva({
-  history: browserHistory,
-  onError(e, dispatch) {
+    history: browserHistory,
+    onError(e, dispatch) {
         dispatch({type: 'app/logout'});
         console.log(e);
         if (e.message === 'Unauthorized') {

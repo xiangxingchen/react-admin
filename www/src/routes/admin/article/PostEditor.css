@@ -11,12 +11,25 @@
     padding-right: 8px;
 }
 
-.group {
-    float: right;
-}
-
 .previewLeading {
     padding-bottom: 16px;
     margin-bottom: 13px;
     border-bottom: 1px solid #dcdcdc;
+}
+.right {
+    padding-left: 15px;
+}
+
+.customPanelStyle {
+    background: #fff;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    border: 0;
+}
+.customPanelStyle:hover {
+    background: #fff;
+}
+.collapse {
+    background: #F8F8F8
+
 }

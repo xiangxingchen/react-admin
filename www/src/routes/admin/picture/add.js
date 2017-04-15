@@ -2,8 +2,7 @@ import React, { PropTypes } from 'react';
 import { routerRedux } from 'dva/router';
 import { connect } from 'dva';
 import { Spin, Icon, Modal, Upload, message } from 'antd';
-import SimpleMDE from 'react-simplemde-editor';
-import '../../../../node_modules/react-simplemde-editor/dist/simplemde.min.css';
+import Editor from '../../../components/Editor/Editor';
 const Dragger = Upload.Dragger;
 class Add extends React.Component {
     state = {
@@ -81,7 +80,7 @@ class Add extends React.Component {
                 <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
                     <img alt="example" style={{ width: '100%' }} src={previewImage} />
                 </Modal>
-                <SimpleMDE
+                <Editor
                     onChange={this.handleChange1}
                     value={this.state.textValue}
                 />

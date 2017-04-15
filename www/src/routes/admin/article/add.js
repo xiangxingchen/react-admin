@@ -1,7 +1,8 @@
 import React, {PropTypes} from 'react';
 import {connect} from 'dva';
 import {routerRedux} from 'dva/router';
-import {Icon, Input, Form, Row, Col, Button, Spin, Collapse, Tree, Tag} from 'antd';
+import {Icon, Input, Form, Row, Col, Button, Spin, Collapse, Tree, Tag, Card } from 'antd';
+import Editor from '../../../components/Editor/Editor';
 import styles from './PostEditor.css';
 import marked from 'marked';
 const Panel = Collapse.Panel;
@@ -9,70 +10,54 @@ const TreeNode = Tree.TreeNode;
 
 class PostEditor extends React.Component {
 
-
     handleSubmit = (e) => {
         e.preventDefault();
         const {isCreator,dispatch,form}=this.props;
         form.validateFields((error, values) => {
             console.log(values);
-            const {postTitle, postContent} = values;
+            const {title, content} = values;
             if (!error) {
                 if (isCreator) {
                     dispatch({
                         type: 'editor/createPost',
-                        payload: {
-                            title: postTitle,
-                            content: postContent
-                        }
+                        payload: {title, content}
                     });
                 } else {
                     dispatch({
                         type: 'editor/patchPost',
-                        payload: {
-                            title: postTitle,
-                            content: postContent,
-                            post_id: post.post_id
-                        }
+                        payload: {title, content, post_id: post.post_id}
                     });
                 }
             }
         });
     }
 
-    onSelect (selectedKeys, info){
+    onSelect(selectedKeys, info) {
         console.log('selected', selectedKeys, info);
     }
-    onCheck (checkedKeys, info) {
+
+    onCheck(checkedKeys, info) {
         console.log('onCheck', checkedKeys, info);
     }
-    render(){
+
+    render() {
         const {form,post,dispatch,isCreator,loadingSubmit,loadingEditorContent}= this.props;
         const {getFieldDecorator,getFieldValue} =form;
-        const tags = <Tag closable onClose={(e)=>console.log(e)}color="pink">React</Tag>;
-        const customPanelStyle = {
-            background: '#fff',
-            borderRadius: 4,
-            marginBottom: 24,
-            border: 0,
-            hover:'#fff',
-        };
+        const tags = <Tag closable onClose={(e)=>console.log(e)} color="pink">React</Tag>;
 
         return (<div>
             <div className={styles.title}>
-                <h3 className={styles.group}>
-                    <Icon type="smile-o" className={styles.icon}/>P.S. MarkDown supported!
-                </h3>
                 <h1><Icon type="edit" className={styles.icon}/>
-                    {isCreator ? 'Create New Post' : 'Edit Post'}
+                    {isCreator ? '添加文章' : 'Edit Post'}
                 </h1>
             </div>
             <Spin spinning={isCreator ? false : loadingEditorContent} tip="Loading Editor...">
                 <Form className={styles.wrapper} onSubmit={this.handleSubmit}>
                     <Row>
-                        <Col span={10}>
+                        <Col span={20}>
                             <Form.Item>
                                 {
-                                    getFieldDecorator('postTitle', {
+                                    getFieldDecorator('title', {
                                         initialValue: isCreator ? 'Example title' : post.title,
                                         rules: [
                                             {
@@ -80,30 +65,26 @@ class PostEditor extends React.Component {
                                                 message: 'Please input title!'
                                             }
                                         ]
-                                    })(<Input placeholder="Title..."/>)
+                                    })(<Input placeholder="请输入标题."/>)
                                 }
                             </Form.Item>
                             <Form.Item>
                                 {
-                                    getFieldDecorator('postContent', {
-                                        initialValue: isCreator ? '## this is a example \n\n wow~~' : post.content,
+                                    getFieldDecorator('content', {
+                                        initialValue:  isCreator ? '# 内容区' : post.content,
                                         rules: [
                                             {
                                                 required: true,
                                                 message: 'Please input content!'
                                             }
                                         ]
-                                    })(<Input type="textarea" placeholder="Content..." autosize={{minRows: 18}}/>)
+                                    })(<Editor />)
                                 }
                             </Form.Item>
                         </Col>
-                        <Col span={10}>
-                            <h2 className={styles.previewLeading}>{getFieldValue('postTitle')}</h2>
-                            <div dangerouslySetInnerHTML={{__html: marked(getFieldValue('postContent'),{sanitize: true})}}/>
-                        </Col>
-                        <Col span={4}>
-                            <Collapse bordered={false}  >
-                                <Panel header="分类目录" key="1" style={customPanelStyle}>
+                        <Col span={4} className={styles.right} >
+                            <Collapse bordered={false} className={styles.collapse}>
+                                <Panel header="分类目录" key="1" className={styles.customPanelStyle}>
                                     <Tree
                                         showIcon
                                         showLine
@@ -116,24 +97,25 @@ class PostEditor extends React.Component {
                                     >
                                         <TreeNode title="APP公共开发规范" key="0-0">
                                             <TreeNode title="App公共组件" key="0-0-0">
-                                                <TreeNode title="App项目文档" key="0-0-0-0" />
-                                                <TreeNode title="App" key="0-0-0-1" />
+                                                <TreeNode title="App项目文档" key="0-0-0-0"/>
+                                                <TreeNode title="App" key="0-0-0-1"/>
                                             </TreeNode>
                                             <TreeNode title="WEB公共开发规范" key="0-0-1">
-                                                <TreeNode title="WEB技术储备" key="0-0-1-0" />
+                                                <TreeNode title="WEB技术储备" key="0-0-1-0"/>
                                             </TreeNode>
-                                            <TreeNode title="leaf" key="0-0-2" />
+                                            <TreeNode title="leaf" key="0-0-2"/>
                                         </TreeNode>
                                     </Tree>
                                 </Panel>
-                                <Panel header="标签" key="2" style={customPanelStyle}>
+                                <Panel header="标签" key="2" className={styles.customPanelStyle}>
                                     <Form.Item>
                                         <Input placeholder="多个标签请用英文逗号（,）分开"/>
-                                        <Button type="ghost" onClick={() => dispatch(routerRedux.goBack())}>添加</Button>
+                                        <Button type="ghost"
+                                                onClick={() => dispatch(routerRedux.goBack())}>添加</Button>
                                         <div>{tags}</div>
                                     </Form.Item>
                                 </Panel>
-                                <Panel header="发布状态" key="3" style={customPanelStyle}>
+                                <Panel header="发布状态" key="3" className={styles.customPanelStyle}>
                                     <p>dfgdfgdf</p>
                                 </Panel>
                             </Collapse>
@@ -155,7 +137,6 @@ class PostEditor extends React.Component {
             </Spin>
         </div>);
     }
-
 }
 
 PostEditor.propTypes = {
@@ -173,4 +154,22 @@ function mapStateToProps(state, ownProps) {
     };
 }
 
-export default connect(mapStateToProps)(Form.create({})(PostEditor));
+function onFieldsChange(props, fields) {
+    console.log(fields)
+    props.dispatch({
+        type: 'posts/changeFields',
+        payload: {
+            title: fields.title,
+            content: fields.content,
+        }
+    });
+}
+
+function mapPropsToFields(props) {
+    return props.post;
+}
+
+PostEditor = Form.create({onFieldsChange, mapPropsToFields})(PostEditor);
+PostEditor = connect(mapStateToProps)(PostEditor);
+
+export default PostEditor;

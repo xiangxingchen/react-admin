@@ -65,7 +65,7 @@ class Test3 extends React.Component {
                 }).on('shadow', function (el, container,source) {
                     //console.log('shadow',container);
                 });
-            console.log(drag);
+            //console.log(drag);
         }
     };
 
