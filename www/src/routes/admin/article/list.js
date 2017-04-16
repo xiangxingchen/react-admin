@@ -13,7 +13,10 @@ class PostsListPage extends React.Component {
         const columns = [{
             title: '标题',
             dataIndex: 'title',
-            key: 'title'
+            key: 'title',
+            render: (text, record) => {
+                return <Link to={`/article/detail/${record._id}`}>{text}</Link>
+            }
         }, {
             title: '作者',
             dataIndex: 'author',

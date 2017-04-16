@@ -1,8 +1,6 @@
 /**
  * 文章表
  */
-'use strict';
-
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
@@ -41,6 +39,10 @@ var ArticleSchema = new Schema({
     top: {
         type: Boolean,
         default: false
+    },
+    allow_comment: {
+        type: Boolean,
+        default: true
     },
     status: {				//0:草稿 1:发布
         type: Number,

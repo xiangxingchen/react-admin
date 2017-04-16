@@ -12,7 +12,7 @@ router.post('/addArticle',auth.hasRole('admin'),controller.addArticle);
 router.get('/getArticleList',auth.hasRole('admin'),controller.getArticleList);
 router.put('/:id/updateArticle', auth.hasRole('admin'), controller.updateArticle);
 router.delete('/:id', auth.hasRole('admin'), controller.destroy);
-router.get('/:id/getArticle', auth.hasRole('admin'), controller.getArticle);
+router.get('/getArticle/:id', auth.hasRole('admin'), controller.getArticle);
 router.post('/uploadImage', auth.hasRole('admin'), upload.single('file'), controller.uploadImage);
 router.post('/fetchImage', auth.hasRole('admin'), controller.fetchImage);
 

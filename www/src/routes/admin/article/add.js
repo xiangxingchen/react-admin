@@ -4,7 +4,6 @@ import {routerRedux} from 'dva/router';
 import {Icon, Input, Form, Row, Col, Button, Spin, Collapse, Tree, Tag, Card } from 'antd';
 import Editor from '../../../components/Editor/Editor';
 import styles from './PostEditor.css';
-import marked from 'marked';
 const Panel = Collapse.Panel;
 const TreeNode = Tree.TreeNode;
 

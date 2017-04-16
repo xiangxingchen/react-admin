@@ -2,7 +2,7 @@ import {
     fetchContent,
     fetchPostInfo,
     createPost,
-    patchPost
+    getArticle
 } from '../services/posts';
 import {message} from 'antd';
 import pathToRegExp from 'path-to-regexp';
@@ -18,7 +18,8 @@ export default {
             author: {},
             created_at: undefined
         },
-        isCreator: true
+        isCreator: true,
+        article:{}
     },
     subscriptions: {},
     effects: {
@@ -59,13 +60,10 @@ export default {
                 yield put(routerRedux.push(`/article/list`));
             }
         },
-        patchPost: function *({payload}, {call, put}) {
-            const {title, content, post_id} = payload;
-            const {data} = yield call(patchPost, {title, content, post_id});
-            if (data) {
-                message.success('patch post successfully :)');
-                yield put(routerRedux.push(`/posts/${post_id}`));
-            }
+        getArticle: function *({payload}, {call, put}) {
+            const {id} = payload;
+            const {data} = yield call(getArticle, {id});
+            yield put({ type: 'saveArticle',payload:data})
         }
     },
     reducers: {
@@ -97,7 +95,6 @@ export default {
             };
         },
         changeFields: function (state, {payload}) {
-            console.log('changeFields', payload);
             const { content, title } = payload;
             return {
                 ...state,
@@ -106,6 +103,12 @@ export default {
                     content,
                     title
                 }
+            };
+        },
+        saveArticle: function (state, {payload}) {
+            return {
+                ...state,
+                article:payload.data
             };
         }
     }

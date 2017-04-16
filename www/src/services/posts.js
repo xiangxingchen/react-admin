@@ -46,17 +46,14 @@ export function createPost({title, content}) {
     });
 }
 
-export function patchPost({title, content, post_id}) {
+export function getArticle({id}) {
     const token = window.localStorage.getItem(storageTokenKey);
-    return request(`/api/article/${post_id}`, {
-        method: 'PATCH',
+    return request(`/api/article/getArticle/${id}`, {
+        method: 'GET',
         headers: new Headers({
             "Authorization": `Bearer ${token}`,
             "Content-Type": "application/json; charset=utf-8"
         }),
-        body: JSON.stringify({
-            title, content
-        })
     });
 }
 

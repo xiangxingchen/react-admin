@@ -31,5 +31,14 @@
 }
 .collapse {
     background: #F8F8F8
-
+}
+.detail_wrapper {
+    margin: 20px 50px;
+}
+.detail_author {
+    margin: 10px;
+}
+.detail_author span {
+    font-size: 16px;
+    margin: 0 10px;
 }
