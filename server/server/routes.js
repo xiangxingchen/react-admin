@@ -1,21 +1,20 @@
 var express = require('express');
 var path = require('path');
 
-module.exports = function(app) {
+module.exports = function (app) {
 
     app.use('/api/auth', require('./auth'));
-	app.use('/api/users', require('./api/user'));
-	app.use('/api/file', require('./api/file'));
-	//app.use('/tags',require('./api/tags'));
-    app.use('/api/article',require('./api/article'));
+    app.use('/api/users', require('./api/user'));
+    app.use('/api/file', require('./api/file'));
+    //app.use('/tags',require('./api/tags'));
+    app.use('/api/article', require('./api/article'));
+    app.use('/api/comment', require('./api/comment'));
 
-  //app.use('/comment', require('./api/comment'));
-  
-	//app.use('/logs',require('./api/logs'));
+    //app.use('/logs',require('./api/logs'));
 
-	//app.use('/mobile',require('./api/mobile'));
+    //app.use('/mobile',require('./api/mobile'));
 
-	app.use('/*', function (req,res,next) {
-		return res.json({status:'success',data:'台湾是中国不可分割的一部分.'});
-	})
+    app.use('/*', function (req, res, next) {
+        return res.json({status: 'success', data: '台湾是中国不可分割的一部分.'});
+    })
 };

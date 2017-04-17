@@ -11,7 +11,8 @@ import {
     createComment,
     deleteComment,
     patchComment,
-    setVisibilityOfComment
+    setVisibilityOfComment,
+    getCommentList
 } from '../services/comments';
 
 const comment = new schema.Entity('comments', {}, {idAttribute: 'comment_id'});
@@ -51,9 +52,9 @@ export default {
                 ];
             }
         },
-        fetchPostContent: function*({payload}, {call, put, select}) {
-            const post_id = yield select(state => state.post_detail.currentPost.post_id);
-            const {data} = yield call(fetchContent, {post_id});
+        getCommentList: function*({payload}, {call, put, select}) {
+            const aid = yield select(state => state.editor.article._id);
+            const {data} = yield call(getCommentList, {aid});
 
             if (data) {
                 const {content} = data;
@@ -75,9 +76,9 @@ export default {
             }
         },
         createComment: function*({payload}, {call, put, select}) {
-            const post_id = yield select(({post_detail}) => post_detail.currentPost.post_id);
+            const aid = yield select(({editor}) => editor.article._id);
             const {commentInput} = payload;
-            const {data} = yield call(createComment, {commentInput, post_id});
+            const {data} = yield call(createComment, {commentInput, aid});
             if (data) {
                 yield put({
                     type: 'saveCreatedComment',

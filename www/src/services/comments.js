@@ -2,16 +2,16 @@ import { request } from '../utils/index'
 import {stringify} from 'qs';
 import {storageTokenKey} from '../utils/constant';
 
-export function createComment({post_id, commentInput}) {
+export function createComment({aid, commentInput}) {
     const token = window.localStorage.getItem(storageTokenKey);
-    return request(`/api/comments?${stringify({post_id})}`, {
+    return request(`/api/comment/addNewComment`, {
         method: 'post',
         headers: new Headers({
             "Authorization": `Bearer ${token}`,
             "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
         }),
         body: stringify({
-            post_id,
+            aid,
             content: commentInput
         })
     });
@@ -51,6 +51,16 @@ export function patchComment({comment_id, updatedContent}) {
         }),
         body: JSON.stringify({
             content: updatedContent
+        })
+    });
+}
+
+export function getCommentList({aid}){
+    const token = window.localStorage.getItem(storageTokenKey);
+    return request(`/api/comment/getCommentList/${aid}`, {
+        method: 'get',
+        headers: new Headers({
+            "Authorization": `Bearer ${token}`
         })
     });
 }

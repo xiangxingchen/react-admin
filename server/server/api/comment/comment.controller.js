@@ -38,7 +38,7 @@ exports.addNewComment = function (req,res,next) {
 }
 
 //获取评论列表.
-exports.getFrontCommentList = function (req,res,next) {
+exports.getCommentList = function (req,res,next) {
 	var aid = req.params.id;
 	Comment.find({aid:aid,status:{$eq:1}})
 	.sort('created')
