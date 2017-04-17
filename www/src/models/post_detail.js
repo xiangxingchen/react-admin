@@ -57,10 +57,9 @@ export default {
             const {data} = yield call(getCommentList, {aid});
 
             if (data) {
-                const {content} = data;
                 yield put({
                     type: 'saveCurrentPostContent',
-                    payload: {content}
+                    payload: {data}
                 });
             }
         },
@@ -158,12 +157,12 @@ export default {
             };
         },
         saveCurrentPostContent: function (state, {payload}) {
-            const {content} = payload;
+            const {data} = payload;
             return {
                 ...state,
                 currentPost: {
                     ...state.currentPost,
-                    content
+                    descendants:data.data
                 }
             };
         },
