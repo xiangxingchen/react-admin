@@ -1,9 +1,6 @@
 /**
  * 初始化数据
  */
-
-'use strict';
-
 var mongoose = require('mongoose');
 var	User = mongoose.model('User');
 var	Article = mongoose.model('Article');

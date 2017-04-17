@@ -64,7 +64,6 @@ class Add extends React.Component {
                 <div className="ant-upload-text">Upload</div>
             </div>
         );
-        var input = '# This is a header\n\nAnd this is a paragraph';
         return (
             <div className="clearfix">
                 <Upload
@@ -80,10 +79,6 @@ class Add extends React.Component {
                 <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
                     <img alt="example" style={{ width: '100%' }} src={previewImage} />
                 </Modal>
-                <Editor
-                    onChange={this.handleChange1}
-                    value={this.state.textValue}
-                />
             </div>
         );
     }
