@@ -53,8 +53,8 @@ export default {
             }
         },
         getCommentList: function*({payload}, {call, put, select}) {
-            const aid = yield select(state => state.editor.article._id);
-            const {data} = yield call(getCommentList, {aid});
+            //const aid = yield select(state => state.editor.article._id);
+            const {data} = yield call(getCommentList, {aid: payload.id});
 
             if (data) {
                 yield put({

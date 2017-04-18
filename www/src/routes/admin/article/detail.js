@@ -7,6 +7,7 @@ import styles from './PostEditor.css';
 import Content from './content';
 import Title from './title';
 import CommentList from '../comment/commentList';
+import Editor from '../../../components/Editor/Editor';
 
 class PostsDetail extends React.Component {
 
@@ -19,15 +20,22 @@ class PostsDetail extends React.Component {
     }
 
     render() {
-        const {article,dispatch}= this.props;
+        const {article,dispatch,params}= this.props;
+        console.log(article);
+        const options = {
+            tabSize: 4,
+            toolbar: false,
+            toolbarTips: false,
+            readOnly: true,
+        }
         return (
             <div>
                 <div className={styles.detail_wrapper}>
-                    <Content article={article}/>
-                    <CommentList dispatch ={dispatch}/>
+                    <h1>{article.title}</h1>
+                    <div dangerouslySetInnerHTML={{__html: marked(article.content || '# hello!')}}></div>
+                    <CommentList dispatch ={dispatch} id={params.id}/>
                 </div>
             </div>
-
         )
     }
 }
@@ -44,3 +52,4 @@ function mapStateToProps(state, ownProps) {
 }
 
 export default connect(mapStateToProps)(PostsDetail);
+//<Content article={article}/>

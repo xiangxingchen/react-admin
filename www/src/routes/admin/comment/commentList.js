@@ -9,9 +9,10 @@ const {Column} = Table;
 
 class CommentsList extends React.Component {
     componentWillMount() {
-        const { dispatch } = this.props;
+        const { dispatch,id } = this.props;
         dispatch({
-            type: 'post_detail/getCommentList'
+            type: 'post_detail/getCommentList',
+            payload:{id}
         });
     }
 

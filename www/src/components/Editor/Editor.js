@@ -37,7 +37,7 @@ class Editor extends React.Component {
     }
 
     render() {
-        return (<SimpleMDE onChange={this.handleChange} value={this.state.value} />);
+        return (<SimpleMDE onChange={this.handleChange} value={this.state.value} options={ this.props.options} readOnly />);
     }
 }
 
