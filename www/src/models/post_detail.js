@@ -53,9 +53,7 @@ export default {
             }
         },
         getCommentList: function*({payload}, {call, put, select}) {
-            //const aid = yield select(state => state.editor.article._id);
             const {data} = yield call(getCommentList, {aid: payload.id});
-
             if (data) {
                 yield put({
                     type: 'saveCurrentPostContent',
@@ -81,7 +79,7 @@ export default {
             if (data) {
                 yield put({
                     type: 'saveCreatedComment',
-                    payload: {newComment: data}
+                    payload: { data }
                 });
                 message.success('create comment successfully. :)');
             }
@@ -145,7 +143,7 @@ export default {
             };
         },
         saveCurrentComments: function (state, {payload}) {
-            const {descendants} = payload;
+            const {data} = payload;
             const normalized = normalize(descendants, [comment]);
             return {
                 ...state,
@@ -178,16 +176,14 @@ export default {
             };
         },
         saveCreatedComment: function (state, {payload}) {
-            const {newComment} = payload;
-            const {comment_id} = newComment;
-            const denormalized = denormalize(state.currentPost.descendants, [comment], {comments: state.commentsById});
+            const {data} = payload;
+            console.log(data);
             return {
                 ...state,
                 currentPost: {
                     ...state.currentPost,
-                    descendants: [...state.currentPost.descendants, comment_id]
+                    descendants: [...state.currentPost.descendants, data.data]
                 },
-                commentsById: normalize([...denormalized, newComment], [comment]).entities.comments
             };
         },
         savePatchedComment: function (state, {payload}) {

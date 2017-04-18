@@ -19,9 +19,9 @@ class CommentsList extends React.Component {
     render() {
         const { commentsList, dispatch } = this.props;
         const commentTable = []
-        commentsList.descendants.map((record) => {
+        commentsList.descendants.map((record, index) => {
             commentTable.push (
-                    <Row>
+                    <Row key={index}>
                         <Col span="1">
                             <img width="40px" src={`http://localhost:9000/avatar/default.jpg`}
                                  style={{ boxShadow: '0 2px 6px 1px rgba(0, 0, 0, 0.4)',borderRadius: '50%'}}/>

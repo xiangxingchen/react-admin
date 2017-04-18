@@ -4,7 +4,6 @@ import {Link} from 'dva/router';
 import {Button, Icon,Table, Dropdown, Menu, Card} from 'antd';
 import marked from 'marked';
 import styles from './PostEditor.css';
-import Content from './content';
 import Title from './title';
 import CommentList from '../comment/commentList';
 import Editor from '../../../components/Editor/Editor';
@@ -21,13 +20,7 @@ class PostsDetail extends React.Component {
 
     render() {
         const {article,dispatch,params}= this.props;
-        console.log(article);
-        const options = {
-            tabSize: 4,
-            toolbar: false,
-            toolbarTips: false,
-            readOnly: true,
-        }
+
         return (
             <div>
                 <div className={styles.detail_wrapper}>
@@ -52,4 +45,3 @@ function mapStateToProps(state, ownProps) {
 }
 
 export default connect(mapStateToProps)(PostsDetail);
-//<Content article={article}/>
