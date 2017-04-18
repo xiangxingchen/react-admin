@@ -46,7 +46,15 @@ export default {
             const {data} = yield call(createPost, {title, content});
             if (data.success) {
                 const {success} = data;
-                message.success('create post successfully :)');
+                message.success('创建文章成功 :)');
+                yield put(routerRedux.push(`/article/list`));
+            }
+        },
+        deletePost: function*({payload}, {call, put}) {
+            const {id} = payload;
+            const {data} = yield call(deletePost, {id});
+            if (data.success) {
+                message.success('删除文章成功 :)');
                 yield put(routerRedux.push(`/article/list`));
             }
         },

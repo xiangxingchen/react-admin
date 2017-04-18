@@ -71,9 +71,9 @@ export function setVisibilityOfPost({visible, post_id}) {
     });
 }
 
-export function deletePost({post_id}) {
+export function deletePost({id}) {
     const token = window.localStorage.getItem(storageTokenKey);
-    return request(`/api/article/${post_id}`, {
+    return request(`/api/article/deleteArticle/${id}`, {
         method: 'DELETE',
         headers: new Headers({
             "Authorization": `Bearer ${token}`,

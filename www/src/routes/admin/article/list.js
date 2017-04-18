@@ -2,7 +2,8 @@ import React, {PropTypes} from 'react';
 import {connect} from 'dva';
 import {Link} from 'dva/router';
 import moment from 'moment';
-import {Button, Icon,Table, Dropdown, Menu} from 'antd';
+import {Button, Icon,Table, Dropdown, Menu, Modal} from 'antd';
+const confirm = Modal.confirm;
 
 class PostsListPage extends React.Component {
 
@@ -16,7 +17,7 @@ class PostsListPage extends React.Component {
                 title: '您确定要删除这条记录吗?',
                 onOk () {
                     dispatch({
-                        type: 'user/delete',
+                        type: 'posts/deletePost',
                         payload: {id: record._id}
                     })
                 }
