@@ -7,7 +7,7 @@ import Test3 from '../../components/test/test3';
 
 class Test extends React.Component {
     render() {
-        return (<Test3/>);
+        return (<Test4/>);
     }
 }
 

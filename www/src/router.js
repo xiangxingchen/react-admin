@@ -16,6 +16,10 @@ import Ico from './routes/admin/ui/ico';
 import Search from './routes/admin/ui/search';
 
 function RouterConfig({ history, app }) {
+    //console.log(history, app);
+    history.listen((location) => {
+        console.log(location.pathname);
+    });
     function requireAuth(nextState, replace, callback) {
         app._store.dispatch({
             type: 'user/enterAuth',
