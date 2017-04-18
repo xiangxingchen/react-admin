@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react';
 import {connect} from 'dva';
 import {Link} from 'dva/router';
+import moment from 'moment';
 import {Button, Icon,Table, Dropdown, Menu} from 'antd';
 
 class PostsListPage extends React.Component {
@@ -8,7 +9,22 @@ class PostsListPage extends React.Component {
     componentWillMount() {
 
     }
-    render(){
+    handleMenuClick = (record, e) => {
+        const { dispatch } = this.props
+        if (e.key === '2') {
+            confirm({
+                title: '您确定要删除这条记录吗?',
+                onOk () {
+                    dispatch({
+                        type: 'user/delete',
+                        payload: {id: record._id}
+                    })
+                }
+            })
+        }
+    }
+
+    render() {
         const {postsList,dispatch}= this.props;
         const columns = [{
             title: '标题',
@@ -26,7 +42,7 @@ class PostsListPage extends React.Component {
             dataIndex: 'status',
             key: 'status',
             render: (text, record) => {
-                return record.status ===0 ? '草稿' : '发布';
+                return record.status === 0 ? '草稿' : '发布';
             }
         }, {
             title: '浏览数',
@@ -40,16 +56,16 @@ class PostsListPage extends React.Component {
             dataIndex: 'comment_count',
             key: 'comment_count',
             render: (text) => {
-                return <span ><Icon type="message" />{text}</span>;
+                return <span ><Icon type="message"/>{text}</span>;
             }
         }, {
             title: '喜欢',
             dataIndex: 'like_count',
             key: 'like_count',
             render: (text) => {
-                return <span ><Icon type="heart" style={{color:'red'}} />{text}</span>;
+                return <span ><Icon type="heart" style={{color:'red'}}/>{text}</span>;
             }
-        },{
+        }, {
             title: '标签',
             dataIndex: 'tags',
             key: 'tags'
@@ -57,23 +73,29 @@ class PostsListPage extends React.Component {
             title: '创建时间',
             dataIndex: 'created',
             key: 'created',
+            render: (text) => {
+                return moment(text).format("dddd, MMMM Do YYYY, h:mm:ss a");
+            }
         }, {
             title: '更新时间',
             dataIndex: 'updated',
             key: 'updated',
-        },{
+            render: (text) => {
+                return moment(text).format("dddd, MMMM Do YYYY, h:mm:ss a");
+            }
+        }, {
             title: '操作',
             key: 'operation',
             width: 100,
             render: (text, record) => {
                 return (
                     <Dropdown overlay={<Menu onClick={(e) => this.handleMenuClick(record, e)}>
-                            <Menu.Item key='1'><Link to={`/admin/users/edituser/${record._id}`} >编辑</Link></Menu.Item>
+                            <Menu.Item key='1'><Link to={`/article/editArticle/${record._id}`} >编辑</Link></Menu.Item>
                             <Menu.Item key='2'>删除</Menu.Item>
                             </Menu>}>
                         <Button style={{ border: 'none' }}>
-                            <Icon style={{ marginRight: 2 }} type='bars' />
-                            <Icon type='down' />
+                            <Icon style={{ marginRight: 2 }} type='bars'/>
+                            <Icon type='down'/>
                         </Button>
                     </Dropdown>)
             }

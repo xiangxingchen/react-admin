@@ -13,7 +13,7 @@ class PostsDetail extends React.Component {
     componentWillMount() {
         const { dispatch, params } = this.props
         dispatch({
-            type: 'editor/getArticle',
+            type: 'posts/getPost',
             payload: {id: params.id}
         });
     }
@@ -40,7 +40,7 @@ PostsDetail.propTypes = {
 
 function mapStateToProps(state, ownProps) {
     return {
-        article: state.editor.article,
+        article: state.posts.post,
     };
 }
 

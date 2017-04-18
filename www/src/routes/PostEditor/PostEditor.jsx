@@ -103,8 +103,6 @@ function mapStateToProps(state, ownProps) {
     return {
         isCreator: state.editor.isCreator,
         post: state.editor.post,
-        loadingSubmit: state.loading.effects['posts/createNewPost'] || state.loading.effects['posts/patchPost'],
-        loadingEditorContent: state.loading.effects['editor/initializeEditorContent']
     };
 }
 

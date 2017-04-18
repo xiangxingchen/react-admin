@@ -5,13 +5,12 @@ import {Table, Icon, Alert,Row,Col} from 'antd';
 import Publish from './publish';
 import moment from 'moment';
 moment.locale(window.navigator.language);
-const {Column} = Table;
 
 class CommentsList extends React.Component {
     componentWillMount() {
         const { dispatch,id } = this.props;
         dispatch({
-            type: 'post_detail/getCommentList',
+            type: 'posts/getCommentList',
             payload:{id}
         });
     }
@@ -19,7 +18,7 @@ class CommentsList extends React.Component {
     render() {
         const { commentsList, dispatch } = this.props;
         const commentTable = []
-        commentsList.descendants.map((record, index) => {
+        commentsList.map((record, index) => {
             commentTable.push (
                     <Row key={index}>
                         <Col span="1">
@@ -35,18 +34,10 @@ class CommentsList extends React.Component {
                     </Row>
                 );
             });
-        //const commentTable = <Table
-        //    showHeader={false}
-        //    dataSource={commentsList.descendants}
-        //    rowKey={record => record._id}
-        //    title={() => <h2><Icon type="message"/>{commentsList.descendants.length} Comment(s)</h2>}
-        //>
-        //    <Column {...columnProps}/>
-        //</Table>;
         return (
             <div>
-                {commentsList.descendants.length > 0 ? commentTable : ''}
-                <Publish dispatch={dispatch}/>
+                {commentsList.length > 0 ? commentTable : ''}
+                <Publish {...this.props}/>
             </div>
         )
     }
@@ -54,7 +45,7 @@ class CommentsList extends React.Component {
 
 function mapStateToProps(state, ownProps) {
     return {
-        commentsList: state.post_detail.currentPost,
+        commentsList: state.posts.descendants,
     };
 }
 

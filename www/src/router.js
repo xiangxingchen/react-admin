@@ -42,6 +42,7 @@ function RouterConfig({ history, app }) {
                 </Route>
                 <Route path="article">
                     <Route path="add" component={PostEditor}/>
+                    <Route path="editArticle/:id" component={PostEditor}/>
                     <Route path="list" component={PostsList}/>
                     <Route path="detail/:id" component={PostsDetail}/>
                 </Route>

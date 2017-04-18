@@ -4,14 +4,14 @@ import {Form, Input, Button, Row, Col} from 'antd';
 class Publish extends React.Component {
 
     handleSubmit = (e) => {
-        const {form,dispatch} = this.props;
+        const {form,dispatch,id} = this.props;
         e.preventDefault();
         form.validateFieldsAndScroll((error, {commentInput}) => {
             if (!error) {
                 form.resetFields();
                 dispatch({
-                    type: 'post_detail/createComment',
-                    payload: {commentInput}
+                    type: 'posts/createComment',
+                    payload: {commentInput,id}
                 });
             }
         });

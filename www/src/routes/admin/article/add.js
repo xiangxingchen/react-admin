@@ -9,6 +9,14 @@ const TreeNode = Tree.TreeNode;
 
 class PostEditor extends React.Component {
 
+    componentWillMount() {
+        const { dispatch, params } = this.props
+        //dispatch({
+        //    type: 'editor/getArticle',
+        //    payload: {id: params.id}
+        //});
+    }
+
     handleSubmit = (e) => {
         e.preventDefault();
         const {isCreator,dispatch,form}=this.props;
@@ -18,12 +26,12 @@ class PostEditor extends React.Component {
             if (!error) {
                 if (isCreator) {
                     dispatch({
-                        type: 'editor/createPost',
+                        type: 'posts/createPost',
                         payload: {title, content}
                     });
                 } else {
                     dispatch({
-                        type: 'editor/patchPost',
+                        type: 'posts/patchPost',
                         payload: {title, content, post_id: post.post_id}
                     });
                 }
@@ -146,21 +154,15 @@ PostEditor.propTypes = {
 
 function mapStateToProps(state, ownProps) {
     return {
-        isCreator: state.editor.isCreator,
-        post: state.editor.post,
-        loadingSubmit: state.loading.effects['posts/createNewPost'] || state.loading.effects['posts/patchPost'],
-        loadingEditorContent: state.loading.effects['editor/initializeEditorContent']
+        isCreator: state.posts.isCreator,
+        post: state.posts.post,
     };
 }
 
 function onFieldsChange(props, fields) {
-    console.log(fields)
     props.dispatch({
         type: 'posts/changeFields',
-        payload: {
-            title: fields.title,
-            content: fields.content,
-        }
+        payload: {fields}
     });
 }
 

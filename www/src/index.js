@@ -23,18 +23,12 @@ const app = dva({
 app.use(createLoading({effects: true}));
 
 // 3. Model
-
 app.model(require("./models/app"));
 app.model(require("./models/user"));
-//app.model(require("./models/admin/app"));
-//app.model(require("./models/admin/users"))
-//app.model(require("./models/admin/dashboard"));
 app.model(require("./models/profile"));
-app.model(require("./models/editor"));
-app.model(require('./models/posts'));
-app.model(require("./models/post_detail"));
-// 4. Router
+app.model(require("./models/posts"));
 
+// 4. Router
 app.router(require('./router'));
 
 // 5. Start

@@ -69,7 +69,7 @@ export default {
         },
         queryUser: function *({payload}, {put, call}) {
             const {data} = yield call(fetchUser);
-            console.log(data);
+            //console.log(data);
             if (data) {
                 yield put({
                     type: 'queryUserSuccess',
