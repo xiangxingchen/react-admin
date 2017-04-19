@@ -8,7 +8,10 @@ const confirm = Modal.confirm;
 class PostsListPage extends React.Component {
 
     componentWillMount() {
-
+        this.props.dispatch({
+            type: 'posts/getPostsList',
+            payload: {pageInfo: {limit: 10, page: 1}}
+        });
     }
     handleMenuClick = (record, e) => {
         const { dispatch } = this.props

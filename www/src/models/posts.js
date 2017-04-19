@@ -21,24 +21,24 @@ export default {
             post_id: undefined,
             content: undefined,
             author: {},
-            created_at: undefined
+            created_at: null
         },
-        isCreator: true,
+        isNew: true,
         article: {},
         postsList: [],
         descendants: [],
     },
     subscriptions: {
-        setup: function ({history, dispatch}) {
-            history.listen(location => {
-                if (pathToRegExp('/article/list').exec(location.pathname)) {
-                    dispatch({
-                        type: 'getPostsList',
-                        payload: {pageInfo: {limit: 10, page: 1}}
-                    });
-                }
-            });
-        }
+        //setup: function ({history, dispatch}) {
+        //    history.listen(location => {
+        //        if (pathToRegExp('/article/list').exec(location.pathname)) {
+        //            dispatch({
+        //                type: 'getPostsList',
+        //                payload: {pageInfo: {limit: 10, page: 1}}
+        //            });
+        //        }
+        //    });
+        //}
     },
     effects: {
         createPost: function*({payload}, {call, put}) {
@@ -59,18 +59,23 @@ export default {
             }
         },
         getPost: function *({payload}, {call, put}) {
-            const {id} = payload;
+            const {id, isEdit} = payload;
             const {data} = yield call(getArticle, {id});
-            yield put({type: 'savePost', payload: data})
+            if (isEdit) {
+                console.log('2')
+                yield put({type: 'savePost', payload: data})
+            } else {
+                console.log('1')
+                yield put({type: 'saveArticle', payload: data})
+            }
         },
         getPostsList: function *({payload}, {call, put}) {
-            const {pageInfo, keyword} = payload;
-            const {data} = yield call(fetchPosts, {pageInfo, keyword});
-
+            const {pageInfo} = payload;
+            const {data} = yield call(fetchPosts, {pageInfo});
             if (data) {
                 yield put({
                     type: 'savePostsList',
-                    payload: data
+                    payload: {data}
                 });
             }
         },
@@ -108,7 +113,18 @@ export default {
         savePost: function (state, {payload}) {
             return {
                 ...state,
-                post: payload.data
+                post: {
+                    ...payload.data,
+                },
+                isNew: false
+            };
+        },
+        saveArticle: function (state, {payload}) {
+            return {
+                ...state,
+                article: {
+                    ...payload.data,
+                },
             };
         },
         savePostsList: function (state, {payload}) {
@@ -116,7 +132,7 @@ export default {
             console.log(data);
             return {
                 ...state,
-                postsList: data,
+                postsList: data.data,
             };
         },
         saveCurrentPostComment: function (state, {payload}) {
@@ -132,6 +148,30 @@ export default {
                 ...state,
                 descendants: [...state.descendants, data.data]
             };
+        },
+        showLoading (state) {
+            return {
+                ...state,
+                loading: true
+            }
+        },
+        hideLoading (state) {
+            return {
+                ...state,
+                loading: false
+            }
+        },
+        isNewTrue (state) {
+            return {
+                ...state,
+                isNew: true
+            }
+        },
+        isNewFalse (state) {
+            return {
+                ...state,
+                isNew: false
+            }
         },
     }
 }

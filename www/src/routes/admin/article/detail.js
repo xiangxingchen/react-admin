@@ -40,7 +40,7 @@ PostsDetail.propTypes = {
 
 function mapStateToProps(state, ownProps) {
     return {
-        article: state.posts.post,
+        article: state.posts.article,
     };
 }
 

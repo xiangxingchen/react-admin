@@ -10,31 +10,32 @@ const TreeNode = Tree.TreeNode;
 class PostEditor extends React.Component {
 
     componentWillMount() {
-        const { dispatch, params } = this.props
-        //dispatch({
-        //    type: 'editor/getArticle',
-        //    payload: {id: params.id}
-        //});
+        const { dispatch, params, isNew } = this.props;
+        if (params.id) {
+            dispatch({
+                type: 'posts/getPost',
+                payload: {id: params.id, isEdit:true}
+            });
+        }
     }
 
     handleSubmit = (e) => {
         e.preventDefault();
-        const {isCreator,dispatch,form}=this.props;
+        const {dispatch,form}=this.props;
         form.validateFields((error, values) => {
-            console.log(values);
             const {title, content} = values;
             if (!error) {
-                if (isCreator) {
+                //if (isCreator) {
                     dispatch({
                         type: 'posts/createPost',
                         payload: {title, content}
                     });
-                } else {
-                    dispatch({
-                        type: 'posts/patchPost',
-                        payload: {title, content, post_id: post.post_id}
-                    });
-                }
+                //} else {
+                //    dispatch({
+                //        type: 'posts/patchPost',
+                //        payload: {title, content, post_id: post.post_id}
+                //    });
+                //}
             }
         });
     }
@@ -48,24 +49,22 @@ class PostEditor extends React.Component {
     }
 
     render() {
-        const {form,post,dispatch,isCreator,loadingSubmit,loadingEditorContent}= this.props;
+        const {form,post,dispatch,isNew}= this.props;
         const {getFieldDecorator,getFieldValue} =form;
         const tags = <Tag closable onClose={(e)=>console.log(e)} color="pink">React</Tag>;
+        console.log('post',post.title,post.content);
 
         return (<div>
             <div className={styles.title}>
-                <h1><Icon type="edit" className={styles.icon}/>
-                    {isCreator ? '添加文章' : 'Edit Post'}
-                </h1>
+                <h1><Icon type="edit" className={styles.icon}/>添加文章</h1>
             </div>
-            <Spin spinning={isCreator ? false : loadingEditorContent} tip="Loading Editor...">
                 <Form className={styles.wrapper} onSubmit={this.handleSubmit}>
                     <Row>
                         <Col span={20}>
                             <Form.Item>
                                 {
                                     getFieldDecorator('title', {
-                                        initialValue: isCreator ? 'Example title' : post.title,
+                                        initialValue: post.title === undefined ? '标题': post.title,
                                         rules: [
                                             {
                                                 required: true,
@@ -78,7 +77,7 @@ class PostEditor extends React.Component {
                             <Form.Item>
                                 {
                                     getFieldDecorator('content', {
-                                        initialValue:  isCreator ? '# 内容区' : post.content,
+                                        initialValue: post.content === undefined ? '# 内容' : post.content,
                                         rules: [
                                             {
                                                 required: true,
@@ -130,32 +129,23 @@ class PostEditor extends React.Component {
                     </Row>
                     <Row>
                         <Form.Item>
-                            <Button.Group className={styles.group}>
-                                <Button type="ghost" onClick={() => dispatch(routerRedux.goBack())}>Back</Button>
-                                <Button icon={isCreator ? 'plus-square-o' : 'edit'}
-                                        htmlType="submit"
-                                        type="primary"
-                                        loading={loadingSubmit}
-                                >{isCreator ? 'Create' : 'Edit'}</Button>
-                            </Button.Group>
+                            <Button htmlType="submit" type="primary" >发布</Button>
                         </Form.Item>
                     </Row>
                 </Form>
-            </Spin>
         </div>);
     }
 }
 
 PostEditor.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    isCreator: PropTypes.bool.isRequired,
     post: PropTypes.object
 };
 
 function mapStateToProps(state, ownProps) {
     return {
-        isCreator: state.posts.isCreator,
         post: state.posts.post,
+        isNew: state.posts.isNew
     };
 }
 
