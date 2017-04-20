@@ -62,28 +62,16 @@ class PostEditor extends React.Component {
                     <Row>
                         <Col span={20}>
                             <Form.Item>
-                                {
-                                    getFieldDecorator('title', {
-                                        initialValue: post.title === undefined ? '标题': post.title,
-                                        rules: [
-                                            {
-                                                required: true,
-                                                message: 'Please input title!'
-                                            }
-                                        ]
-                                    })(<Input placeholder="请输入标题."/>)
+                                {getFieldDecorator('title', {
+                                    initialValue: post.title === undefined ? '标题' : post.title,
+                                    rules: [{required: true, message: 'Please input title!'}]
+                                    })(<Input type="text" placeholder="请输入标题."/>)
                                 }
                             </Form.Item>
                             <Form.Item>
-                                {
-                                    getFieldDecorator('content', {
-                                        initialValue: post.content === undefined ? '# 内容' : post.content,
-                                        rules: [
-                                            {
-                                                required: true,
-                                                message: 'Please input content!'
-                                            }
-                                        ]
+                                {getFieldDecorator('content', {
+                                    initialValue: post.content === undefined ? '# hello' : post.content,
+                                    rules: [{required: true, message: 'Please input content!'}]
                                     })(<Editor />)
                                 }
                             </Form.Item>
@@ -150,6 +138,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function onFieldsChange(props, fields) {
+    console.log(fields);
     props.dispatch({
         type: 'posts/changeFields',
         payload: {fields}

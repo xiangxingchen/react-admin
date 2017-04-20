@@ -12,13 +12,12 @@ class Editor extends React.Component {
 
     constructor(props) {
         super(props);
-        if (props.value) {
-            this.state = {value: props.value}
-        }
+        const value = props.value ? props.value : '# hello';
+        this.state = {value}
     }
     componentWillReceiveProps(nextProps){
-        if (nextProps.value !== this.state.value) {
-            this.setState({ value });
+        if (nextProps.value && nextProps.value !== this.state.value) {
+            this.setState({ value: nextProps.value});
         }
     }
 

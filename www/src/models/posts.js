@@ -114,7 +114,10 @@ export default {
             return {
                 ...state,
                 post: {
+                    ...state.post,
                     ...payload.data,
+                    title:{ name:'title', value: payload.data.title},
+                    content:{ name:'content', value: payload.data.content},
                 },
                 isNew: false
             };
