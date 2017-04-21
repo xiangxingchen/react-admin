@@ -18,9 +18,9 @@ export default {
     namespace: 'posts',
     state: {
         post: {
-            title: undefined,
+            title: {value:undefined},
             post_id: undefined,
-            content: undefined,
+            content: {value:undefined},
             author: {},
             created_at: null
         },
@@ -179,7 +179,7 @@ export default {
                 ...state,
                 post: {
                     title: undefined,
-                    contend: undefined,
+                    content: undefined,
                 },
                 isNew: true
             }
@@ -190,5 +190,16 @@ export default {
                 isNew: false
             }
         },
+        uploadImage(state, {payload}){
+            const {name}=payload;
+            const content =state.post.content;
+            return {
+                ...state,
+                post: {
+                    ...state.post,
+                    content: {value:content === undefined ? `![](http://localhost:9000/avatar/${name})`:content.value.concat(`![](http://localhost:9000/avatar/${name})`)}
+                },
+            }
+        }
     }
 }

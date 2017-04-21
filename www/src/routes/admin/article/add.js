@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
 import {connect} from 'dva';
 import {routerRedux} from 'dva/router';
-import {Icon, Input, Form, Row, Col, Button, Spin, Collapse, Tree, Tag, Card } from 'antd';
+import {Icon, Input, Form, Row, Col, Button, Spin, Collapse, Tree, Tag, Card,Upload,message } from 'antd';
 import Editor from '../../../components/Editor/Editor';
 import styles from './PostEditor.css';
 const Panel = Collapse.Panel;
@@ -40,24 +40,57 @@ class PostEditor extends React.Component {
 
         const {getFieldDecorator} =form;
         const tags = <Tag closable onClose={(e)=>console.log(e)} color="pink">React</Tag>;
-
+        const props = {
+            name: 'file',
+            action: '/api/file/upload',
+            headers: {
+                authorization: 'authorization-text',
+            },
+            accept:"image/*",
+            showUploadList:false,
+            onChange(info) {
+                if (info.file.status !== 'uploading') {
+                    //console.log(info.file, info.fileList);
+                }
+                if (info.file.status === 'done') {
+                    console.log(info.file.name);
+                    dispatch({
+                        type: 'posts/uploadImage',
+                        payload: {name:info.file.name}
+                    });
+                } else if (info.file.status === 'error') {
+                    message.error(`${info.file.name} file upload failed.`);
+                }
+            },
+        };
         return (<div>
             <div className={styles.title}>
-                <h1><Icon type="edit" className={styles.icon}/>添加文章</h1>
+                <Row>
+                    <Col span='16'>
+                        <h1><Icon type="edit" className={styles.icon}/>添加文章</h1>
+                    </Col>
+                    <Col>
+                        <Upload {...props}>
+                            <Button>
+                                <Icon type="upload" />上传图片
+                            </Button>
+                        </Upload>
+                    </Col>
+                </Row>
             </div>
             <Form className={styles.wrapper} onSubmit={this.handleSubmit}>
                 <Row>
                     <Col span={20}>
                         <Form.Item>
                             {getFieldDecorator('title', {
-                                initialValue: post.title === undefined ? '标题' : post.title,
+                                initialValue: post.title === undefined ? '' : post.title,
                                 rules: [{required: true, message: 'Please input title!'}]
                             })(<Input type="text" placeholder="请输入标题."/>)
                             }
                         </Form.Item>
                         <Form.Item>
                             {getFieldDecorator('content', {
-                                initialValue: post.content === undefined ? '# hello' : post.content,
+                                initialValue: post.content === undefined ? '' : post.content,
                                 rules: [{required: true, message: 'Please input content!'}]
                             })(<Editor />)
                             }

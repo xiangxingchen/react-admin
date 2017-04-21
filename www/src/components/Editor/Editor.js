@@ -12,7 +12,7 @@ class Editor extends React.Component {
 
     constructor(props) {
         super(props);
-        const value = props.value ? props.value : '# hello';
+        const value = props.value ? props.value : '';
         this.state = {value}
     }
     componentWillReceiveProps(nextProps){
@@ -36,7 +36,7 @@ class Editor extends React.Component {
     }
 
     render() {
-        return (<SimpleMDE onChange={this.handleChange} value={this.state.value} options={ this.props.options} readOnly />);
+        return (<SimpleMDE onChange={this.handleChange} value={this.state.value} options={ this.props.options} />);
     }
 }
 
