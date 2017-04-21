@@ -10,18 +10,26 @@ const TreeNode = Tree.TreeNode;
 class PostEditor extends React.Component {
 
     componentWillMount() {
+        const { dispatch, params } = this.props;
+        dispatch({
+            type: 'posts/getPost',
+            payload: {id: params.id, isEdit: true}
+        });
+    }
 
+    componentWillUnmount() {
+        this.props.dispatch({type: 'posts/isNewTrue'});
     }
 
     handleSubmit = (e) => {
         e.preventDefault();
-        const {dispatch,form}=this.props;
+        const {dispatch,form,params}=this.props;
         form.validateFields((error, values) => {
             const {title, content} = values;
             if (!error) {
                 dispatch({
-                    type: 'posts/createPost',
-                    payload: {title, content}
+                    type: 'posts/updatePost',
+                    payload: {title, content,id:params.id}
                 });
             }
         });
@@ -38,7 +46,7 @@ class PostEditor extends React.Component {
     render() {
         const {form,post,dispatch}= this.props;
 
-        const {getFieldDecorator} =form;
+        const {getFieldDecorator,getFieldValue} =form;
         const tags = <Tag closable onClose={(e)=>console.log(e)} color="pink">React</Tag>;
 
         return (<div>
@@ -104,7 +112,7 @@ class PostEditor extends React.Component {
                 </Row>
                 <Row>
                     <Form.Item>
-                        <Button htmlType="submit" type="primary">发布</Button>
+                        <Button htmlType="submit" type="primary">更新</Button>
                     </Form.Item>
                 </Row>
             </Form>

@@ -7,7 +7,8 @@ import {
     deletePost,
     createComment,
     deleteComment,
-    getCommentList
+    getCommentList,
+    updatePost,
 } from '../services/posts';
 import {message} from 'antd';
 import pathToRegExp from 'path-to-regexp';
@@ -48,6 +49,15 @@ export default {
                 const {success} = data;
                 message.success('创建文章成功 :)');
                 yield put(routerRedux.push(`/article/list`));
+            }
+        },
+        updatePost: function*({payload}, {call, put}) {
+            const {title, content,id} = payload;
+            const {data} = yield call(updatePost, {title, content,id});
+            if (data.success) {
+                const {id} = data;
+                message.success('创建文章成功 :)');
+                yield put(routerRedux.push(`/article/detail/${id}`));
             }
         },
         deletePost: function*({payload}, {call, put}) {
@@ -167,6 +177,10 @@ export default {
         isNewTrue (state) {
             return {
                 ...state,
+                post: {
+                    title: undefined,
+                    contend: undefined,
+                },
                 isNew: true
             }
         },

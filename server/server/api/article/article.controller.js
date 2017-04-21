@@ -101,7 +101,7 @@ exports.updateArticle = function (req,res,next) {
 	}
 
 	Article.findByIdAndUpdateAsync(id,req.body,{new:true}).then(function(article){
-		return res.status(200).json({success:true,article_id:article._id});
+		return res.status(200).json({success:true,id:article._id});
 	}).catch(function(err){
 		return next(err);
 	});

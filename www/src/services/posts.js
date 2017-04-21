@@ -45,6 +45,19 @@ export function createPost({title, content}) {
         })
     });
 }
+export function updatePost({id,title, content}) {
+    const token = window.localStorage.getItem(storageTokenKey);
+    return request(`/api/article/updateArticle/${id}`, {
+        method: 'PUT',
+        headers: new Headers({
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json; charset=utf-8"
+        }),
+        body: JSON.stringify({
+            title, content
+        })
+    });
+}
 
 export function getArticle({id}) {
     const token = window.localStorage.getItem(storageTokenKey);

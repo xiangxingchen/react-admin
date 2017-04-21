@@ -4,7 +4,8 @@ import Login from './routes/Login/Login';
 import Register from './routes/Register/Register';
 import PostsList from './routes/admin/article/list';
 import PostsDetail from './routes/admin/article/detail';
-import PostEditor from './routes/admin/article/add';
+import AddPost from './routes/admin/article/add';
+import EditPost from './routes/admin/article/edit';
 import adminApp from './routes/admin/app';
 import Error from './routes/admin/error';
 import Test from './routes/admin/test';
@@ -41,8 +42,8 @@ function RouterConfig({ history, app }) {
                     <Route path="piclist" component={PictureList}/>
                 </Route>
                 <Route path="article">
-                    <Route path="add" component={PostEditor}/>
-                    <Route path="editArticle/:id" component={PostEditor}/>
+                    <Route path="add" component={AddPost}/>
+                    <Route path="editArticle/:id" component={EditPost}/>
                     <Route path="list" component={PostsList}/>
                     <Route path="detail/:id" component={PostsDetail}/>
                 </Route>
