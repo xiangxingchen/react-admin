@@ -55,10 +55,10 @@ exports.getArticleList = function (req,res,next) {
 	Article.find()
 		.skip(startRow)
 		.limit(itemsPerPage)
-		.sort(sortName)
+		.sort({updated:-1})
 		.exec().then(function (ArticleList) {
 			return Article.countAsync().then(function (count) {
-				return res.status(200).json({ data: ArticleList, count:count });
+				return res.status(200).json({ data: ArticleList, count:count,currentPage:currentPage });
 			});
 		}).then(null,function (err) {
 			return next(err);

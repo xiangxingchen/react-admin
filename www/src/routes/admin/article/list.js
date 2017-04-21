@@ -75,7 +75,8 @@ class PostsListPage extends React.Component {
             key: 'visit_count',
             render: (text) => {
                 return <span><Icon type="eye"/>{text}</span>;
-            }
+            },
+            sorter: (a, b) => a.visit_count - b.visit_count,
         }, {
             title: '评论数',
             dataIndex: 'comment_count',
@@ -108,14 +109,24 @@ class PostsListPage extends React.Component {
             key: 'created',
             render: (text) => {
                 return moment(text).format("YYYY-MM-DD hh:mm:ss");
-            }
+            },
+            sorter: (a, b) => {
+                const updateda = new Date(a.created);
+                const updatedb=new Date(b.created);
+                return updateda.getTime()-updatedb.getTime();
+            },
         }, {
             title: '更新时间',
             dataIndex: 'updated',
             key: 'updated',
             render: (text) => {
                 return moment(text).format("YYYY-MM-DD hh:mm:ss");
-            }
+            },
+            sorter: (a, b) => {
+                const updateda = new Date(a.updated);
+                const updatedb=new Date(b.updated);
+                return updateda.getTime()-updatedb.getTime();
+            },
         }, {
             title: '操作',
             key: 'operation',
@@ -134,6 +145,26 @@ class PostsListPage extends React.Component {
             }
         }
         ]
+
+        const pagination = {
+            total: postsList.count,
+            current: postsList.currentPage,
+            showTotal: total => `共 ${total} 条`,
+            //pageSizeOptions: ['5', '10', '15', '20'],
+            //showSizeChanger: true,
+            //onShowSizeChange: (current, pageSize) => {
+            //    this.props.dispatch({
+            //        type: 'posts/getPostsList',
+            //        payload: {pageInfo: {limit: pageSize, page: current}}
+            //    });
+            //},
+            onChange: (current) => {
+                this.props.dispatch({
+                    type: 'posts/getPostsList',
+                    payload: {pageInfo: {limit: 10, page: current}}
+                });
+            },
+        };
 
         return (
             <div>
@@ -155,19 +186,15 @@ class PostsListPage extends React.Component {
                     bordered
                     scroll={{ x: 1200 }}
                     columns={columns}
-                    dataSource={postsList}
+                    dataSource={postsList.data}
                     simple
                     rowKey={record => record._id}
+                    pagination={pagination}
                 />
             </div>
         );
     }
 }
-
-PostsListPage.propTypes = {
-    postsList: PropTypes.arrayOf(PropTypes.object).isRequired,
-    dispatch: PropTypes.func.isRequired
-};
 
 
 function mapStateToProps(state, ownProps) {

@@ -170,7 +170,7 @@ export default {
             const {data} = payload;
             return {
                 ...state,
-                postsList: data.data,
+                postsList: data,
             };
         },
         saveCurrentPostComment: function (state, {payload}) {
