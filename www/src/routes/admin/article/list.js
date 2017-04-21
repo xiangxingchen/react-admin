@@ -13,7 +13,7 @@ class PostsListPage extends React.Component {
             payload: {pageInfo: {limit: 10, page: 1}}
         });
     }
-    handleSubmit(e){
+    handleSubmit = (e)=>{
         e.preventDefault();
         const {dispatch,form}=this.props;
         form.validateFields((error, values) => {
@@ -141,7 +141,7 @@ class PostsListPage extends React.Component {
                     <Row>
                         <Col span={6} offset="14">
                             <Form.Item>
-                                {getFieldDecorator('search', {})(<Input type="text" placeholder="请输入标题或作者名字"/>)}
+                                {getFieldDecorator('search')(<Input type="text" placeholder="请输入标题或作者名字"/>)}
                             </Form.Item>
                         </Col>
                         <Col span={1} offset="1">

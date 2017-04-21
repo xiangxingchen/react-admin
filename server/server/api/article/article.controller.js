@@ -118,18 +118,31 @@ exports.getArticle = function (req,res) {
 		});
 }
 
-//更新博客
+//禁止评论
 exports.changeComment = function (req,res,next) {
 	var id = req.params.id;
 	var checked = req.body.checked;
-	console.log(checked);
 	Article.findByIdAndUpdateAsync(id,{allow_comment:checked},{new:true}).then(function(article){
 		return res.status(200).json({success:true,id:article._id});
 	}).catch(function(err){
 		return next(err);
 	});
 }
-
+//条件查询
+exports.searchArticle = function (req,res,next) {
+	const search = req.body.search; //从URL中传来的 keyword参数
+	const reg = new RegExp(search, 'i') //不区分大小写
+	Article.find({
+		$or : [ //多条件，数组
+			{title : {$regex : reg}},
+			{author : {$regex : reg}}
+		]
+	}).sort('updated').then(function(article){
+		return res.status(200).json({success:true,data:article});
+	}).catch(function(err){
+		return next(err);
+	});
+}
 
 //前台获取博客数量
 exports.getFrontArticleCount = function (req,res,next) {

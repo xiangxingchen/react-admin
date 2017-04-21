@@ -14,6 +14,7 @@ class PostEditor extends React.Component {
     }
 
     handleSubmit = (e) => {
+        console.log()
         e.preventDefault();
         const {dispatch,form}=this.props;
         form.validateFields((error, values) => {
@@ -158,7 +159,6 @@ function mapStateToProps(state, ownProps) {
 }
 
 function onFieldsChange(props, fields) {
-    console.log(fields);
     props.dispatch({
         type: 'posts/changeFields',
         payload: {fields}

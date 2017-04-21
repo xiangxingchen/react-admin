@@ -10,6 +10,7 @@ import {
     getCommentList,
     updatePost,
     changeComment,
+    searchArticle,
 } from '../services/posts';
 import {message} from 'antd';
 import pathToRegExp from 'path-to-regexp';
@@ -19,9 +20,9 @@ export default {
     namespace: 'posts',
     state: {
         post: {
-            title: {value:undefined},
+            title: {value: undefined},
             post_id: undefined,
-            content: {value:undefined},
+            content: {value: undefined},
             author: {},
             created_at: null
         },
@@ -54,7 +55,7 @@ export default {
         },
         updatePost: function*({payload}, {call, put}) {
             const {title, content,id} = payload;
-            const {data} = yield call(updatePost, {title, content,id});
+            const {data} = yield call(updatePost, {title, content, id});
             if (data.success) {
                 const {id} = data;
                 message.success('创建文章成功 :)');
@@ -100,7 +101,7 @@ export default {
                 });
             }
         },
-        getCommentList: function*({payload}, {call, put, select}) {
+        getCommentList: function*({payload}, {call, put}) {
             const {data} = yield call(getCommentList, {aid: payload.id});
             if (data) {
                 yield put({
@@ -109,22 +110,29 @@ export default {
                 });
             }
         },
-        createComment: function*({payload}, {call, put, select}) {
+        createComment: function*({payload}, {call, put}) {
             const {commentInput,id} = payload;
-            const {data} = yield call(createComment, {commentInput, aid:id});
+            const {data} = yield call(createComment, {commentInput, aid: id});
             if (data) {
                 yield put({
                     type: 'saveCreatedComment',
-                    payload: { data }
+                    payload: {data}
                 });
                 message.success('create comment successfully. :)');
             }
         },
-        changeComment: function*({payload}, {call, put, select}) {
+        changeComment: function*({payload}, {call}) {
             const {checked,id} = payload;
             const {data} = yield call(changeComment, {checked, id});
             if (data.success) {
                 message.success('评论设置成功');
+            }
+        },
+        searchArticle: function*({payload}, {call, put, select}) {
+            const {search} = payload;
+            const {data} = yield call(searchArticle, {search});
+            if (data.success) {
+                yield put({ type: 'savePostsList', payload: {data}});
             }
         },
     },
@@ -144,8 +152,8 @@ export default {
                 post: {
                     ...state.post,
                     ...payload.data,
-                    title:{ name:'title', value: payload.data.title},
-                    content:{ name:'content', value: payload.data.content},
+                    title: {name: 'title', value: payload.data.title},
+                    content: {name: 'content', value: payload.data.content},
                 },
                 isNew: false
             };
@@ -160,7 +168,6 @@ export default {
         },
         savePostsList: function (state, {payload}) {
             const {data} = payload;
-            console.log(data);
             return {
                 ...state,
                 postsList: data.data,
@@ -170,7 +177,7 @@ export default {
             const {data} = payload;
             return {
                 ...state,
-                descendants:data.data
+                descendants: data.data
             };
         },
         saveCreatedComment: function (state, {payload}) {
@@ -210,12 +217,12 @@ export default {
         },
         uploadImage(state, {payload}){
             const {name}=payload;
-            const content =state.post.content;
+            const content = state.post.content;
             return {
                 ...state,
                 post: {
                     ...state.post,
-                    content: {value:content === undefined ? `![](http://localhost:9000/avatar/${name})`:content.value.concat(`![](http://localhost:9000/avatar/${name})`)}
+                    content: {value: content === undefined ? `![](http://localhost:9000/avatar/${name})` : content.value.concat(`![](http://localhost:9000/avatar/${name})`)}
                 },
             }
         }

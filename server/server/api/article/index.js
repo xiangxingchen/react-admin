@@ -18,8 +18,9 @@ router.delete('/deleteArticle/:id', auth.hasRole('admin'), controller.destroy);
 router.get('/getArticle/:id', auth.hasRole('admin'), controller.getArticle);
 //设置文章是否可评论
 router.post('/changeComment/:id', auth.hasRole('admin'), controller.changeComment);
-
 //根据条件查询文章
+router.post('/searchArticle', auth.hasRole('admin'), controller.searchArticle);
+
 //发布文章，定时发布
 //我的文章，已发布，草稿，回收站，分类，标签
 

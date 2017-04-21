@@ -135,6 +135,17 @@ export function changeComment({checked, id}){
         body: JSON.stringify({checked})
     });
 }
+export function searchArticle({search}){
+    const token = window.localStorage.getItem(storageTokenKey);
+    return request(`/api/article/searchArticle`, {
+        method: 'POST',
+        headers: new Headers({
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json; charset=utf-8"
+        }),
+        body: JSON.stringify({search})
+    });
+}
 
 export function createComment({aid, commentInput}) {
     const token = window.localStorage.getItem(storageTokenKey);
