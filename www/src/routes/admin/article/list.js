@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react';
 import {connect} from 'dva';
 import {Link} from 'dva/router';
 import moment from 'moment';
-import {Button, Icon,Table, Dropdown, Menu, Modal} from 'antd';
+import {Button, Icon,Table, Dropdown, Menu, Modal,Form,Row,Col,Input,Switch } from 'antd';
 const confirm = Modal.confirm;
 
 class PostsListPage extends React.Component {
@@ -13,6 +13,26 @@ class PostsListPage extends React.Component {
             payload: {pageInfo: {limit: 10, page: 1}}
         });
     }
+    handleSubmit(e){
+        e.preventDefault();
+        const {dispatch,form}=this.props;
+        form.validateFields((error, values) => {
+            const { search } = values;
+            if (!error) {
+                dispatch({
+                    type: 'posts/searchArticle',
+                    payload: {search}
+                });
+            }
+        });
+    }
+    onChange(checked, id){
+        this.props.dispatch({
+            type: 'posts/changeComment',
+            payload: {checked,id}
+        });
+    }
+
     handleMenuClick = (record, e) => {
         const { dispatch } = this.props
         if (e.key === '2') {
@@ -29,7 +49,8 @@ class PostsListPage extends React.Component {
     }
 
     render() {
-        const {postsList,dispatch}= this.props;
+        const {postsList,dispatch,form}= this.props;
+        const {getFieldDecorator} =form;
         const columns = [{
             title: '标题',
             dataIndex: 'title',
@@ -70,6 +91,14 @@ class PostsListPage extends React.Component {
                 return <span ><Icon type="heart" style={{color:'red'}}/>{text}</span>;
             }
         }, {
+            title: '评论开关',
+            dataIndex: 'allow_comment',
+            key: 'allow_comment',
+            render: (text,record) => {
+                const id =record._id;
+                return <Switch defaultChecked={text} onChange={(checked) =>{this.onChange(checked,id)}} />;
+            }
+        }, {
             title: '标签',
             dataIndex: 'tags',
             key: 'tags'
@@ -78,14 +107,14 @@ class PostsListPage extends React.Component {
             dataIndex: 'created',
             key: 'created',
             render: (text) => {
-                return moment(text).format("dddd, MMMM Do YYYY, h:mm:ss a");
+                return moment(text).format("YYYY-MM-DD hh:mm:ss");
             }
         }, {
             title: '更新时间',
             dataIndex: 'updated',
             key: 'updated',
             render: (text) => {
-                return moment(text).format("dddd, MMMM Do YYYY, h:mm:ss a");
+                return moment(text).format("YYYY-MM-DD hh:mm:ss");
             }
         }, {
             title: '操作',
@@ -108,16 +137,20 @@ class PostsListPage extends React.Component {
 
         return (
             <div>
-                <div>
-                    <Link to="/article/add">
-                        <Button type="primary"
-                                size="large"
-                                icon="addfile">
-                            Add Post
-                        </Button>
-                    </Link>
-                    <h1><Icon type="file-text"/>Posts</h1>
-                </div>
+                <Form onSubmit={this.handleSubmit}>
+                    <Row>
+                        <Col span={6} offset="14">
+                            <Form.Item>
+                                {getFieldDecorator('search', {})(<Input type="text" placeholder="请输入标题或作者名字"/>)}
+                            </Form.Item>
+                        </Col>
+                        <Col span={1} offset="1">
+                            <Form.Item>
+                                <Button htmlType="submit" type="primary">搜索</Button>
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                </Form>
                 <Table
                     bordered
                     scroll={{ x: 1200 }}
@@ -143,4 +176,5 @@ function mapStateToProps(state, ownProps) {
     };
 }
 
+PostsListPage = Form.create()(PostsListPage);
 export default connect(mapStateToProps)(PostsListPage);

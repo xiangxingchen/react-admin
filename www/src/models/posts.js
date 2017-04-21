@@ -9,6 +9,7 @@ import {
     deleteComment,
     getCommentList,
     updatePost,
+    changeComment,
 } from '../services/posts';
 import {message} from 'antd';
 import pathToRegExp from 'path-to-regexp';
@@ -79,6 +80,16 @@ export default {
                 yield put({type: 'saveArticle', payload: data})
             }
         },
+        searchArticle: function *({payload}, {call, put}) {
+            const {search} = payload;
+            const {data} = yield call(fetchPosts, {search});
+            if (data) {
+                yield put({
+                    type: 'savePostsList',
+                    payload: {data}
+                });
+            }
+        },
         getPostsList: function *({payload}, {call, put}) {
             const {pageInfo} = payload;
             const {data} = yield call(fetchPosts, {pageInfo});
@@ -107,6 +118,13 @@ export default {
                     payload: { data }
                 });
                 message.success('create comment successfully. :)');
+            }
+        },
+        changeComment: function*({payload}, {call, put, select}) {
+            const {checked,id} = payload;
+            const {data} = yield call(changeComment, {checked, id});
+            if (data.success) {
+                message.success('评论设置成功');
             }
         },
     },

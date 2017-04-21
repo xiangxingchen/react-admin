@@ -124,6 +124,18 @@ export function getCommentList({aid}){
     });
 }
 
+export function changeComment({checked, id}){
+    const token = window.localStorage.getItem(storageTokenKey);
+    return request(`/api/article/changeComment/${id}`, {
+        method: 'POST',
+        headers: new Headers({
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json; charset=utf-8"
+        }),
+        body: JSON.stringify({checked})
+    });
+}
+
 export function createComment({aid, commentInput}) {
     const token = window.localStorage.getItem(storageTokenKey);
     return request(`/api/comment/addNewComment`, {

@@ -117,46 +117,20 @@ exports.getArticle = function (req,res) {
 			return res.status(500).send();
 		});
 }
-//上传图片
-exports.uploadImage = function (req,res,next) {
-	var file = req.file;
-	if(!file){
-		return res.status(422).send({error_msg:"缺少文件参数."});
-	}
-	var fileName =  new Date().getTime() + file.originalname;
-	qiniuHelper.upload(file.path,'blog/article/' + fileName).then(function (result) {
-		return res.status(200).json({success:true,img_url:result.url});
-	}).catch(function (err) {
+
+//更新博客
+exports.changeComment = function (req,res,next) {
+	var id = req.params.id;
+	var checked = req.body.checked;
+	console.log(checked);
+	Article.findByIdAndUpdateAsync(id,{allow_comment:checked},{new:true}).then(function(article){
+		return res.status(200).json({success:true,id:article._id});
+	}).catch(function(err){
 		return next(err);
 	});
 }
-//将网络图片抓取到七牛
-/**
- * 七牛返回结果
- * $$hashKey: "object:88"
- * hash: "FmUJ7-RWKGMtsX8UTY-_oa5ahsFb"
- * key: "blog/article/1439948192797e48eb2b310f91bda45273dbbfc1a8e6e.png"
- * url: "http://upload.jackhu.top/blog/article/1439948192797e48eb2b310f91bda45273dbbfc1a8e6e.png"
- */
-exports.fetchImage = function (req,res,next) {
-	if(!req.body.url){
-		return res.status(422).send({error_msg:"url地址不能为空."});
-	}
-	var urlLink = URL.parse(req.body.url);
-	var fileName;
-	if(urlLink.pathname.indexOf('/') !== -1){
-		var links = urlLink.pathname.split('/');
-		fileName = links[links.length - 1];
-	}else{
-		fileName = urlLink.pathname;
-	};
-	fileName =  new Date().getTime() + fileName;
-	qiniuHelper.fetch(req.body.url,'blog/article/' + fileName).then(function (result) {
-		return res.status(200).json({success:true,img_url:result.url});
-	}).catch(function (err) {
-		return next(err);
-	});
-}
+
+
 //前台获取博客数量
 exports.getFrontArticleCount = function (req,res,next) {
 	var condition = {status:{$gt:0}};
