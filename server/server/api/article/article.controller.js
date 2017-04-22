@@ -1,5 +1,3 @@
-'use strict';
-
 var _ = require('lodash');
 var mongoose = require('mongoose');
 var Article = mongoose.model('Article');
@@ -7,7 +5,6 @@ var User = mongoose.model('User');
 var Comment = mongoose.model('Comment');
 var qiniuHelper = require('../../util/qiniu');
 var path = require('path');
-var URL = require('url');
 var config = require('../../config/env');
 var Promise = require("bluebird");
 var tools = require('../../util/tools');

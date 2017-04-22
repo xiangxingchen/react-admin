@@ -4,8 +4,9 @@ import {Link} from 'dva/router';
 import {Table, Icon, Alert,Row,Col} from 'antd';
 import Publish from './publish';
 import moment from 'moment';
-moment.locale(window.navigator.language);
+import style from './comment.less';
 
+moment.locale(window.navigator.language);
 class CommentsList extends React.Component {
     componentWillMount() {
         const { dispatch,id } = this.props;
@@ -20,24 +21,25 @@ class CommentsList extends React.Component {
         const commentTable = []
         commentsList.map((record, index) => {
             commentTable.push (
-                    <Row key={index}>
+                    <Row key={index} className={style.commentsList}>
                         <Col span="1">
-                            <img width="40px" src={`http://localhost:9000/avatar/default.jpg`}
-                                 style={{ boxShadow: '0 2px 6px 1px rgba(0, 0, 0, 0.4)',borderRadius: '50%'}}/>
+                            <img src={`http://localhost:9000/avatar/default.jpg`} className={style.img}/>
                         </Col>
-                        <Col>
-                            <p style={{ fontSize:'16px',lineHeight:'30px',height:'30px'}}>
-                                <Link to={`/user/${record.user_id._id}`}><em>{record.user_id.nickname}</em></Link>, {moment(record.created).fromNow()}
+                        <Col span='20' offset="1">
+                            <p className={style.commentList_author}>
+                                <Link to={`/user/${record.user_id._id}`}>
+                                    <em>{record.user_id.nickname}</em>
+                                </Link>, {moment(record.created).fromNow()}
                             </p>
-                            <div style={{ fontSize:'16px'}}>{record.content}</div>
+                            <div className={style.commentList_content}>{record.content}</div>
                         </Col>
                     </Row>
                 );
             });
         return (
             <div>
-                {commentsList.length > 0 ? commentTable : ''}
                 <Publish {...this.props}/>
+                {commentsList.length > 0 ? commentTable : ''}
             </div>
         )
     }
@@ -46,6 +48,7 @@ class CommentsList extends React.Component {
 function mapStateToProps(state, ownProps) {
     return {
         commentsList: state.posts.descendants,
+        user:state.user.account,
     };
 }
 

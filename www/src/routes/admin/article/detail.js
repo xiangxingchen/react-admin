@@ -3,7 +3,7 @@ import {connect} from 'dva';
 import {Link} from 'dva/router';
 import {Button, Icon,Table, Dropdown, Menu, Card} from 'antd';
 import marked from 'marked';
-import styles from './PostEditor.css';
+import styles from './article.less';
 import Title from './title';
 import CommentList from '../comment/commentList';
 import Editor from '../../../components/Editor/Editor';
@@ -20,7 +20,6 @@ class PostsDetail extends React.Component {
 
     render() {
         const {article,dispatch,params}= this.props;
-
         return (
             <div>
                 <div className={styles.detail_wrapper}>

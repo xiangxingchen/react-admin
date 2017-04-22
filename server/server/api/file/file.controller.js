@@ -47,14 +47,14 @@ exports.upload = function (req,res) {
  * @returns {data:{success,name}}
  */
 exports.getImageList = function (req,res) {
-   //fs.stat(__dirname + "/../../avatar", (err, files) => {
-   //   if (err) throw err;
-   //   console.log(files);
-   //   res.status(200).json({data:files})
-   //});
-   getAllAlbums((err,files) => {
+   fs.readdir(__dirname + "/../../avatar", (err, files) => {
+      if (err) throw err;
       console.log(files);
-   })
+      res.status(200).json({data:files})
+   });
+   //getAllAlbums((err,files) => {
+   //   console.log(files);
+   //})
 }
 
 getAllAlbums = (callback) =>{

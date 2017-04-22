@@ -20,9 +20,9 @@ export default {
     namespace: 'posts',
     state: {
         post: {
-            title: {value: undefined},
+            title:  undefined,
             post_id: undefined,
-            content: {value: undefined},
+            content:  undefined,
             author: {},
             created_at: null
         },
@@ -74,10 +74,8 @@ export default {
             const {id, isEdit} = payload;
             const {data} = yield call(getArticle, {id});
             if (isEdit) {
-                console.log('2')
                 yield put({type: 'savePost', payload: data})
             } else {
-                console.log('1')
                 yield put({type: 'saveArticle', payload: data})
             }
         },

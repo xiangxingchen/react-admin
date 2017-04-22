@@ -3,7 +3,7 @@ import {connect} from 'dva';
 import {routerRedux} from 'dva/router';
 import {Icon, Input, Form, Row, Col, Button, Spin, Collapse, Tree, Tag, Card,Upload,message } from 'antd';
 import Editor from '../../../components/Editor/Editor';
-import styles from './PostEditor.css';
+import styles from './article.less';
 const Panel = Collapse.Panel;
 const TreeNode = Tree.TreeNode;
 
@@ -123,12 +123,10 @@ class PostEditor extends React.Component {
                                 </Tree>
                             </Panel>
                             <Panel header="标签" key="2" className={styles.customPanelStyle}>
-                                <Form.Item>
                                     <Input placeholder="多个标签请用英文逗号（,）分开"/>
                                     <Button type="ghost"
                                             onClick={() => dispatch(routerRedux.goBack())}>添加</Button>
                                     <div>{tags}</div>
-                                </Form.Item>
                             </Panel>
                             <Panel header="发布状态" key="3" className={styles.customPanelStyle}>
                                 <p>dfgdfgdf</p>
