@@ -27,7 +27,8 @@ class Publish extends React.Component {
     };
     render() {
         const {getFieldDecorator,getFieldValue} = this.props.form;
-        const {user} = this.props;
+        const {user,allowComment} = this.props;
+
         return (
             <div>
                 <div className={style.comment_title}>评论</div>
@@ -43,10 +44,11 @@ class Publish extends React.Component {
                                         rules: [{required: true, message: '请输入评论'}]
                                     })(<Input
                                         type="textarea"
-                                        placeholder="说说你的看法"
+                                        placeholder={ allowComment ? "说说你的看法" :'作者禁止评论啦~\(≧▽≦)/~啦啦啦'}
                                         rows={3}
                                         onFocus={this.onFocus}
                                         onBlur={this.onBlur}
+                                        disabled={!allowComment}
                                     />)
                                 }
                             </Form.Item>
