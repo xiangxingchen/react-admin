@@ -10,6 +10,7 @@ import adminApp from './routes/admin/app';
 import Error from './routes/admin/error';
 import Test from './routes/admin/test';
 import Dashboard from './routes/admin/dashboard';
+import Comment from './routes/admin/comment';
 import PictureList from './routes/admin/picture/list';
 import AddPicture from './routes/admin/picture/add';
 import AddUser from './routes/admin/user/add';
@@ -53,6 +54,7 @@ function RouterConfig({ history, app }) {
                     <Route path="edituser/:id" component={AddUser}/>
                     <Route path="userlist" component={UserList}/>
                 </Route>
+                <Route path="comment" component={Comment}/>
                 <Route path="*" component={Error}/>
             </Route>
             <Route path="/register" component={Register}/>

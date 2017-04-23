@@ -11,6 +11,15 @@ export function fetchPosts({pageInfo}) {
         })
     });
 }
+export function getAllCommentList({pageInfo}) {
+    const token = window.localStorage.getItem(storageTokenKey);
+    return request(`/api/comment/getAllCommentList?${stringify({...pageInfo })}`, {
+        method: 'get',
+        headers: new Headers({
+            "Authorization": `Bearer ${token}`
+        })
+    });
+}
 
 export function fetchContent({post_id}) {
     const token = window.localStorage.getItem(storageTokenKey);

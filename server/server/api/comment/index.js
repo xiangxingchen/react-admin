@@ -8,6 +8,8 @@ var router = express.Router();
 //后台管理
 router.delete('/:id',auth.hasRole('admin'),controller.delComment);
 router.put('/:id/delReply', auth.hasRole('admin'), controller.delReply);
+router.get('/getAllCommentList',auth.hasRole('admin'),controller.getAllCommentList);
+
 //前台获取
 router.post('/addNewComment',auth.isAuthenticated(),controller.addNewComment);
 router.get('/getCommentList/:id',controller.getCommentList);

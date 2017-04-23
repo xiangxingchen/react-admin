@@ -22,22 +22,6 @@ module.exports = [
     ]
   },
   {
-    key: 'ui',
-    name: 'UI组件',
-    icon: 'camera-o',
-    clickable: false,
-    child: [
-      {
-        key: 'ico',
-        name: 'Ico 图标'
-      },
-      {
-        key: 'search',
-        name: 'Search 搜索'
-      }
-    ]
-  },
-  {
     key: 'picture',
     name: '相册管理',
     icon: 'picture',
@@ -68,30 +52,10 @@ module.exports = [
         name: '文章列表'
       }
     ]
-  },
-  {
-    key: 'navigation',
-    name: '测试导航',
-    icon: 'setting',
-    child: [
-      {
-        key: 'navigation1',
-        name: '二级导航1'
-      },
-      {
-        key: 'navigation2',
-        name: '二级导航2',
-        child: [
-          {
-            key: 'navigation21',
-            name: '三级导航1'
-          },
-          {
-            key: 'navigation22',
-            name: '三级导航2'
-          }
-        ]
-      }
-    ]
+  },{
+    key: 'comment',
+    name: '评论管理',
+    icon: 'message',
+    clickable: false,
   }
 ]

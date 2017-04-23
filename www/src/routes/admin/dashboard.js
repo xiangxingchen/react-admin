@@ -2,7 +2,6 @@ import React, {PropTypes} from 'react'
 import {connect} from 'dva'
 import {Row, Col, Card,Timeline,Pagination } from 'antd';
 import moment from 'moment';
-
 import styles from './dashboard.less'
 
 const Item =Timeline.Item;

@@ -5,9 +5,9 @@ var Blog = mongoose.model('Article');
 
 //添加新的评论.
 exports.addNewComment = function (req, res, next) {
+    const user = req.user;
     var aid = req.body.aid;
     var content = req.body.content;
-    var userId = req.user._id;
     var error_msg;
     if (!aid) {
         error_msg = '缺少必须参数';
@@ -17,22 +17,28 @@ exports.addNewComment = function (req, res, next) {
     if (error_msg) {
         return res.status(422).send({error_msg: error_msg});
     }
-    Comment.createAsync({
-        aid: aid,
-        content: content,
-        user_id: userId
-    }).then(function (result) {
-        var comment = result.toObject();
-        comment.user_id = {
-            _id: req.user._id,
-            nickname: req.user.nickname,
-            avatar: req.user.avatar
-        }
-        Blog.findByIdAndUpdateAsync(aid, {$inc: {comment_count: 1}});
-        return res.status(200).json({success: true, data: comment});
-    }).catch(function (err) {
-        return next(err);
-    });
+    Blog.findOne({_id:aid}).then(function(article){
+        Comment.createAsync({
+            aid: aid,
+            content: content,
+            user_id: user._id,
+            nickname:user.nickname,
+            title:article.title,
+            allow_comment:article.allow_comment,
+        }).then(function (result) {
+            var comment = result.toObject();
+            comment.user_id = {
+                _id: req.user._id,
+                nickname: req.user.nickname,
+                avatar: req.user.avatar
+            }
+            Blog.findByIdAndUpdateAsync(aid, {$inc: {comment_count: 1}});
+            return res.status(200).json({success: true, data: comment});
+        }).catch(function (err) {
+            return next(err);
+        });
+    })
+
 }
 
 //获取评论列表.
@@ -49,7 +55,7 @@ exports.getCommentList = function (req, res, next) {
     }).then(null, function (err) {
         return next(err);
     });
-}
+};
 //添加回复
 exports.addNewReply = function (req, res, next) {
     var cid = req.params.id;
@@ -92,3 +98,32 @@ exports.delReply = function (req, res, next) {
         return next(err);
     });
 }
+
+//获取所有评论.
+exports.getAllCommentList = function (req, res, next) {
+    var currentPage = (parseInt(req.query.page) > 0)?parseInt(req.query.page):1;
+    var itemsPerPage = (parseInt(req.query.limit) > 0)?parseInt(req.query.limit):10;
+    var startRow = (currentPage - 1) * itemsPerPage;
+
+    var sortName = String(req.query.sortName) || "created";
+    var sortOrder = req.query.sortOrder;
+    if(sortOrder === 'false'){
+        sortName = "-" + sortName;
+    }
+    Comment.find({})
+        .skip(startRow)
+        .limit(itemsPerPage)
+        .sort({updated: -1})
+        .exec().then(function(commentList){
+        Comment.countAsync().then(function (count) {
+            commentList.map(comment=>{
+                Blog.findOne({_id:comment.aid}).then((article)=>{
+                    comment.allow_comment = article.allow_comment
+                })
+            });
+            return res.status(200).send({ data: commentList,count:count, currentPage:currentPage});
+        });
+    }).then(null,function (err) {
+        return next(err);
+    });
+};

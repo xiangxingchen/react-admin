@@ -13,6 +13,7 @@ import {
     searchArticle,
     createCategory,
     getTagCatList,
+    getAllCommentList,
 } from '../services/posts';
 import {message} from 'antd';
 import pathToRegExp from 'path-to-regexp';
@@ -32,6 +33,7 @@ export default {
         article: {},
         postsList: [],
         descendants: [],
+        allComment:{data:[]}
     },
     subscriptions: {
         //setup: function ({history, dispatch}) {
@@ -149,6 +151,16 @@ export default {
                 //yield put({ type: 'savePostsList', payload: {data}});
             }
         },
+        getAllCommentList: function *({payload}, {call, put}) {
+            const {pageInfo} = payload;
+            const data = yield call(getAllCommentList, {pageInfo});
+            if (data) {
+                yield put({
+                    type: 'saveAllComment',
+                    payload: {data}
+                });
+            }
+        },
     },
     reducers: {
         changeFields: function (state, {payload}) {
@@ -239,6 +251,12 @@ export default {
                     content: {value: content === undefined ? `![](http://localhost:9000/avatar/${name})` : content.value.concat(`![](http://localhost:9000/avatar/${name})`)}
                 },
             }
-        }
+        },
+        saveAllComment(state, {payload}){
+            return {
+                ...state,
+                allComment:payload.data.data
+            }
+        },
     }
 }
