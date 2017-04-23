@@ -71,8 +71,14 @@ exports.getArticleList = function (req, res, next) {
 
 //删除博客(连同这篇文章的评论一起删除.)
 exports.destroy = function (req, res, next) {
+    const user = req.user;
     var id = req.params.id;
-    Article.findByIdAndRemoveAsync(id).then(function () {
+    Article.findByIdAndRemoveAsync(id).then(function (article) {
+        Logs.createAsync({
+            uid:user._id,
+            name:user.nickname,
+            content:user.nickname+'删除了文章'+article.title
+        });
         return Comment.removeAsync({aid: id}).then(function () {
             return res.status(200).send({success: true});
         });
@@ -82,6 +88,7 @@ exports.destroy = function (req, res, next) {
 }
 //更新博客
 exports.updateArticle = function (req, res, next) {
+    const user = req.user;
     var id = req.params.id;
     if (req.body._id) {
         delete req.body._id;
@@ -105,6 +112,11 @@ exports.updateArticle = function (req, res, next) {
     }
 
     Article.findByIdAndUpdateAsync(id, req.body, {new: true}).then(function (article) {
+        Logs.createAsync({
+            uid:user._id,
+            name:user.nickname,
+            content:user.nickname+'修改了文章'+article.title
+        });
         return res.status(200).json({success: true, id: article._id});
     }).catch(function (err) {
         return next(err);
@@ -123,9 +135,15 @@ exports.getArticle = function (req, res) {
 
 //禁止评论
 exports.changeComment = function (req, res, next) {
+    const user = req.user;
     var id = req.params.id;
     var checked = req.body.checked;
     Article.findByIdAndUpdateAsync(id, {allow_comment: checked}, {new: true}).then(function (article) {
+        Logs.createAsync({
+            uid:user._id,
+            name:user.nickname,
+            content:user.nickname+'修改了文章评论设置'+article.title
+        });
         return res.status(200).json({success: true, id: article._id});
     }).catch(function (err) {
         return next(err);

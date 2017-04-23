@@ -1,98 +1,62 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'dva'
-import {Row, Col, Card} from 'antd'
-import NumberCard from '../../components/admin/dashboard/numberCard'
-import Quote from '../../components/admin/dashboard/quote'
-import Sales from '../../components/admin/dashboard/sales'
-import Weather from '../../components/admin/dashboard/weather'
-import RecentSales from '../../components/admin/dashboard/recentSales'
-import Comments from '../../components/admin/dashboard/comments'
-import Completed from '../../components/admin/dashboard/completed'
-import Browser from '../../components/admin/dashboard/browser'
-import Cpu from '../../components/admin/dashboard/cpu'
-import User from '../../components/admin/dashboard/user'
+import {Row, Col, Card,Timeline,Pagination } from 'antd';
+import moment from 'moment';
+
 import styles from './dashboard.less'
-import {color} from '../../utils/index'
 
-const bodyStyle = {
-  bodyStyle: {
-    height: 432,
-    background: '#fff'
-  }
+const Item =Timeline.Item;
+class Dashboard extends React.Component {
+
+    componentWillMount() {
+        this.props.dispatch({
+            type: 'app/getLogsList',
+            payload: {logInfo: {itemsPerPage: 10, currentPage: 1}}
+        });
+    }
+    onChange = (page) => {
+        this.props.dispatch({
+            type: 'app/getLogsList',
+            payload: {logInfo: {itemsPerPage: 10, currentPage: page}}
+        });
+    };
+
+    render() {
+        const {systemLogs} = this.props;
+        const items =[];
+        systemLogs.data.map((item,index)=>{
+            const time = moment(item.created).format("YYYY-MM-DD hh:mm:ss");
+            items.push(<Item key={index}><p>{time}</p><p>{item.content}</p></Item>)
+        });
+        return (
+            <Row>
+                <Col span="11" offset="1">
+                    <Card title="操作记录">
+                        <Timeline>
+                            {items}
+                        </Timeline>
+                        <Pagination
+                            key="system"
+                            current={systemLogs.currentPage}
+                            total={ systemLogs.count }
+                            showTotal={(total, range) => `共 ${total} 条`}
+                            onChange={ this.onChange }
+                            pageSize={10}
+                            defaultCurrent={1}
+                        />
+                    </Card>
+                </Col>
+            </Row>
+        );
+    }
 }
 
-function Dashboard ({dashboard}) {
-  const {weather, sales, quote, numbers, recentSales, comments, completed, browser, cpu, user} = dashboard
-  const numberCards = numbers.map((item, key) => <Col key={key} lg={6} md={12}>
-    <NumberCard {...item} />
-  </Col>)
-
-  return (
-    <Row gutter={24}>
-      {numberCards}
-      <Col lg={18} md={24}>
-        <Card bordered={false} bodyStyle={{ padding: '24px 36px 24px 0' }}>
-          <Sales data={sales} />
-        </Card>
-      </Col>
-      <Col lg={6} md={24}>
-        <Row gutter={24}>
-          <Col lg={24} md={12}>
-            <Card bordered={false} className={styles.weather} bodyStyle={{padding: 0, height: 204, background: color.blue }}>
-              <Weather {...weather} />
-            </Card>
-          </Col>
-          <Col lg={24} md={12}>
-            <Card bordered={false} className={styles.quote} bodyStyle={{ padding: 0, height: 204, background: color.peach }}>
-              <Quote {...quote} />
-            </Card>
-          </Col>
-        </Row>
-      </Col>
-      <Col lg={12} md={24}>
-        <Card bordered={false} {...bodyStyle}>
-          <RecentSales data={recentSales} />
-        </Card>
-      </Col>
-      <Col lg={12} md={24}>
-        <Card bordered={false} {...bodyStyle}>
-          <Comments data={comments} />
-        </Card>
-      </Col>
-      <Col lg={24} md={24}>
-        <Card bordered={false} bodyStyle={{
-          padding: '24px 36px 24px 0'
-        }}>
-          <Completed data={completed} />
-        </Card>
-      </Col>
-      <Col lg={8} md={24}>
-        <Card bordered={false} {...bodyStyle}>
-          <Browser data={browser} />
-        </Card>
-      </Col>
-      <Col lg={8} md={24}>
-        <Card bordered={false} {...bodyStyle}>
-          <Cpu {...cpu} />
-        </Card>
-      </Col>
-      <Col lg={8} md={24}>
-        <Card bordered={false} bodyStyle={{...bodyStyle.bodyStyle, padding: 0}}>
-          <User {...user} />
-        </Card>
-      </Col>
-    </Row>
-  )
-}
-
-Dashboard.propTypes = {
-  dashboard: PropTypes.object
-}
+Dashboard.propTypes = {}
 
 function mapStateToProps(state) {
-  return {
-    dashboard: state.dashboard,
-  };
+    return {
+        systemLogs:state.app.systemLogs,
+    };
 }
 
 export default connect(mapStateToProps)(Dashboard);

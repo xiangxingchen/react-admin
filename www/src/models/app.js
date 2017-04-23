@@ -1,6 +1,6 @@
 import {routerRedux} from 'dva/router';
 import {message} from 'antd';
-
+import {getLogsList} from '../services/app';
 export default {
     namespace: 'app',
     state: {
@@ -9,10 +9,18 @@ export default {
         siderFold: localStorage.getItem('antdAdminSiderFold') === 'true',
         darkTheme: localStorage.getItem('antdAdminDarkTheme') !== 'false',
         isNavbar: document.body.clientWidth < 769,
-        navOpenKeys: JSON.parse(localStorage.getItem('navOpenKeys') || '[]')
+        navOpenKeys: JSON.parse(localStorage.getItem('navOpenKeys') || '[]'),
+        systemLogs:{data:[]},
     },
     subscriptions: {},
     effects: {
+        *getLogsList ({ payload }, {call,put}) {
+            const {logInfo} = payload;
+            const data = yield call(getLogsList, {logInfo});
+            if(data.data){
+                yield put({ type: 'saveSysLogs',payload:data});
+            }
+        },
         *switchSider ({ payload }, {put}) {
             yield put({ type: 'handleSwitchSider'});
         },
@@ -72,5 +80,11 @@ export default {
                 ...action.payload
             }
         },
+        saveSysLogs(state,{payload}){
+            return {
+                ...state,
+                systemLogs:payload.data,
+            }
+        }
     }
 }

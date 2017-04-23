@@ -19,10 +19,10 @@ exports.getLogsList = function(req,res,next){
 	Logs.find({})
 		.skip(startRow)
 		.limit(itemsPerPage)
-		.sort(sortName)
+		.sort({created: -1})
 		.exec().then(function(logsList){
 			Logs.countAsync().then(function (count) {
-				return res.status(200).send({ data: logsList,count:count });
+				return res.status(200).send({ data: logsList,count:count, currentPage:currentPage});
 			});
 		}).then(null,function (err) {
 			return next(err);

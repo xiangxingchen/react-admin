@@ -14,8 +14,6 @@ export function auth(payload) {
         })
     });
 }
-
-
 export function fetchUser() {
     const token = window.localStorage.getItem(storageTokenKey);
     return request('/api/users/user', {
@@ -28,6 +26,15 @@ export function fetchUser() {
 export function getUserList({currentPage}) {
     const token = window.localStorage.getItem(storageTokenKey);
     return request(`/api/users/getUserList?currentPage=${currentPage}`, {
+        method: 'GET',
+        headers: new Headers({
+            "Authorization": `Bearer ${token}`
+        })
+    });
+}
+export function getLogsList({logInfo}) {
+    const token = window.localStorage.getItem(storageTokenKey);
+    return request(`/api/logs/getLogsList?${stringify({...logInfo })}`, {
         method: 'GET',
         headers: new Headers({
             "Authorization": `Bearer ${token}`

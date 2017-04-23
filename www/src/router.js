@@ -9,6 +9,7 @@ import EditPost from './routes/admin/article/edit';
 import adminApp from './routes/admin/app';
 import Error from './routes/admin/error';
 import Test from './routes/admin/test';
+import Dashboard from './routes/admin/dashboard';
 import PictureList from './routes/admin/picture/list';
 import AddPicture from './routes/admin/picture/add';
 import AddUser from './routes/admin/user/add';
@@ -30,8 +31,8 @@ function RouterConfig({ history, app }) {
         <Router history={history}>
             <Route path="/login" component={Login}/>
             <Route path="/" component={adminApp} onEnter={requireAuth}>
-                <IndexRoute component={Test}/>
-                <Route path="dashboard" component={Test}/>
+                <IndexRoute component={Dashboard}/>
+                <Route path="dashboard" component={Dashboard}/>
                 <Route path="picture/addpic" component={AddPicture}/>
                 <Route path="ui">
                     <Route path="ico" component={Ico}/>
