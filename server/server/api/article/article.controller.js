@@ -144,6 +144,13 @@ exports.changeComment = function (req, res, next) {
             name:user.nickname,
             content:user.nickname+'修改了文章评论设置'+article.title
         });
+        Comment.find({aid:id}).then((comments)=>{
+            comments.map(comment=>{
+                Comment.update({_id:comment._id},{allow_comment:checked}).then(c=>{
+                    console.log(c);
+                })
+            })
+        })
         return res.status(200).json({success: true, id: article._id});
     }).catch(function (err) {
         return next(err);

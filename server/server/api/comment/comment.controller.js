@@ -116,11 +116,6 @@ exports.getAllCommentList = function (req, res, next) {
         .sort({updated: -1})
         .exec().then(function(commentList){
         Comment.countAsync().then(function (count) {
-            commentList.map(comment=>{
-                Blog.findOne({_id:comment.aid}).then((article)=>{
-                    comment.allow_comment = article.allow_comment
-                })
-            });
             return res.status(200).send({ data: commentList,count:count, currentPage:currentPage});
         });
     }).then(null,function (err) {

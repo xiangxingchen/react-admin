@@ -3,8 +3,9 @@ import {connect} from 'dva';
 import {Link} from 'dva/router';
 import moment from 'moment';
 import {Button, Icon,Table, Dropdown, Menu, Modal,Form,Row,Col,Input,Switch,Tag } from 'antd';
-const confirm = Modal.confirm;
+import deepEqual from '../../utils/deepEqual';
 
+const confirm = Modal.confirm;
 class PostsListPage extends React.Component {
 
     componentWillMount() {
@@ -12,6 +13,14 @@ class PostsListPage extends React.Component {
             type: 'posts/getAllCommentList',
             payload: {pageInfo: {limit: 10, page: 1}}
         });
+    }
+    shouldComponentUpdate(nextProps, nextState) {
+        const fields = ['allComment'];
+        var b = deepEqual(this.props, nextProps, fields);
+        if (b) {
+            return false;
+        }
+        return true;
     }
     handleSubmit = (e)=>{
         e.preventDefault();
@@ -57,19 +66,12 @@ class PostsListPage extends React.Component {
             dataIndex: 'title',
             key: 'title',
             render: (text, record) => {
-                return <Link to={`/article/detail/${record._id}`}>{text}</Link>
+                return <Link to={`/article/detail/${record.aid}`}>{text}</Link>
             }
         }, {
-            title: '作者',
+            title: '评论人',
             dataIndex: 'nickname',
             key: 'nickname'
-        }, {
-            title: '状态',
-            dataIndex: 'status',
-            key: 'status',
-            render: (text, record) => {
-                return record.status === 0 ? '草稿' : '发布';
-            }
         },{
             title: '评论开关',
             dataIndex: 'allow_comment',
