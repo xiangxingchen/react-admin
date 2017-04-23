@@ -11,6 +11,8 @@ import {
     updatePost,
     changeComment,
     searchArticle,
+    createCategory,
+    getTagCatList,
 } from '../services/posts';
 import {message} from 'antd';
 import pathToRegExp from 'path-to-regexp';
@@ -131,6 +133,20 @@ export default {
             const {data} = yield call(searchArticle, {search});
             if (data.success) {
                 yield put({ type: 'savePostsList', payload: {data}});
+            }
+        },
+        createCategory: function*({payload}, {call, put, select}) {
+            const {category} = payload;
+            const {data} = yield call(createCategory, {category});
+            if (data.success) {
+                yield put({ type: 'savePostsList', payload: {data}});
+            }
+        },
+        getTagCatList: function*({payload}, {call, put, select}) {
+            const {data} = yield call(getTagCatList);
+            console.log(data);
+            if (data.success) {
+                //yield put({ type: 'savePostsList', payload: {data}});
             }
         },
     },

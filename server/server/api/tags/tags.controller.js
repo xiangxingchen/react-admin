@@ -7,7 +7,7 @@ var Tag = mongoose.model('Tag');
 
 //添加添签分类.
 exports.addTagCat = function (req,res,next) {
-	var catName = req.body.name;
+	var catName = req.body.category;
 	if(!catName){
 		return res.status(422).send({error_msg:"标签分类名称不能为空."});
 	}
@@ -15,7 +15,7 @@ exports.addTagCat = function (req,res,next) {
 		if(cat){
 			return res.status(403).send({error_msg:"分类名称已经存在."});
 		}else{
-			return TagCategory.createAsync(req.body).then(function (result) {
+			return TagCategory.createAsync({name:catName}).then(function (result) {
 				return res.status(200).json({success:true,cat_id:result._id});
 			});
 		}

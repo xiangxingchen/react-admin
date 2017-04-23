@@ -161,6 +161,26 @@ export function createComment({aid, commentInput}) {
         })
     });
 }
+export function createCategory({category}) {
+    const token = window.localStorage.getItem(storageTokenKey);
+    return request(`/api/tags/addTagCat`, {
+        method: 'post',
+        headers: new Headers({
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
+        }),
+        body: stringify({category})
+    });
+}
+export function getTagCatList() {
+    const token = window.localStorage.getItem(storageTokenKey);
+    return request('/api/tags/getTagCatList', {
+        method: 'get',
+        headers: new Headers({
+            "Authorization": `Bearer ${token}`
+        })
+    });
+}
 
 export function deleteComment({comment_id}) {
     const token = window.localStorage.getItem(storageTokenKey);

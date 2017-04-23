@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react';
 import {connect} from 'dva';
 import {Link} from 'dva/router';
 import {Button, Icon,Table, Dropdown, Menu, Card} from 'antd';
-import marked from 'marked';
+import marked from '../../../utils/marked';
 import styles from './article.less';
 import Title from './title';
 import CommentList from '../comment/commentList';

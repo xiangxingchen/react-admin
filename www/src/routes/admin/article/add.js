@@ -1,16 +1,20 @@
 import React, {PropTypes} from 'react';
 import {connect} from 'dva';
 import {routerRedux} from 'dva/router';
-import {Icon, Input, Form, Row, Col, Button, Spin, Collapse, Tree, Tag, Card,Upload,message } from 'antd';
+import {Icon, Input, Form, Row, Col, Button, Spin, Collapse, Tree, Tag, Card,Upload,message,Modal } from 'antd';
 import Editor from '../../../components/Editor/Editor';
+import Category from './category';
 import styles from './article.less';
 const Panel = Collapse.Panel;
 const TreeNode = Tree.TreeNode;
 
 class PostEditor extends React.Component {
+    state={
+        visible:false,
+    }
 
     componentWillMount() {
-
+        this.props.dispatch({type: 'posts/getTagCatList'});
     }
 
     handleSubmit = (e) => {
@@ -28,13 +32,13 @@ class PostEditor extends React.Component {
         });
     }
 
-    onSelect(selectedKeys, info) {
-        console.log('selected', selectedKeys, info);
+    showModal= () => {
+        this.setState({visible:true})
+    }
+    handleCancel= () => {
+        this.setState({visible:false})
     }
 
-    onCheck(checkedKeys, info) {
-        console.log('onCheck', checkedKeys, info);
-    }
 
     render() {
         const {form,post,dispatch}= this.props;
@@ -47,8 +51,8 @@ class PostEditor extends React.Component {
             headers: {
                 authorization: 'authorization-text',
             },
-            accept:"image/*",
-            showUploadList:false,
+            accept: "image/*",
+            showUploadList: false,
             onChange(info) {
                 if (info.file.status !== 'uploading') {
                     //console.log(info.file, info.fileList);
@@ -57,7 +61,7 @@ class PostEditor extends React.Component {
                     console.log(info.file.name);
                     dispatch({
                         type: 'posts/uploadImage',
-                        payload: {name:info.file.name}
+                        payload: {name: info.file.name}
                     });
                 } else if (info.file.status === 'error') {
                     message.error(`${info.file.name} file upload failed.`);
@@ -73,15 +77,15 @@ class PostEditor extends React.Component {
                     <Col>
                         <Upload {...props}>
                             <Button>
-                                <Icon type="upload" />上传图片
+                                <Icon type="upload"/>上传图片
                             </Button>
                         </Upload>
                     </Col>
                 </Row>
             </div>
-            <Form className={styles.wrapper} onSubmit={this.handleSubmit}>
-                <Row>
-                    <Col span={20}>
+            <Row>
+                <Col span={24}>
+                    <Form className={styles.wrapper} onSubmit={this.handleSubmit}>
                         <Form.Item>
                             {getFieldDecorator('title', {
                                 initialValue: post.title === undefined ? '' : post.title,
@@ -96,50 +100,37 @@ class PostEditor extends React.Component {
                             })(<Editor />)
                             }
                         </Form.Item>
-                    </Col>
-                    <Col span={4} className={styles.right}>
-                        <Collapse bordered={false} className={styles.collapse}>
-                            <Panel header="分类目录" key="1" className={styles.customPanelStyle}>
-                                <Tree
-                                    showIcon
-                                    showLine
-                                    checkable
-                                    defaultExpandedKeys={['0-0-0', '0-0-1']}
-                                    defaultSelectedKeys={['0-0-0', '0-0-1']}
-                                    defaultCheckedKeys={['0-0-0', '0-0-1']}
-                                    onSelect={this.onSelect}
-                                    onCheck={this.onCheck}
-                                >
-                                    <TreeNode title="APP公共开发规范" key="0-0">
-                                        <TreeNode title="App公共组件" key="0-0-0">
-                                            <TreeNode title="App项目文档" key="0-0-0-0"/>
-                                            <TreeNode title="App" key="0-0-0-1"/>
-                                        </TreeNode>
-                                        <TreeNode title="WEB公共开发规范" key="0-0-1">
-                                            <TreeNode title="WEB技术储备" key="0-0-1-0"/>
-                                        </TreeNode>
-                                        <TreeNode title="leaf" key="0-0-2"/>
-                                    </TreeNode>
-                                </Tree>
-                            </Panel>
-                            <Panel header="标签" key="2" className={styles.customPanelStyle}>
-                                    <Input placeholder="多个标签请用英文逗号（,）分开"/>
-                                    <Button type="ghost"
-                                            onClick={() => dispatch(routerRedux.goBack())}>添加</Button>
-                                    <div>{tags}</div>
-                            </Panel>
-                            <Panel header="发布状态" key="3" className={styles.customPanelStyle}>
-                                <p>dfgdfgdf</p>
-                            </Panel>
-                        </Collapse>
-                    </Col>
-                </Row>
-                <Row>
-                    <Form.Item>
-                        <Button htmlType="submit" type="primary">发布</Button>
-                    </Form.Item>
-                </Row>
-            </Form>
+                        <Form.Item>
+                            <Button htmlType="submit" type="primary">发布</Button>
+                        </Form.Item>
+                    </Form>
+                        <Button type="primary" onClick={this.showModal}>
+                            Open modal dialog
+                        </Button>
+                        <Modal
+                            visible={this.state.visible}
+                            title="Title"
+                            onOk={this.handleOk}
+                            onCancel={this.handleCancel}
+                            footer={[
+                                <Button key="back" size="large" onClick={this.handleCancel}>Return</Button>,
+                                <Button key="submit" type="primary" size="large" loading={this.state.loading} onClick={this.handleOk}>
+                                  Submit
+                                </Button>,
+                            ]}
+                        >
+                            <Form.Item>
+                                {getFieldDecorator('category', {
+                                    initialValue: post.content === undefined ? '' : post.content,
+                                    rules: [{required: true, message: 'Please input content!'}]
+                                })(<Editor />)
+                                }
+                            </Form.Item>
+                            <Category />
+                        </Modal>
+                </Col>
+            </Row>
+
         </div>);
     }
 }

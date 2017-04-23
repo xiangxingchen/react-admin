@@ -20,10 +20,7 @@ var ArticleSchema = new Schema({
         type: Array
     },
     //一篇文章可以有多个标签
-    tags: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Tag'
-    }],
+    tags: Array,
     visit_count: {			//访问数
         type: Number,
         default: 1
@@ -46,7 +43,7 @@ var ArticleSchema = new Schema({
     },
     status: {				//0:草稿 1:发布
         type: Number,
-        default: 0
+        default: 1
     },
     created: {
         type: Date,

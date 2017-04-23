@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react';
 import {connect} from 'dva';
 import {Link} from 'dva/router';
 import moment from 'moment';
-import {Button, Icon,Table, Dropdown, Menu, Modal,Form,Row,Col,Input,Switch } from 'antd';
+import {Button, Icon,Table, Dropdown, Menu, Modal,Form,Row,Col,Input,Switch,Tag } from 'antd';
 const confirm = Modal.confirm;
 
 class PostsListPage extends React.Component {
@@ -99,11 +99,16 @@ class PostsListPage extends React.Component {
                 const id =record._id;
                 return <Switch defaultChecked={text} onChange={(checked) =>{this.onChange(checked,id)}} />;
             }
-        }, {
-            title: '标签',
-            dataIndex: 'tags',
-            key: 'tags'
-        }, {
+        }
+        //    , {
+        //    title: '标签',
+        //    dataIndex: 'tags',
+        //    key: 'tags',
+        //    render: (text,record) => {
+        //        return <Tag>{text[0].name}</Tag>
+        //    }
+        //}
+            , {
             title: '创建时间',
             dataIndex: 'created',
             key: 'created',
