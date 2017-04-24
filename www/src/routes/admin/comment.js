@@ -41,21 +41,18 @@ class PostsListPage extends React.Component {
             payload: {checked,id}
         });
     }
-
-    handleMenuClick = (record, e) => {
-        const { dispatch } = this.props
-        if (e.key === '2') {
-            confirm({
-                title: '您确定要删除这条记录吗?',
-                onOk () {
-                    dispatch({
-                        type: 'posts/deletePost',
-                        payload: {id: record._id}
-                    })
-                }
-            })
-        }
-    }
+    onClick =(id, index)=>{
+        const {dispatch}=this.props;
+        confirm({
+            title: `您确定要删除这条记录吗?`,
+            onOk () {
+                dispatch({
+                    type: 'posts/delComment',
+                    payload: {id, index}
+                })
+            }
+        })
+    };
 
     render() {
         const {allComment,dispatch,form}= this.props;
@@ -69,6 +66,10 @@ class PostsListPage extends React.Component {
                 return <Link to={`/article/detail/${record.aid}`}>{text}</Link>
             }
         }, {
+            title: '内容',
+            dataIndex: 'content',
+            key: 'content'
+        },{
             title: '评论人',
             dataIndex: 'nickname',
             key: 'nickname'
@@ -108,17 +109,8 @@ class PostsListPage extends React.Component {
                 title: '操作',
                 key: 'operation',
                 width: 100,
-                render: (text, record) => {
-                    return (
-                        <Dropdown overlay={<Menu onClick={(e) => this.handleMenuClick(record, e)}>
-                            <Menu.Item key='1'><Link to={`/article/editArticle/${record._id}`} >编辑</Link></Menu.Item>
-                            <Menu.Item key='2'>删除</Menu.Item>
-                            </Menu>}>
-                            <Button style={{ border: 'none' }}>
-                                <Icon style={{ marginRight: 2 }} type='bars'/>
-                                <Icon type='down'/>
-                            </Button>
-                        </Dropdown>)
+                render: (text, record,index) => {
+                    return (<a onClick={()=>this.onClick(record._id,index)}>删除评论</a>)
                 }
             }
         ]

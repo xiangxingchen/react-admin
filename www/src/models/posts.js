@@ -14,6 +14,7 @@ import {
     createCategory,
     getTagCatList,
     getAllCommentList,
+    delComment,
 } from '../services/posts';
 import {message} from 'antd';
 import pathToRegExp from 'path-to-regexp';
@@ -161,6 +162,18 @@ export default {
                 });
             }
         },
+        delComment: function *({payload}, {call, put}) {
+            const {id,index} = payload;
+            const {data} = yield call(delComment, {id});
+            console.log(data,index);
+            if (data.success) {
+                yield put({
+                    type: 'afterDelComment',
+                    payload: {index}
+                });
+                message.success('删除评论成功');
+            }
+        },
     },
     reducers: {
         changeFields: function (state, {payload}) {
@@ -256,6 +269,21 @@ export default {
             return {
                 ...state,
                 allComment:payload.data.data
+            }
+        },
+        afterDelComment(state, {payload}){
+            const {index}=payload;
+            const {allComment}=state;
+            return {
+                ...state,
+                allComment:{
+                    ...allComment,
+                    count:allComment.count-1,
+                    data:[
+                        ...allComment.data.slice(0,index),
+                        ...allComment.data.slice(index + 1),
+                    ]
+                }
             }
         },
     }

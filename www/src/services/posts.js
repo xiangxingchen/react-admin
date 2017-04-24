@@ -102,6 +102,15 @@ export function deletePost({id}) {
         })
     });
 }
+export function delComment({id}) {
+    const token = window.localStorage.getItem(storageTokenKey);
+    return request(`/api/comment/delComment/${id}`, {
+        method: 'DELETE',
+        headers: new Headers({
+            "Authorization": `Bearer ${token}`,
+        })
+    });
+}
 
 export function fetchPostInfo({post_id}) {
     const token = window.localStorage.getItem(storageTokenKey);
