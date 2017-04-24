@@ -121,7 +121,7 @@ class PostsListPage extends React.Component {
             showTotal: total => `共 ${total} 条`,
             onChange: (current) => {
                 this.props.dispatch({
-                    type: 'posts/getPostsList',
+                    type: 'posts/getAllCommentList',
                     payload: {pageInfo: {limit: 10, page: current}}
                 });
             },

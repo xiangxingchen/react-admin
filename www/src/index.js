@@ -1,6 +1,6 @@
 import dva from 'dva';
 import { message } from 'antd';
-import { browserHistory } from 'dva/router';
+import { browserHistory,routerRedux } from 'dva/router';
 import createLoading from 'dva-loading';
 import './index.html';
 import './index.css';
@@ -10,9 +10,8 @@ const app = dva({
     history: browserHistory,
     onError(e, dispatch) {
         dispatch({type: 'app/logout'});
-        console.log(e);
         if (e.message === 'Unauthorized') {
-            message.info('Please Login :)', 5);
+            dispatch(routerRedux.push('/login'));
         } else {
             message.error(e.message, 5);
         }

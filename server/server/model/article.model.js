@@ -9,6 +9,10 @@ var ArticleSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
+    category_id:{
+        type: Schema.Types.ObjectId,
+        ref: 'TagCategory'
+    },
     author: String,
     title: {
         type: String,

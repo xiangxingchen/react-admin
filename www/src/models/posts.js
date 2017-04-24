@@ -13,6 +13,7 @@ import {
     searchArticle,
     createCategory,
     getTagCatList,
+    getFrontTagList,
     getAllCommentList,
     delComment,
 } from '../services/posts';
@@ -34,7 +35,9 @@ export default {
         article: {},
         postsList: [],
         descendants: [],
-        allComment:{data:[]}
+        allComment:{data:[]},
+        tagCat:[],
+        tags:[],
     },
     subscriptions: {
         //setup: function ({history, dispatch}) {
@@ -147,9 +150,14 @@ export default {
         },
         getTagCatList: function*({payload}, {call, put, select}) {
             const {data} = yield call(getTagCatList);
-            console.log(data);
-            if (data.success) {
-                //yield put({ type: 'savePostsList', payload: {data}});
+            if (data) {
+                yield put({ type: 'saveTagCat', payload: {data}});
+            }
+        },
+        getFrontTagList: function*({payload}, {call, put, select}) {
+            const {data} = yield call(getFrontTagList);
+            if (data) {
+                yield put({ type: 'saveTags', payload: {data}});
             }
         },
         getAllCommentList: function *({payload}, {call, put}) {
@@ -284,6 +292,20 @@ export default {
                         ...allComment.data.slice(index + 1),
                     ]
                 }
+            }
+        },
+        saveTagCat(state, {payload}){
+            const {data}=payload;
+            return {
+                ...state,
+                tagCat:data.data
+            }
+        },
+        saveTags(state, {payload}){
+            const {data}=payload;
+            return {
+                ...state,
+                tags:data.data
             }
         },
     }

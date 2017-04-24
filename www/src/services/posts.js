@@ -199,6 +199,16 @@ export function getTagCatList() {
         })
     });
 }
+export function getFrontTagList() {
+    const token = window.localStorage.getItem(storageTokenKey);
+    return request('/api/tags/getFrontTagList', {
+        method: 'get',
+        headers: new Headers({
+            "Authorization": `Bearer ${token}`
+        })
+    });
+}
+
 
 export function deleteComment({comment_id}) {
     const token = window.localStorage.getItem(storageTokenKey);
