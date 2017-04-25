@@ -53,8 +53,8 @@ export default {
     },
     effects: {
         createPost: function*({payload}, {call, put}) {
-            const {title, content} = payload;
-            const {data} = yield call(createPost, {title, content});
+            //const {title, content} = payload;
+            const {data} = yield call(createPost, payload);
             if (data.success) {
                 const {success} = data;
                 message.success('创建文章成功 :)');

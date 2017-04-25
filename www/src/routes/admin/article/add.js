@@ -22,15 +22,18 @@ class PostEditor extends React.Component {
     }
 
     handleSubmit = (e) => {
-        console.log()
         e.preventDefault();
+        this.setState({visible:false})
         const {dispatch,form}=this.props;
+        const tags = this.state.selectedTags;
         form.validateFields((error, values) => {
+            console.log(values,tags);
+
             const {title, content} = values;
             if (!error) {
                 dispatch({
                     type: 'posts/createPost',
-                    payload: {title, content}
+                    payload: values
                 });
             }
         });
@@ -42,6 +45,9 @@ class PostEditor extends React.Component {
     handleCancel= () => {
         this.setState({visible:false})
     };
+    handleOk=()=>{
+        this.setState({visible:false})
+    }
     handleChange=(t, checked)=>{
         const { selectedTags } = this.state;
         const nextSelectedTags = checked ?
@@ -142,7 +148,7 @@ class PostEditor extends React.Component {
                             onCancel={this.handleCancel}
                             footer={[
                                 <Button key="back" size="large" onClick={this.handleCancel}>取消</Button>,
-                                <Button key="submit" type="primary" size="large" loading={this.state.loading} onClick={this.handleOk}>
+                                <Button key="submit" type="primary" size="large" loading={this.state.loading} onClick={this.handleSubmit}>
                                    保存
                                 </Button>,
                             ]}
@@ -212,7 +218,7 @@ class PostEditor extends React.Component {
                             >
                                 {getFieldDecorator('tags', {
                                     initialValue: '',
-                                    rules: [{required: true, message: '请选择分类'}]
+                                    rules: [{ message: '请选择分类'}]
                                 })( <div>{selectedTag}<Input type="text" placeholder="请输入标题." /></div>)
                                 }
                             </FormItem>

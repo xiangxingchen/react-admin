@@ -41,7 +41,7 @@ export function fetchComments({post_id}) {
     });
 }
 
-export function createPost({title, content}) {
+export function createPost(payload) {
     const token = window.localStorage.getItem(storageTokenKey);
     return request('/api/article/addArticle', {
         method: 'POST',
@@ -49,9 +49,7 @@ export function createPost({title, content}) {
             "Authorization": `Bearer ${token}`,
             "Content-Type": "application/json; charset=utf-8"
         }),
-        body: JSON.stringify({
-            title, content
-        })
+        body: JSON.stringify(payload)
     });
 }
 export function updatePost({id,title, content}) {
