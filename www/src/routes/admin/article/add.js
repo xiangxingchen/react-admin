@@ -27,13 +27,11 @@ class PostEditor extends React.Component {
         const {dispatch,form}=this.props;
         const tags = this.state.selectedTags;
         form.validateFields((error, values) => {
-            console.log(values,tags);
-
-            const {title, content} = values;
+            const value = {...values,tags};
             if (!error) {
                 dispatch({
                     type: 'posts/createPost',
-                    payload: values
+                    payload: value
                 });
             }
         });

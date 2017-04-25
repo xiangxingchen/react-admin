@@ -58,4 +58,16 @@ module.exports = [
     icon: 'message',
     clickable: false,
   }
+  ,{
+    key: 'category',
+    name: '分类管理',
+    icon: 'book',
+    clickable: false,
+  }
+  ,{
+    key: 'tags',
+    name: '标签管理',
+    icon: 'tags',
+    clickable: false,
+  }
 ]
