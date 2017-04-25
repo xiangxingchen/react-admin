@@ -27,7 +27,8 @@ class Publish extends React.Component {
     };
     render() {
         const {getFieldDecorator,getFieldValue} = this.props.form;
-        const {user,allowComment} = this.props;
+        const {user,article} = this.props;
+        const allowComment = article.allow_comment;
 
         return (
             <div>

@@ -16,6 +16,7 @@ import {
     getFrontTagList,
     getAllCommentList,
     delComment,
+    addNewReply,
 } from '../services/posts';
 import {message} from 'antd';
 import pathToRegExp from 'path-to-regexp';
@@ -173,6 +174,18 @@ export default {
         delComment: function *({payload}, {call, put}) {
             const {id,index} = payload;
             const {data} = yield call(delComment, {id});
+            console.log(data,index);
+            if (data.success) {
+                yield put({
+                    type: 'afterDelComment',
+                    payload: {index}
+                });
+                message.success('删除评论成功');
+            }
+        },
+        addNewReply: function *({payload}, {call, put}) {
+            const {id,reply} = payload;
+            const {data} = yield call(addNewReply, {id,reply});
             console.log(data,index);
             if (data.success) {
                 yield put({

@@ -25,7 +25,7 @@ class PostsDetail extends React.Component {
                 <div className={styles.detail_wrapper}>
                     <h1>{article.title}</h1>
                     <div dangerouslySetInnerHTML={{__html: marked(article.content || '# hello!')}}></div>
-                    <CommentList dispatch ={dispatch} id={params.id} allowComment={article.allow_comment}/>
+                    <CommentList dispatch ={dispatch} id={params.id} article={article}/>
                 </div>
             </div>
         )

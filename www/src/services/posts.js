@@ -177,6 +177,18 @@ export function createComment({aid, commentInput}) {
         })
     });
 }
+export function addNewReply({id, reply}) {
+    const token = window.localStorage.getItem(storageTokenKey);
+    return request(`/api/comment/addNewReply/${id}`, {
+        method: 'post',
+        headers: new Headers({
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
+        }),
+        body: stringify({reply})
+    });
+}
+
 export function createCategory({category}) {
     const token = window.localStorage.getItem(storageTokenKey);
     return request(`/api/tags/addTagCat`, {

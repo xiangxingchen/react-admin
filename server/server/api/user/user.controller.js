@@ -8,7 +8,7 @@ var config = require('../../config/env')
 exports.getMe = function (req,res) {
 	var userId = req.user._id;
 	User.findByIdAsync(userId).then(function (user) {
-		return res.status(200).json(user.userInfo);
+		return res.status(200).json(user);
 	}).catch(function (err) {
 		return res.status(401).send();
 	});
