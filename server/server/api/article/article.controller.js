@@ -18,6 +18,9 @@ exports.addArticle = function (req, res, next) {
     console.log(req.body);
     var content = req.body.content;
     var title = req.body.title;
+    var status = req.body.status;
+    var publish_time = req.body.publish_time;
+
     var error_msg;
     if (!title) {
         error_msg = '标题不能为空.';
@@ -40,6 +43,9 @@ exports.addArticle = function (req, res, next) {
             name:user.nickname,
             content:user.nickname+'添加了文章'+title
         });
+        if(Number(status)===2){
+            timeRelease(result._id,publish_time);
+        }
         return res.status(200).json({success: true, article_id: result._id});
     }).catch(function (err) {
         return next(err);
@@ -318,8 +324,10 @@ exports.toggleLike = function (req, res, next) {
 
 function timeRelease(id, date) {
     var date = new Date(date);
+    console.log('准备发布====================');
+
     var j = schedule.scheduleJob(date, function () {
-        console.log('发布成功====================')
+        console.log('发布成功====================');
         Article.findByIdAndUpdateAsync(id, {status:1}, {new: true}).then(function (article) {
             //return res.status(200).json({success: true, id: article._id});
             console.log(article)
