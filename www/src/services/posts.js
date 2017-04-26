@@ -177,7 +177,7 @@ export function createComment({aid, commentInput}) {
         })
     });
 }
-export function addNewReply({id, reply}) {
+export function addNewReply({id, content}) {
     const token = window.localStorage.getItem(storageTokenKey);
     return request(`/api/comment/addNewReply/${id}`, {
         method: 'post',
@@ -185,7 +185,7 @@ export function addNewReply({id, reply}) {
             "Authorization": `Bearer ${token}`,
             "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
         }),
-        body: stringify({reply})
+        body: stringify({content})
     });
 }
 

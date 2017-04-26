@@ -184,8 +184,8 @@ export default {
             }
         },
         addNewReply: function *({payload}, {call, put}) {
-            const {id,reply} = payload;
-            const {data} = yield call(addNewReply, {id,reply});
+            const {id,content} = payload;
+            const {data} = yield call(addNewReply, {id,content});
             console.log(data,index);
             if (data.success) {
                 yield put({
