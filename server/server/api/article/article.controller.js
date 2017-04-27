@@ -11,6 +11,7 @@ var config = require('../../config/env');
 var Promise = require("bluebird");
 var tools = require('../../util/tools');
 var redis = require('../../util/redis');
+const cookies=[];
 
 //添加博客
 exports.addArticle = function (req, res, next) {
@@ -132,9 +133,21 @@ exports.updateArticle = function (req, res, next) {
 //获取单篇博客
 exports.getArticle = function (req, res) {
     var id = req.params.id;
-    Article.findOne({_id: id})
-        .exec().then(function (article) {
-        return res.status(200).json({data: article});
+    var cookie = req.cookies;
+    console.log(req.cookies, req.session);
+    Article.findOne({_id: id}).exec().then(function (article) {
+        if(cookie && !_.some(cookies,function(id){ return id === cookie})){
+            cookie = new Date().getTime();
+            cookies.push(cookie);
+            Article.findByIdAndUpdateAsync(id,{visit_count:(article.visit_count+1)}).then(function (a) {
+                console.log('访问量加一',cookies, cookie);
+                res.cookie('id', cookie, { maxAge: 900000, httpOnly: true }).status(200).json({data: a});
+            }).catch(function (err) {
+                return next(err);
+            });
+        } else{
+            return res.status(200).json({data: article});
+        }
     }).then(null, function (err) {
         return res.status(500).send();
     });

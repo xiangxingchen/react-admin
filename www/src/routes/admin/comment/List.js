@@ -65,8 +65,21 @@ class List extends React.Component {
                     </Col> : ''}
                 </Row>
                 {record.replys.map((reply,index) =>{
-                    return <Row key={index}>
-                        {reply.content}
+                    return <Row key={index} className={style.commentsList}>
+                        <Col span="1">
+                            <img src={`http://localhost:9000/avatar/default.jpg`} className={style.img}/>
+                        </Col>
+                        <Col span='20' offset="1">
+                            <p className={style.commentList_author}>
+                                <Link to={`/user/${reply.user_info._id}`}>
+                                    <em>{reply.user_info.nickname}</em>
+                                </Link>, {moment(reply.created).fromNow()}
+                            </p>
+                            <div className={style.commentList_content}>{reply.content}</div>
+                        </Col>
+                        {article.author_id === user._id ? <Col span="2">
+                            <a onClick={()=>{that.onClick(index,reply._id)}}>回复</a>
+                        </Col> : ''}
                     </Row>
                 })}
                 <Row>
