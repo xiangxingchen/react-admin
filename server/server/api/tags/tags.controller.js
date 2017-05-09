@@ -1,13 +1,13 @@
 'use strict';
 
-var _ = require('lodash');
-var mongoose = require('mongoose');
-var TagCategory = mongoose.model('TagCategory');
-var Tag = mongoose.model('Tag');
+const _ = require('lodash');
+const mongoose = require('mongoose');
+const TagCategory = mongoose.model('TagCategory');
+const Tag = mongoose.model('Tag');
 
 //添加添签分类.
 exports.addTagCat = function (req, res, next) {
-    var catName = req.body.category;
+    const catName = req.body.category;
     if (!catName) {
         return res.status(422).send({error_msg: "标签分类名称不能为空."});
     }
@@ -22,7 +22,7 @@ exports.addTagCat = function (req, res, next) {
     }).catch(function (err) {
         return next(err);
     })
-}
+};
 
 //获取分类列表
 exports.getTagCatList = function (req, res, next) {
@@ -31,11 +31,11 @@ exports.getTagCatList = function (req, res, next) {
     }).catch(function (err) {
         return next(err);
     })
-}
+};
 
 //更新分类
 exports.updateTagCat = function (req, res) {
-    var id = req.params.id;
+    const id = req.params.id;
     if (req.body._id) {
         delete req.body._id;
     }
@@ -44,11 +44,10 @@ exports.updateTagCat = function (req, res) {
     }).catch(function (err) {
         return next(err);
     });
-}
+};
 //删除分类
-//(如果分类下有标签,则不可删除)
 exports.delTagCat = function (req, res, next) {
-    var id = req.params.id;
+    const id = req.params.id;
     Tag.findOneAsync({cid: id}).then(function (tag) {
         if (tag) {
             //分类下有标签,分类不可删除
@@ -61,12 +60,11 @@ exports.delTagCat = function (req, res, next) {
     }).catch(function (err) {
         return next(err);
     })
-}
-
+};
 //获取标签列表
 exports.getTagList = function (req, res, next) {
-    var cid = req.params.id;
-    var condition = {};
+    const cid = req.params.id;
+    let condition = {};
     if (cid != 0) {
         condition = {cid: cid};
     }
@@ -79,13 +77,13 @@ exports.getTagList = function (req, res, next) {
     }).then(null, function (err) {
         return next(err);
     });
-}
+};
 //添加标签
 exports.addTag = function (req, res, next) {
     //标签名称不能重复,标签分类名称必须有.
-    var cid = req.body.cid;
-    var tagName = req.body.name;
-    var error_msg;
+    const cid = req.body.cid;
+    const tagName = req.body.name;
+    let error_msg;
     if (!tagName) {
         error_msg = '标签名称不能为空.';
     } else if (!cid) {
@@ -105,7 +103,7 @@ exports.addTag = function (req, res, next) {
     }).catch(function (err) {
         return next(err);
     });
-}
+};
 
 //删除标签
 exports.deleteTag = function (req, res, next) {

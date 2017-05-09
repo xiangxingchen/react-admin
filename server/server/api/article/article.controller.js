@@ -42,7 +42,8 @@ exports.addArticle = function (req, res, next) {
         Logs.createAsync({
             uid:user._id,
             name:user.nickname,
-            content:user.nickname+'添加了文章'+title
+            content:user.nickname+'添加了文章'+title,
+            type:'article'
         });
         if(Number(status)===2){
             timeRelease(result._id,publish_time);
@@ -85,7 +86,8 @@ exports.destroy = function (req, res, next) {
         Logs.createAsync({
             uid:user._id,
             name:user.nickname,
-            content:user.nickname+'删除了文章'+article.title
+            content:user.nickname+'删除了文章'+article.title,
+            type:'article'
         });
         return Comment.removeAsync({aid: id}).then(function () {
             return res.status(200).send({success: true});
@@ -123,7 +125,8 @@ exports.updateArticle = function (req, res, next) {
         Logs.createAsync({
             uid:user._id,
             name:user.nickname,
-            content:user.nickname+'修改了文章'+article.title
+            content:user.nickname+'修改了文章'+article.title,
+            type:'article'
         });
         return res.status(200).json({success: true, id: article._id});
     }).catch(function (err) {
@@ -162,7 +165,8 @@ exports.changeComment = function (req, res, next) {
         Logs.createAsync({
             uid:user._id,
             name:user.nickname,
-            content:user.nickname+'修改了文章评论设置'+article.title
+            content:user.nickname+'修改了文章评论设置'+article.title,
+            type:'article'
         });
         Comment.find({aid:id}).then((comments) => {
             comments.map(comment=>{
@@ -337,7 +341,7 @@ exports.toggleLike = function (req, res, next) {
 
 function timeRelease(id, date) {
     var date = new Date(date);
-    console.log('准备发布====================');
+    console.log('定时发布====================');
 
     var j = schedule.scheduleJob(date, function () {
         console.log('发布成功====================');

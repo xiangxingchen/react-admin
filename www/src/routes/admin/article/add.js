@@ -1,9 +1,7 @@
 import React, {PropTypes} from 'react';
 import {connect} from 'dva';
-import {routerRedux} from 'dva/router';
-import {Icon, Input, Form, Row, Col, Button, Spin, Tag,Upload,message,Modal,Select,Radio,DatePicker  } from 'antd';
+import {Icon, Input, Form, Row, Col, Button, Tag,Upload,message,Modal,Select,Radio,DatePicker  } from 'antd';
 import Editor from '../../../components/Editor/Editor';
-import Category from './category';
 import styles from './article.less';
 const Option = Select.Option;
 const FormItem = Form.Item;

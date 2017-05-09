@@ -8,7 +8,6 @@ import AddPost from './routes/admin/article/add';
 import EditPost from './routes/admin/article/edit';
 import adminApp from './routes/admin/app';
 import Error from './routes/admin/error';
-import Test from './routes/admin/test';
 import Dashboard from './routes/admin/dashboard';
 import Comment from './routes/admin/comment';
 import PictureList from './routes/admin/picture/list';
@@ -17,6 +16,7 @@ import AddUser from './routes/admin/user/add';
 import UserList from './routes/admin/user/list';
 import Ico from './routes/admin/ui/ico';
 import Search from './routes/admin/ui/search';
+import MenuHeader from './routes/front/header/header';
 
 function RouterConfig({ history, app }) {
 
@@ -30,6 +30,7 @@ function RouterConfig({ history, app }) {
 
     return (
         <Router history={history}>
+            <Route path="/menu" component={MenuHeader}/>
             <Route path="/login" component={Login}/>
             <Route path="/" component={adminApp} onEnter={requireAuth}>
                 <IndexRoute component={Dashboard}/>

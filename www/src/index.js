@@ -12,7 +12,7 @@ const app = dva({
         dispatch({type: 'app/logout'});
         if (e.message === 'Unauthorized') {
             dispatch(routerRedux.push('/login'));
-        } else {
+            } else {
             message.error(e.message, 5);
         }
     }
