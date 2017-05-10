@@ -49,7 +49,7 @@ var Promise = require('bluebird');
 				}).then(function () {
 					return TagCategory.createAsync({
 						name:'language',
-						desc:'按编程语言分类'
+						desc:'编程语言',
 					}).then(function (cat) {
 						return Tag.createAsync({
 							name:'nodejs',
@@ -67,7 +67,7 @@ var Promise = require('bluebird');
 					}).then(function () {
 						return TagCategory.createAsync({
 							name:'system',
-							desc:'按操作系统分类'
+							desc:'操作系统'
 						}).then(function (cat) {
 							return Tag.createAsync({
 								name:'linux',
@@ -84,6 +84,25 @@ var Promise = require('bluebird');
 							})
 						});
 					}).then(function () {
+                        return TagCategory.createAsync({
+                            name:'tool',
+                            desc:'工具'
+                        }).then(function (cat) {
+                            return Tag.createAsync({
+                                name:'webpack',
+                                cid:cat._id,
+                                is_show:true
+                            },{
+                                name:'github',
+                                cid:cat._id,
+                                is_show:true
+                            },{
+                                name:'idea',
+                                cid:cat._id,
+                                is_show:true
+                            })
+                        });
+                    }).then(function () {
 						return TagCategory.createAsync({
 							name:'other',
 							desc:'其它分类'
