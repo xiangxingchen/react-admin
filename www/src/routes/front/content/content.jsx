@@ -1,4 +1,6 @@
 import React, { PropTypes } from 'react';
+import {connect} from 'dva';
+import { Link } from 'dva/router'
 import style from '../header/header.less';
 import { Row, Col, Carousel, Tabs, Card, Layout, Icon } from 'antd';
 const { Header, Footer, Sider, Content } = Layout;
@@ -7,6 +9,13 @@ const TabPane = Tabs.TabPane;
 class content extends React.Component {
     state = {
         current: 'mail',
+    };
+    componentWillMount() {
+        // this.props.dispatch({
+        //     type: 'posts/getPostsList',
+        //     payload: {pageInfo: {limit: 10, page: 1}}
+        // });
+        this.props.dispatch({type: 'posts/getImageList'});
     }
     handleClick = (e) => {
         console.log('click ', e);
@@ -15,26 +24,26 @@ class content extends React.Component {
         });
     }
     render() {
+        const {posts}=this.props;
+        console.log(posts.imagePostList);
+        const items=[];
+        posts.imagePostList.map(item => {
+            items.push(<Link to={`/detail/${item._id}`} key={item._id}>
+                <img src={item.images[0].url} className={style.image}/>
+                <div className={style.title}>
+                <h3>{item.title}</h3>
+                </div>
+            </Link>)
+        })
         return (
             <Layout style={{ height: '100vh' }}>
                 <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
                     <Row className={style.content}>
                         <Col span={12} offset={3}>
                             <Row>
-                                <Card>
+                                <Card bodyStyle={{ padding: 0 }}>
                                     <Carousel autoplay>
-                                        <div>
-                                            <img alt="example" src={`http://localhost:9000/avatar/1.jpg`} className={style.image}/>
-                                            <h3>1</h3>
-                                        </div>
-                                        <div>
-                                            <img alt="example" src={`http://localhost:9000/avatar/2.jpg`} className={style.image} />
-                                            <h3>2</h3>
-                                        </div>
-                                        <div>
-                                            <img alt="example" src={`http://localhost:9000/avatar/4.jpg`} className={style.image} />
-                                            <h3>4</h3>
-                                        </div>
+                                        {posts.imagePostList.length > 0 ? items : <div></div>}
                                     </Carousel>
                                 </Card>
                             </Row>
@@ -103,5 +112,10 @@ class content extends React.Component {
         );
     }
 }
+function mapStateToProps(state, ownProps) {
+    return {
+        posts: state.posts,
+    };
+}
 
-export default content;
+export default connect(mapStateToProps)(content);

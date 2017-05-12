@@ -218,7 +218,15 @@ export function getFrontTagList() {
         })
     });
 }
-
+export function getImageList() {
+    const token = window.localStorage.getItem(storageTokenKey);
+    return request('/api/article/getImageList', {
+        method: 'get',
+        headers: new Headers({
+            "Authorization": `Bearer ${token}`
+        })
+    });
+}
 
 export function deleteComment({comment_id}) {
     const token = window.localStorage.getItem(storageTokenKey);

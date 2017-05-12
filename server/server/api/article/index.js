@@ -34,6 +34,7 @@ router.post('/searchArticle', auth.hasRole('admin'), controller.searchArticle);
 /**
  *前台获取
  */
+router.get('/getImageList',controller.getImageList);
 router.get('/getFrontArticleList',controller.getFrontArticleList);
 router.get('/getFrontArticleCount',controller.getFrontArticleCount);
 //获取首页图片

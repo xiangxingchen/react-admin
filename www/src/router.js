@@ -34,7 +34,7 @@ function RouterConfig({ history, app }) {
 
     return (
         <Router history={history}>
-            <Route path="/index" component={MenuHeader} onEnter={requireAuth}>
+            <Route path="/" component={MenuHeader} onEnter={requireAuth}>
                 <IndexRoute component={Content}/>
                 <Route path="home" component={Content}/>
                 <Route path="language" component={Language}/>
@@ -43,7 +43,7 @@ function RouterConfig({ history, app }) {
             </Route>
             <Route path="/menu" component={MenuHeader}/>
             <Route path="/login" component={Login}/>
-            <Route path="/" component={adminApp} onEnter={requireAuth}>
+            <Route path="/1" component={adminApp} onEnter={requireAuth}>
                 <IndexRoute component={Dashboard}/>
                 <Route path="dashboard" component={Dashboard}/>
                 <Route path="picture/addpic" component={AddPicture}/>

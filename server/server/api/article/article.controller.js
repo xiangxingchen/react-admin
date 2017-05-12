@@ -76,6 +76,16 @@ exports.getArticleList = function (req, res, next) {
     }).then(null, function (err) {
         return next(err);
     });
+};
+//获取轮播文章
+exports.getImageList = function (req, res, next) {
+    Article.find({status: {$gt: 0},'images.0': {$exists: true}})
+        .sort({comment_count: -1})
+        .exec().then(function (ArticleList) {
+        return res.status(200).json({data: ArticleList.slice(0,3)});
+    }).then(null, function (err) {
+        return next(err);
+    });
 }
 
 //删除博客(连同这篇文章的评论一起删除.)

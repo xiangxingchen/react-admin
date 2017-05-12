@@ -17,6 +17,7 @@ import {
     getAllCommentList,
     delComment,
     addNewReply,
+    getImageList,
 } from '../services/posts';
 import {message} from 'antd';
 import pathToRegExp from 'path-to-regexp';
@@ -39,6 +40,7 @@ export default {
         allComment:{data:[]},
         tagCat:[],
         tags:[],
+        imagePostList:[],
     },
     subscriptions: {
         //setup: function ({history, dispatch}) {
@@ -86,6 +88,16 @@ export default {
                 yield put({type: 'savePost', payload: data})
             } else {
                 yield put({type: 'saveArticle', payload: data})
+            }
+        },
+        getImageList: function *({payload}, {call, put}) {
+            console.log('11')
+            const {data} = yield call(getImageList);
+            if (data) {
+                yield put({
+                    type: 'saveImagePostsList',
+                    payload: {data}
+                });
             }
         },
         searchArticle: function *({payload}, {call, put}) {
@@ -319,6 +331,13 @@ export default {
             return {
                 ...state,
                 tags:data.data
+            }
+        },
+        saveImagePostsList(state, {payload}){
+            const {data}=payload;
+            return {
+                ...state,
+                imagePostList:data.data
             }
         },
     }
