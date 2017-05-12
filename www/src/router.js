@@ -17,6 +17,10 @@ import UserList from './routes/admin/user/list';
 import Ico from './routes/admin/ui/ico';
 import Search from './routes/admin/ui/search';
 import MenuHeader from './routes/front/header/header';
+import Content from './routes/front/content/content';
+import Language from './routes/front/content/language';
+import System from './routes/front/content/system';
+import Tools from './routes/front/content/tools';
 
 function RouterConfig({ history, app }) {
 
@@ -30,6 +34,13 @@ function RouterConfig({ history, app }) {
 
     return (
         <Router history={history}>
+            <Route path="/index" component={MenuHeader} onEnter={requireAuth}>
+                <IndexRoute component={Content}/>
+                <Route path="home" component={Content}/>
+                <Route path="language" component={Language}/>
+                <Route path="system" component={System}/>
+                <Route path="tool" component={Tools}/>
+            </Route>
             <Route path="/menu" component={MenuHeader}/>
             <Route path="/login" component={Login}/>
             <Route path="/" component={adminApp} onEnter={requireAuth}>

@@ -4,7 +4,7 @@ import { Row, Col, Carousel, Tabs, Card, Layout, Icon } from 'antd';
 const { Header, Footer, Sider, Content } = Layout;
 const TabPane = Tabs.TabPane;
 
-class content extends React.Component {
+class language extends React.Component {
     state = {
         current: 'mail',
     }
@@ -20,24 +20,6 @@ class content extends React.Component {
                 <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
                     <Row className={style.content}>
                         <Col span={12} offset={3}>
-                            <Row>
-                                <Card>
-                                    <Carousel autoplay>
-                                        <div>
-                                            <img alt="example" src={`http://localhost:9000/avatar/1.jpg`} className={style.image}/>
-                                            <h3>1</h3>
-                                        </div>
-                                        <div>
-                                            <img alt="example" src={`http://localhost:9000/avatar/2.jpg`} className={style.image} />
-                                            <h3>2</h3>
-                                        </div>
-                                        <div>
-                                            <img alt="example" src={`http://localhost:9000/avatar/4.jpg`} className={style.image} />
-                                            <h3>4</h3>
-                                        </div>
-                                    </Carousel>
-                                </Card>
-                            </Row>
                             <Row>
                                 <Card title="新闻" extra={<a href="#">更多</a>}>
                                     <p>Card content</p>
@@ -104,4 +86,4 @@ class content extends React.Component {
     }
 }
 
-export default content;
+export default language;
