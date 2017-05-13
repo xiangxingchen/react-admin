@@ -21,6 +21,7 @@ import Content from './routes/front/content/content';
 import Language from './routes/front/content/language';
 import System from './routes/front/content/system';
 import Tools from './routes/front/content/tools';
+import userCenter from './routes/front/content/userCenter';
 
 function RouterConfig({ history, app }) {
 
@@ -41,6 +42,7 @@ function RouterConfig({ history, app }) {
                 <Route path="system" component={System}/>
                 <Route path="tool" component={Tools}/>
                 <Route path="post/:id" component={PostsDetail}/>
+                <Route path="user/:id" component={userCenter}/>
             </Route>
             <Route path="/menu" component={MenuHeader}/>
             <Route path="/login" component={Login}/>

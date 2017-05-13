@@ -205,9 +205,19 @@ exports.searchArticle = function (req, res, next) {
     Article.find({
         $or: [ //多条件，数组
             {title: {$regex: reg}},
-            {author: {$regex: reg}}
+            {author: {$regex: reg}},
+            {author_id: {$regex: reg}}
         ]
     }).sort('updated').then(function (article) {
+        return res.status(200).json({success: true, data: article});
+    }).catch(function (err) {
+        return next(err);
+    });
+}
+//根据用户id查询
+exports.getArticleByUserId = function (req, res, next) {
+    const id = req.params.id; //从URL中传来的 keyword参数
+    Article.find({author_id:id}).sort('updated').then(function (article) {
         return res.status(200).json({success: true, data: article});
     }).catch(function (err) {
         return next(err);

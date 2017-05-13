@@ -27,6 +27,8 @@ router.post('/changeComment/:id', auth.hasRole('admin'), controller.changeCommen
 
 //根据条件查询文章
 router.post('/searchArticle', auth.hasRole('admin'), controller.searchArticle);
+//根据用户id查询
+router.get('/getArticleByUserId/:id', controller.getArticleByUserId);
 
 //发布文章，定时发布
 //我的文章，已发布，草稿，回收站，分类，标签

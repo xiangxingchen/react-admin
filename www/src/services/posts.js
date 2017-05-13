@@ -237,7 +237,15 @@ export function getPrenext({id}) {
         })
     });
 }
-
+export function getArticleByUserId({id}) {
+    const token = window.localStorage.getItem(storageTokenKey);
+    return request(`/api/article/getArticleByUserId/${id}`, {
+        method: 'get',
+        headers: new Headers({
+            "Authorization": `Bearer ${token}`
+        })
+    });
+}
 export function deleteComment({comment_id}) {
     const token = window.localStorage.getItem(storageTokenKey);
     return request(`/api/comments/${comment_id}`, {

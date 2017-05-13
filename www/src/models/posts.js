@@ -19,6 +19,7 @@ import {
     addNewReply,
     getImageList,
     getPrenext,
+    getArticleByUserId,
 } from '../services/posts';
 import {message} from 'antd';
 import pathToRegExp from 'path-to-regexp';
@@ -114,6 +115,16 @@ export default {
         getPostsList: function *({payload}, {call, put}) {
             const {pageInfo} = payload;
             const {data} = yield call(fetchPosts, {pageInfo});
+            if (data) {
+                yield put({
+                    type: 'savePostsList',
+                    payload: {data}
+                });
+            }
+        },
+        getArticleByUserId:function *({payload}, {call, put}) {
+            const {id} = payload;
+            const {data} = yield call(getArticleByUserId, {id});
             if (data) {
                 yield put({
                     type: 'savePostsList',
