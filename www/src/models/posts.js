@@ -18,6 +18,7 @@ import {
     delComment,
     addNewReply,
     getImageList,
+    getPrenext,
 } from '../services/posts';
 import {message} from 'antd';
 import pathToRegExp from 'path-to-regexp';
@@ -41,6 +42,7 @@ export default {
         tagCat:[],
         tags:[],
         imagePostList:[],
+        preNext:{next:{},prev:{}},
     },
     subscriptions: {
         //setup: function ({history, dispatch}) {
@@ -174,7 +176,7 @@ export default {
         },
         getAllCommentList: function *({payload}, {call, put}) {
             const {pageInfo} = payload;
-            const data = yield call(getAllCommentList, {pageInfo});
+            const data= yield call(getAllCommentList, {pageInfo});
             if (data) {
                 yield put({
                     type: 'saveAllComment',
@@ -185,7 +187,6 @@ export default {
         delComment: function *({payload}, {call, put}) {
             const {id,index} = payload;
             const {data} = yield call(delComment, {id});
-            console.log(data,index);
             if (data.success) {
                 yield put({
                     type: 'afterDelComment',
@@ -197,13 +198,22 @@ export default {
         addNewReply: function *({payload}, {call, put}) {
             const {id,content} = payload;
             const {data} = yield call(addNewReply, {id,content});
-            console.log(data,index);
             if (data.success) {
                 yield put({
                     type: 'afterDelComment',
                     payload: {index}
                 });
                 message.success('删除评论成功');
+            }
+        },
+        getPrenext: function *({payload}, {call, put}) {
+            const {id} = payload;
+            const {data} = yield call(getPrenext, {id});
+            if (data) {
+                yield put({
+                    type: 'savePrenext',
+                    payload: {data}
+                });
             }
         },
     },
@@ -337,6 +347,13 @@ export default {
             return {
                 ...state,
                 imagePostList:data.data
+            }
+        },
+        savePrenext(state, {payload}){
+            const {data}=payload;
+            return {
+                ...state,
+                preNext:data.data
             }
         },
     }

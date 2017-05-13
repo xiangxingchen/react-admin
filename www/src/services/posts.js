@@ -228,6 +228,16 @@ export function getImageList() {
     });
 }
 
+export function getPrenext({id}) {
+    const token = window.localStorage.getItem(storageTokenKey);
+    return request(`/api/article/getPrenext/${id}`, {
+        method: 'get',
+        headers: new Headers({
+            "Authorization": `Bearer ${token}`
+        })
+    });
+}
+
 export function deleteComment({comment_id}) {
     const token = window.localStorage.getItem(storageTokenKey);
     return request(`/api/comments/${comment_id}`, {

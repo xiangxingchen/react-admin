@@ -3,7 +3,7 @@ import {connect} from 'dva';
 import { Link } from 'dva/router';
 import moment from 'moment';
 import style from '../header/header.less';
-import { Row, Col, Carousel, Tabs, Card, Layout, Icon, Popover, Button } from 'antd';
+import { Row, Col, Carousel, Tabs, Card, Layout, Icon, Popover } from 'antd';
 const { Content } = Layout;
 const TabPane = Tabs.TabPane;
 moment.locale(window.navigator.language);
@@ -58,7 +58,7 @@ class content extends React.Component {
                                 <li>
                                     <a><Icon type="like" /><span>{data.like_count}</span></a>
                                     <a><Icon type="message" /><span>{data.comment_count}</span></a>
-                                    <a><Icon type="eye" /><span>{data.comment_count}</span></a>
+                                    <a><Icon type="eye" /><span>{data.visit_count}</span></a>
                                 </li>
                             </ul></Col>
                         <Col span={4}>

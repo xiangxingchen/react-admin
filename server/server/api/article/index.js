@@ -42,5 +42,5 @@ router.get('/getIndexImage',controller.getIndexImage);
 //用户喜欢文章
 router.put('/:id/toggleLike',auth.isAuthenticated(),controller.toggleLike);
 //获取上一篇和下一篇
-router.get('/:id/getPrenext',controller.getPrenext);
+router.get('/getPrenext/:id',controller.getPrenext);
 module.exports = router;

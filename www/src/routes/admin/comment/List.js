@@ -67,7 +67,7 @@ class List extends React.Component {
                 {record.replys.map((reply,index) =>{
                     return <Row key={index} className={style.commentsList}>
                         <Col span="1">
-                            <img src={`http://localhost:9000/avatar/default.jpg`} className={style.img}/>
+                            <img src={`http://localhost:9000/avatar/8.jpg`} className={style.img}/>
                         </Col>
                         <Col span='20' offset="1">
                             <p className={style.commentList_author}>

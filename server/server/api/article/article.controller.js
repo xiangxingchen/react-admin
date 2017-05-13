@@ -148,20 +148,28 @@ exports.getArticle = function (req, res) {
     var id = req.params.id;
     var cookie = req.cookies;
     console.log(req.cookies, req.session);
-    Article.findOne({_id: id}).exec().then(function (article) {
-        if(cookie && !_.some(cookies,function(id){ return id === cookie})){
-            cookie = new Date().getTime();
-            cookies.push(cookie);
-            Article.findByIdAndUpdateAsync(id,{visit_count:(article.visit_count+1)}).then(function (a) {
-                console.log('访问量加一',cookies, cookie);
-                res.cookie('id', cookie, { maxAge: 900000, httpOnly: true }).status(200).json({data: a});
-            }).catch(function (err) {
-                return next(err);
-            });
-        } else{
+    Article.findOne({_id: id}).populate({
+        path: 'author_id',
+        select: 'nickname avatar'
+    }).exec().then(function (article) {
+        // if(cookie && !_.some(cookies,function(id){ return id === cookie})){
+        //     cookie = new Date().getTime();
+        //     cookies.push(cookie);
+        //     Article.findByIdAndUpdateAsync(id,{visit_count:(article.visit_count+1)})
+        //         .populate({
+        //             path: 'author_id',
+        //             select: 'nickname avatar'
+        //         }).exec().then(function (a) {
+        //         console.log('访问量加一',cookies, cookie);
+        //         res.cookie('id', cookie, { maxAge: 900000, httpOnly: true }).status(200).json({data: a});
+        //     }).catch(function (err) {
+        //         return next(err);
+        //     });
+        // } else{
             return res.status(200).json({data: article});
-        }
+        // }
     }).then(null, function (err) {
+        console.log(err)
         return res.status(500).send();
     });
 }
