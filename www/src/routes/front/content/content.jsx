@@ -80,7 +80,7 @@ class content extends React.Component {
 
         const items=[];
         posts.imagePostList.map(item => {
-            items.push(<Link to={`/detail/${item._id}`} key={item._id}>
+            items.push(<Link to={`/post/${item._id}`} key={item._id}>
                 <img src={item.images[0].url} className={style.image}/>
                 <div className={style.title}>
                 <h3>{item.title}</h3>

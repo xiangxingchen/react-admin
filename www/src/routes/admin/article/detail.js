@@ -50,20 +50,24 @@ class PostsDetail extends React.Component {
                     <div dangerouslySetInnerHTML={{__html: marked(article.content || '# hello!')}} className={styles.content}></div>
                     <Row className={styles.prevNext}>
                         <Col span={10}>
-                            <Link to={`/post/${preNext.prev._id}`}>
-                            <div className={styles.prev}>
-                                <Icon type="arrow-left" />
-                                <span>上篇：{preNext.prev.title}</span>
-                            </div>
-                            </Link>
+                            {
+                                preNext.prev.title ? <Link to={`/post/${preNext.prev._id}`}>
+                                    <div className={styles.prev}>
+                                        <Icon type="arrow-left" />
+                                        <span>上篇：{preNext.prev.title}</span>
+                                    </div>
+                                </Link> :''
+                            }
                         </Col>
                         <Col span={10} offset={4}>
-                            <Link to={`/post/${preNext.next._id}`}>
-                            <div className={styles.next}>
-                                <span>下篇：{preNext.next.title}</span>
-                                <Icon type="arrow-right" />
-                            </div>
-                            </Link>
+                            {
+                                preNext.next.title ? <Link to={`/post/${preNext.next._id}`}>
+                                    <div className={styles.next}>
+                                        <span>下篇：{preNext.next.title}</span>
+                                        <Icon type="arrow-right" />
+                                    </div>
+                                </Link> : ''
+                            }
                         </Col>
                     </Row>
                     <CommentList dispatch ={dispatch} id={params.id} article={article}/>

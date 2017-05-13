@@ -15,10 +15,13 @@ class List extends React.Component {
     };
     componentWillMount() {
         const { dispatch,id } = this.props;
-        dispatch({
-            type: 'posts/getCommentList',
-            payload:{id}
-        });
+        this.getData({dispatch,id});
+    }
+    componentWillReceiveProps(nextProps) {
+        const { dispatch, id } = nextProps;
+        if(nextProps.id !== this.props.id) {
+            this.getData({dispatch,id});
+        }
     }
     handleSubmit = (e) => {
         const {form,dispatch} = this.props;
@@ -38,6 +41,12 @@ class List extends React.Component {
     }
     onCancel = (index) => {
         this.setState({visitable:false,currentIndex:index})
+    }
+    getData({dispatch,id}){
+        dispatch({
+            type: 'posts/getCommentList',
+            payload: {id}
+        });
     }
 
     render() {

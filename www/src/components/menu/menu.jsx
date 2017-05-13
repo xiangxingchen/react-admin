@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react'
-import { Menu, Icon, Input, Dropdown, Button } from 'antd';
+import { Menu, Icon, Input, Dropdown, Button,Popover } from 'antd';
 import {connect} from 'dva';
 import { Link } from 'dva/router'
 import style from './menu.less'
@@ -36,12 +36,22 @@ class MenuHeader extends React.Component {
         });
         return items;
     };
+
     render() {
-        const {posts} = this.props;
+        const {posts,user} = this.props;
         const {tagCat} = posts;
         const mainMenu = this.getMenuItems(tagCat.slice(0,3));
         const otherMenu = this.getMenuItems(tagCat.slice(3,tagCat.length));
         const otherMenus = (<Menu onClick={this.onClick}>{otherMenu}</Menu>);
+        const content = (
+                <ul className={style.user}>
+                    <a href={`/user/${user.account._id}`}><li><Icon type="user" /> 我的主页</li></a>
+                    <a href={`/tags`}><li><Icon type="tags-o" /> 标签管理</li></a>
+                    <a href={`/user/setting`}><li><Icon type="setting" /> 信息设置</li></a>
+                    <a href={`/about`}><li><Icon type="team" /> 关于我们</li></a>
+                    <a href={`/user`}><li><Icon type="logout" /> 安全退出</li></a>
+                </ul>
+        );
         return (
             <Menu
                 onClick={this.handleClick}
@@ -67,12 +77,18 @@ class MenuHeader extends React.Component {
                         onSearch={value => console.log(value)}
                     />
                 </Item>
-                <Item key="login" className={style.right} >
-                    <Icon type="appstore" />登陆
-                </Item >
-                <Item key="register" className={style.right} >
-                    <Icon type="appstore" />注册
-                </Item >
+                {user.account._id ?<Item key="blog" className={style.right}>
+                    <Button >写文章</Button>
+                </Item> : ''
+                }
+                {user.account._id ?<Item key="user" className={style.right} >
+                    <Popover placement="bottomRight" content={content} trigger="hover">
+                        <img src={`http://localhost:9000/avatar/7.jpg`} className={style.avatar} />
+                    </Popover>
+                </Item> : <Item key="login" className={style.right} >
+                        <Icon type="appstore" />登陆
+                    </Item>
+                }
             </Menu>
         );
     }
@@ -80,6 +96,7 @@ class MenuHeader extends React.Component {
 function mapStateToProps(state, ownProps) {
     return {
         posts: state.posts,
+        user: state.user,
     };
 }
 
