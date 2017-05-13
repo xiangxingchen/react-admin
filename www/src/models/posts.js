@@ -91,7 +91,6 @@ export default {
             }
         },
         getImageList: function *({payload}, {call, put}) {
-            console.log('11')
             const {data} = yield call(getImageList);
             if (data) {
                 yield put({

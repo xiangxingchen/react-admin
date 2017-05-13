@@ -40,6 +40,7 @@ function RouterConfig({ history, app }) {
                 <Route path="language" component={Language}/>
                 <Route path="system" component={System}/>
                 <Route path="tool" component={Tools}/>
+                <Route path="post/:id" component={PostsDetail}/>
             </Route>
             <Route path="/menu" component={MenuHeader}/>
             <Route path="/login" component={Login}/>
