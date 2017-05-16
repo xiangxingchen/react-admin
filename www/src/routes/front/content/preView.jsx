@@ -46,9 +46,7 @@ class preView extends React.Component {
                 <Col span={20}>
                     <Row>
                         <Col span={2} key={data.author}>
-                            <Popover content={cont}>
-                                {data.author}
-                            </Popover>
+                            <Link to={`f/user/${data.author_id}`}>{data.author}</Link>
                         </Col>
                         <Col span={2} key={data.tags[0].id}>
                             <Popover content={cont}>

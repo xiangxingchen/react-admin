@@ -2,9 +2,9 @@ import { request } from '../utils/index'
 import {stringify} from 'qs';
 import {storageTokenKey} from '../utils/constant';
 
-export function fetchPosts({pageInfo}) {
+export function fetchPosts({pageInfo,sort,hotSort}) {
     const token = window.localStorage.getItem(storageTokenKey);
-    return request(`/api/article/getArticleList?${stringify({...pageInfo })}`, {
+    return request(`/api/article/getArticleList?${stringify({...pageInfo, ...sort,...hotSort })}`, {
         method: 'get',
         headers: new Headers({
             "Authorization": `Bearer ${token}`
@@ -13,7 +13,7 @@ export function fetchPosts({pageInfo}) {
 }
 export function getAllCommentList({pageInfo}) {
     const token = window.localStorage.getItem(storageTokenKey);
-    return request(`/api/comment/getAllCommentList?${stringify({...pageInfo })}`, {
+    return request(`/api/comment/getAllCommentList?${stringify({...pageInfo})}`, {
         method: 'get',
         headers: new Headers({
             "Authorization": `Bearer ${token}`

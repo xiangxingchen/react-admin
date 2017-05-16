@@ -40,6 +40,7 @@ export default {
         isNew: true,
         article: {},
         postsList: [],
+        hotList:[],
         descendants: [],
         allComment:{data:[]},
         tagCat:[],
@@ -131,8 +132,18 @@ export default {
             }
         },
         getPostsList: function *({payload}, {call, put}) {
-            const {pageInfo} = payload;
-            const {data} = yield call(fetchPosts, {pageInfo});
+            const {pageInfo,type} = payload;
+            const hotSort={sortName:'visit_count',sortOrder:false};
+            const sort={sortName:'publish_time',sortOrder:false};
+            const {data} = yield call(fetchPosts, {pageInfo,sort});
+            if(type === 'hot') {
+                const hotData = yield call(fetchPosts, {pageInfo,hotSort});
+                console.log(hotData);
+                yield put({
+                    type: 'saveHotPostsList',
+                    payload: {hotData}
+                });
+            }
             if (data) {
                 yield put({
                     type: 'savePostsList',
@@ -281,6 +292,13 @@ export default {
             return {
                 ...state,
                 postsList: data,
+            };
+        },
+        saveHotPostsList: function (state, {payload}) {
+            const {hotData} = payload;
+            return {
+                ...state,
+                hotList: hotData.data,
             };
         },
         saveCurrentPostComment: function (state, {payload}) {

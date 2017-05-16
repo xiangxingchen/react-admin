@@ -3,7 +3,7 @@ import {connect} from 'dva';
 import { Link } from 'dva/router';
 import moment from 'moment';
 import style from '../header/header.less';
-import { Row, Col, Carousel, Tabs, Card, Layout, Icon, Popover } from 'antd';
+import { Row, Col, Carousel, Tabs, Card, Layout, Icon, Badge,Tag } from 'antd';
 import PreContent from './preView';
 const { Content } = Layout;
 const TabPane = Tabs.TabPane;
@@ -16,7 +16,7 @@ class content extends React.Component {
     componentWillMount() {
         this.props.dispatch({
             type: 'posts/getPostsList',
-            payload: {pageInfo: {limit: 10, page: 1}}
+            payload: {pageInfo: {limit: 10, page: 1},type:'hot'}
         });
         this.props.dispatch({type: 'posts/getImageList'});
     }
@@ -28,21 +28,44 @@ class content extends React.Component {
     };
     getContent = (items,likeList) => {
         const {dispatch}=this.props;
-        const content = [];
         return (items||[]).map((data,index)=> {
             return <PreContent data={data} key={index} likeList={likeList} dispatch={dispatch}/>
-            // )
         })
-        // return content;
     };
+    getHotContent = (items) => {
+        return (items||[]).slice(0,5).map((data,index)=> {
+            return <div key={index} className={style.hot}>
+                <Link to={`f/post/${data._id}`}>
+                <span className={style.badge}>{data.visit_count}</span>
+                {data.title.slice(0,10)}
+                </Link>
+            </div>
+            }
+        );
+    };
+    getNewContent = (items) => {
+        return (items||[]).slice(0,5).map((data,index)=> {
+                return <div key={index} className={style.new}>
+                    <Link to={`f/post/${data._id}`}>
+                        {data.title.slice(0,9)}
+                        {data.title.slice(9,20)? '...': ''}
+                        <span className={style.time}>{moment(data.publish_time).format("YYYY-MM-DD")}</span>
+                    </Link>
+                </div>
+            }
+        );
+    };
+
     render() {
         const {posts,likeList}=this.props;
-        const datasource = posts.postsList.data;
-        const data = datasource && datasource[0];
+        const {imagePostList,hotList,postsList} = posts
+        const datasource = postsList.data;
+        const hotData = this.getHotContent(hotList.data);
         const content = this.getContent(datasource,likeList);
+        const newcontent = this.getNewContent(datasource);
 
         const items=[];
-        posts.imagePostList.map(item => {
+        imagePostList.map(item => {
             items.push(<Link to={`f/post/${item._id}`} key={item._id}>
                 <img src={item.images[0].url} className={style.image}/>
                 <div className={style.title}>
@@ -72,15 +95,11 @@ class content extends React.Component {
                         <Col span={5} offset={1}>
                             <Row>
                                 <Tabs className={style.tabs}>
-                                    <TabPane tab="最新动态" key="1">
-                                        <p>Card content</p>
-                                        <p>Card content</p>
-                                        <p>Card content</p>
+                                    <TabPane tab="最热动态" key="1">
+                                        {hotList.data && hotList.data.length > 0 ? hotData : <div></div>}
                                     </TabPane>
-                                    <TabPane tab="最热动态" key="2">
-                                        <p>Card content1</p>
-                                        <p>Card content1</p>
-                                        <p>Card content1</p>
+                                    <TabPane tab="最新动态" key="2">
+                                        {newcontent}
                                     </TabPane>
                                 </Tabs>
                             </Row>

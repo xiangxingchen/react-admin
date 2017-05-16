@@ -65,11 +65,13 @@ exports.getArticleList = function (req, res, next) {
     if (sortOrder === 'false') {
         sortName = "-" + sortName;
     }
+    console.log(req.query)
+
 
     Article.find()
         .skip(startRow)
         .limit(itemsPerPage)
-        .sort({updated: -1})
+        .sort(sortName)
         .exec().then(function (ArticleList) {
         return Article.countAsync().then(function (count) {
             return res.status(200).json({data: ArticleList, count: count, currentPage: currentPage});
