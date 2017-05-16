@@ -3,21 +3,46 @@ import { Link } from 'dva/router';
 import moment from 'moment';
 import style from '../header/header.less';
 import { Row, Col, Card, Icon, Popover } from 'antd';
+import _ from 'lodash';
 moment.locale(window.navigator.language);
 
 class preView extends React.Component {
+    state={
+        isLike:false
+    };
+    componentWillMount() {
+        const {data,likeList}=this.props;
+        // data.like_count
+        const like = _.indexOf(likeList, data._id) > -1;
+        const count= data.like_count;
+        this.setState({isLike:like,count});
+    }
+
+    like(id){
+        const {isLike,count}=this.state;
+        this.props.dispatch({
+            type: 'posts/toggleLike',
+            payload: {id}
+        });
+        const data = isLike ? count-1 : count+1;
+        this.setState({isLike:!isLike,count:data});
+
+    }
 
     render() {
         const {data}=this.props;
-        console.log(this.props);
+        const {isLike,count}=this.state;
+        const that = this;
+        // console.log(this.props);
         const cont=(
             <div>
                 <p>Content</p>
                 <p>Content</p>
             </div>
         );
-        return (<Row key={data._id} className={style.preView}>
-            <Link to={`post/${data._id}`}>
+        return (<div className={style.preView}>
+            <Row key={data._id} >
+            <Link to={`f/post/${data._id}`}>
                 <Col span={20}>
                     <Row>
                         <Col span={2} key={data.author}>
@@ -32,21 +57,23 @@ class preView extends React.Component {
                         </Col>
                         <span>{moment(data.publish_time).fromNow()} </span>
                     </Row>
-                    <a href={`post/${data._id}`}>
+                    <a href={`f/post/${data._id}`}>
                         <h1>{data.title}</h1>
                     </a>
-                    <ul>
-                        <li>
-                            <a><Icon type="like" /><span>{data.like_count}</span></a>
-                            <a><Icon type="message" /><span>{data.comment_count}</span></a>
-                            <a><Icon type="eye" /><span>{data.visit_count}</span></a>
-                        </li>
-                    </ul></Col>
+                </Col>
                 <Col span={4}>
                     {data.images[0] && <img src={data.images[0].url} className={style.contentImage}/>}
                 </Col>
             </Link>
-        </Row>)
+        </Row>
+            <div className={style.like}>
+                {isLike?
+                    <a onClick={(e) => {that.like(data._id,e)}}><Icon type="like" className={style.red} />{count}</a>
+                    :<a onClick={(e) => {that.like(data._id,e)}}><Icon type="like-o" />{count}</a>}
+                <span><Icon type="message" />{data.comment_count}</span>
+                <span><Icon type="eye" />{data.visit_count}</span>
+            </div>
+        </div>)
     }
 }
 

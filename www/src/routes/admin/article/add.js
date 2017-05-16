@@ -12,6 +12,7 @@ class PostEditor extends React.Component {
     state={
         visible:false,
         selectedTags: [],
+        selectedTagsName: [],
     }
 
     componentWillMount() {
@@ -45,11 +46,15 @@ class PostEditor extends React.Component {
         this.setState({visible:false})
     }
     handleChange=(t, checked)=>{
-        const { selectedTags } = this.state;
+        const { selectedTags, selectedTagsName } = this.state;
         const nextSelectedTags = checked ?
-            [...selectedTags, t] :
-            selectedTags.filter(tag => tag !== t);
+            [...selectedTags, t._id] :
+            selectedTags.filter(tag => tag !== t._id);
         this.setState({ selectedTags: nextSelectedTags });
+        const nextSelectedTagsName = checked ?
+            [...selectedTagsName, t.name] :
+            selectedTagsName.filter(tag => tag !== t.name);
+        this.setState({ selectedTagsName: nextSelectedTagsName });
     };
     onCheck=()=>{
 
@@ -58,7 +63,7 @@ class PostEditor extends React.Component {
     render() {
         const {form,post,dispatch,tagCat,tags}= this.props;
         const {getFieldDecorator,getFieldValue} =form;
-        const {selectedTags}=this.state;
+        const {selectedTags,selectedTagsName}=this.state;
 
         const selectedTag=[]
         const options=[];
@@ -66,16 +71,17 @@ class PostEditor extends React.Component {
         tagCat.map(cat=>{
             options.push(<Option value={cat._id} key={cat._id}>{cat.desc}</Option>)
         });
+        console.log(tags);
         tags.map(item=>{
             tag.push(<CheckableTag
                         key={item._id}
-                        checked={selectedTags.indexOf(item.name) > -1}
-                        onChange={checked => this.handleChange(item.name, checked)}
+                        checked={selectedTags.indexOf(item._id) > -1}
+                        onChange={checked => this.handleChange(item, checked)}
                     >
                         {item.name}
                     </CheckableTag>)
         });
-        selectedTags.map((t,i)=>{
+        selectedTagsName.map((t,i)=>{
             selectedTag.push(<span><Tag color="#f50" key={i}>{t}</Tag></span>)
         })
         const props = {
@@ -215,10 +221,9 @@ class PostEditor extends React.Component {
                                 {getFieldDecorator('tags', {
                                     initialValue: '',
                                     rules: [{ message: '请选择分类'}]
-                                })( <div>{selectedTag}<Input type="text" placeholder="请输入标题." /></div>)
+                                })( <div>{selectedTag}</div>)
                                 }
                             </FormItem>
-
                         </Modal>
                     </Form>
                 </Col>

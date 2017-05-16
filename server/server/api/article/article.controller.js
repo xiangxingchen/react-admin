@@ -5,6 +5,7 @@ var Article = mongoose.model('Article');
 var User = mongoose.model('User');
 var Logs = mongoose.model('Logs');
 var Comment = mongoose.model('Comment');
+var MarkdownIt = require('markdown-it');
 var qiniuHelper = require('../../util/qiniu');
 var path = require('path');
 var config = require('../../config/env');
@@ -105,7 +106,25 @@ exports.destroy = function (req, res, next) {
     }).catch(function (err) {
         return next(err);
     });
-}
+};
+//批量删除
+exports.destroyAllSelect = function (req, res, next) {
+    const user = req.user;
+    var id = req.body.id;
+    Article.remove({"_id":{ $in: id}}).then(function (article) {
+        Logs.createAsync({
+            uid:user._id,
+            name:user.nickname,
+            content:user.nickname+'删除了文章'+article.title,
+            type:'article'
+        });
+        return Comment.remove({aid: { $in: id}}).then(function () {
+            return res.status(200).send({success: true});
+        });
+    }).catch(function (err) {
+        return next(err);
+    });
+};
 //更新博客
 exports.updateArticle = function (req, res, next) {
     const user = req.user;
@@ -224,7 +243,24 @@ exports.getArticleByUserId = function (req, res, next) {
     });
 }
 
-//前台获取博客数量
+//前台获取文章
+exports.getFrontArticle = function (req,res,next) {
+    var id = req.params.id;
+    var md = new MarkdownIt({
+        html:true //启用html标记转换
+    });
+    //每次获取之后,将阅读数加1
+    return Article.findByIdAsync(id,'-images').then(function(result) {
+        //将content markdown文档转成HTML
+        result.content = md.render(result.content);
+        result.visit_count++;
+        Article.findByIdAndUpdateAsync(id,{$inc:{visit_count:1}});
+        return res.status(200).json({data:result.info});
+    }).catch(function (err) {
+        return next(err);
+    });
+
+}//前台获取博客数量
 exports.getFrontArticleCount = function (req, res, next) {
     var condition = {status: {$gt: 0}};
     if (req.query.tagId) {

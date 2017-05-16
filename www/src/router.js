@@ -35,7 +35,7 @@ function RouterConfig({ history, app }) {
 
     return (
         <Router history={history}>
-            <Route path="/" component={MenuHeader} onEnter={requireAuth}>
+            <Route path="/f" component={MenuHeader} onEnter={requireAuth}>
                 <IndexRoute component={Content}/>
                 <Route path="home" component={Content}/>
                 <Route path="language" component={Language}/>
@@ -43,10 +43,11 @@ function RouterConfig({ history, app }) {
                 <Route path="tool" component={Tools}/>
                 <Route path="post/:id" component={PostsDetail}/>
                 <Route path="user/:id" component={userCenter}/>
+                <Route path="add" component={AddPost}/>
             </Route>
             <Route path="/menu" component={MenuHeader}/>
             <Route path="/login" component={Login}/>
-            <Route path="/1" component={adminApp} onEnter={requireAuth}>
+            <Route path="/" component={adminApp} onEnter={requireAuth}>
                 <IndexRoute component={Dashboard}/>
                 <Route path="dashboard" component={Dashboard}/>
                 <Route path="picture/addpic" component={AddPicture}/>

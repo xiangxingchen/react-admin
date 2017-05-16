@@ -1,5 +1,6 @@
 .wrap{
   width: 100%;
+  font-size: 20px;
   background: #fff;
   padding: 0;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
@@ -43,9 +44,7 @@
     box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
   }
 }
-.contentImage{
-  width: 80px;
-}
+
 .preView{
   border-bottom: 1px solid rgba(178,186,194,.15);
   padding: 10px 0 10px 40px;
@@ -59,6 +58,23 @@
     }
     &:visited{
       color:#909090;
+    }
+  }
+  .contentImage{
+    width: 80px;
+    overflow: hidden;
+  }
+
+  .like{
+    font-size: 15px;
+    a{
+      &:hover{
+        text-decoration: none;
+        color: #108ee9;
+      }
+    }
+    span{
+      margin-left: 10px;
     }
   }
 }
@@ -76,4 +92,7 @@
   h1{
     text-align: center;
   }
+}
+.red{
+  color: red;
 }

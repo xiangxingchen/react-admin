@@ -6,6 +6,9 @@ import {Button, Icon,Table, Dropdown, Menu, Modal,Form,Row,Col,Input,Switch,Tag 
 const confirm = Modal.confirm;
 
 class PostsListPage extends React.Component {
+    state={
+        selectedRowKeys:[]
+    }
 
     componentWillMount() {
         this.props.dispatch({
@@ -32,6 +35,13 @@ class PostsListPage extends React.Component {
             payload: {checked,id}
         });
     }
+    delSelect = ()=> {
+        const {selectedRowKeys} = this.state;
+        this.props.dispatch({
+            type: 'posts/destroyAllSelect',
+            payload: {id:selectedRowKeys}
+        });
+    }
 
     handleMenuClick = (record, e) => {
         const { dispatch } = this.props
@@ -47,9 +57,14 @@ class PostsListPage extends React.Component {
             })
         }
     }
+    onSelectChange = (selectedRowKeys) => {
+        console.log('selectedRowKeys changed: ', selectedRowKeys);
+        this.setState({ selectedRowKeys });
+    }
 
     render() {
         const {postsList,dispatch,form}= this.props;
+        const {selectedRowKeys} = this.state;
         const {getFieldDecorator} =form;
         const columns = [{
             title: '标题',
@@ -171,11 +186,18 @@ class PostsListPage extends React.Component {
             },
         };
 
+        const rowSelection = {
+            selectedRowKeys,
+            onChange: this.onSelectChange,
+        };
         return (
             <div>
+                <Row>
+                    <Col span={2}>
+                        <Button disabled={!selectedRowKeys.length > 0} onClick={this.delSelect}>批量删除</Button>
+                    </Col>
                 <Form onSubmit={this.handleSubmit}>
-                    <Row>
-                        <Col span={6} offset="14">
+                        <Col span={6} offset="13">
                             <Form.Item>
                                 {getFieldDecorator('search')(<Input type="text" placeholder="请输入标题或作者名字"/>)}
                             </Form.Item>
@@ -185,8 +207,8 @@ class PostsListPage extends React.Component {
                                 <Button htmlType="submit" type="primary">搜索</Button>
                             </Form.Item>
                         </Col>
-                    </Row>
                 </Form>
+                </Row>
                 <Table
                     bordered
                     scroll={{ x: 1200 }}
@@ -195,6 +217,7 @@ class PostsListPage extends React.Component {
                     simple
                     rowKey={record => record._id}
                     pagination={pagination}
+                    rowSelection={rowSelection}
                 />
             </div>
         );

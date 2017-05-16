@@ -28,7 +28,7 @@ const getMenus = function (menuArray, siderFold, parentPath) {
 }
 
 function Menus({ siderFold, darkTheme, location, isNavbar, handleClickNavMenu, navOpenKeys, changeOpenKeys }) {
-    const menuItems = getMenus(menu, siderFold);
+    const menuItems = getMenus(menu, siderFold,);
 
     const onOpenChange = (openKeys) => {
         const latestOpenKey = openKeys.find(key => !(navOpenKeys.indexOf(key) > -1))

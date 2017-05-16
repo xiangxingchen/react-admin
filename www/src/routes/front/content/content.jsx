@@ -26,32 +26,30 @@ class content extends React.Component {
             current: e.key,
         });
     };
-    getContent = (items) => {
+    getContent = (items,likeList) => {
+        const {dispatch}=this.props;
         const content = [];
         return (items||[]).map((data,index)=> {
-            return <PreContent data={data} />
+            return <PreContent data={data} key={index} likeList={likeList} dispatch={dispatch}/>
             // )
         })
         // return content;
     };
     render() {
-        const {posts}=this.props;
+        const {posts,likeList}=this.props;
         const datasource = posts.postsList.data;
         const data = datasource && datasource[0];
-        const content = this.getContent(datasource);
-        console.log("content",content);
-
+        const content = this.getContent(datasource,likeList);
 
         const items=[];
         posts.imagePostList.map(item => {
-            items.push(<Link to={`/post/${item._id}`} key={item._id}>
+            items.push(<Link to={`f/post/${item._id}`} key={item._id}>
                 <img src={item.images[0].url} className={style.image}/>
                 <div className={style.title}>
                 <h3>{item.title}</h3>
                 </div>
             </Link>)
         })
-
 
         return (
             <Layout style={{ height: '100vh' }}>
@@ -94,13 +92,6 @@ class content extends React.Component {
                                 </Card>
                             </Row>
                             <Row>
-                                <Card title="美食" extra={<a href="#">更多</a>}>
-                                    <p>Card content</p>
-                                    <p>Card content</p>
-                                    <p>Card content</p>
-                                </Card>
-                            </Row>
-                            <Row>
                                 <Card title="友情链接" extra={<a href="#">更多</a>}>
                                     <p>Card content</p>
                                     <p>Card content</p>
@@ -117,6 +108,7 @@ class content extends React.Component {
 function mapStateToProps(state, ownProps) {
     return {
         posts: state.posts,
+        likeList:state.user.account.likeList
     };
 }
 

@@ -2,9 +2,10 @@ import {
     fetchContent,
     fetchPostInfo,
     createPost,
-    getArticle,
+    getFrontArticle,
     fetchPosts,
     deletePost,
+    destroyAllSelect,
     createComment,
     deleteComment,
     getCommentList,
@@ -20,6 +21,7 @@ import {
     getImageList,
     getPrenext,
     getArticleByUserId,
+    toggleLike,
 } from '../services/posts';
 import {message} from 'antd';
 import pathToRegExp from 'path-to-regexp';
@@ -76,6 +78,14 @@ export default {
                 yield put(routerRedux.push(`/article/detail/${id}`));
             }
         },
+        toggleLike: function*({payload}, {call, put}) {
+            const {id} = payload;
+            const {data} = yield call(toggleLike, {id});
+            if (data.success) {
+                const {id} = data;
+                message.success('点赞👍');
+            }
+        },
         deletePost: function*({payload}, {call, put}) {
             const {id} = payload;
             const {data} = yield call(deletePost, {id});
@@ -84,9 +94,17 @@ export default {
                 yield put(routerRedux.push(`/article/list`));
             }
         },
+        destroyAllSelect: function*({payload}, {call, put}) {
+            const {id} = payload;
+            const {data} = yield call(destroyAllSelect, {id});
+            if (data.success) {
+                message.success('删除文章成功 :)');
+                yield put(routerRedux.push(`/article/list`));
+            }
+        },
         getPost: function *({payload}, {call, put}) {
             const {id, isEdit} = payload;
-            const {data} = yield call(getArticle, {id});
+            const {data} = yield call(getFrontArticle, {id});
             if (isEdit) {
                 yield put({type: 'savePost', payload: data})
             } else {

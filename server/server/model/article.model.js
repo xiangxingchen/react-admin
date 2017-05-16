@@ -20,11 +20,15 @@ var ArticleSchema = new Schema({
     },
     content: String,
     //存储文章所用到的图片
-    images: {
-        type: Array
+    //存储文章所用到的图片
+    images:{
+        type:Array
     },
     //一篇文章可以有多个标签
-    tags: Array,
+    tags:[{
+        type: Schema.Types.ObjectId,
+        ref: 'Tag'
+    }],
     visit_count: {			//访问数
         type: Number,
         default: 1
@@ -77,6 +81,7 @@ ArticleSchema
             'publish_time': this.publish_time,
             'author': this.author,
             'author_id': this.author_id,
+            'allow_comment': this.allow_comment,
         };
     });
 

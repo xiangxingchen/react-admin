@@ -26,6 +26,7 @@
     "ioredis": "^2.4.0",
     "jsonwebtoken": "^7.1.9",
     "lodash": "^4.16.2",
+    "markdown-it": "^8.3.1",
     "method-override": "^2.3.6",
     "moment": "^2.15.1",
     "mongoose": "^4.6.2",

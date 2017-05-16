@@ -65,10 +65,20 @@ export function updatePost({id,title, content}) {
         })
     });
 }
-
-export function getArticle({id}) {
+export function toggleLike({id}) {
     const token = window.localStorage.getItem(storageTokenKey);
-    return request(`/api/article/getArticle/${id}`, {
+    return request(`/api/article/toggleLike/${id}`, {
+        method: 'PUT',
+        headers: new Headers({
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json; charset=utf-8"
+        }),
+    });
+}
+
+export function getFrontArticle({id}) {
+    const token = window.localStorage.getItem(storageTokenKey);
+    return request(`/api/article/getFrontArticle/${id}`, {
         method: 'GET',
         headers: new Headers({
             "Authorization": `Bearer ${token}`,
@@ -98,6 +108,17 @@ export function deletePost({id}) {
         headers: new Headers({
             "Authorization": `Bearer ${token}`,
         })
+    });
+}
+export function destroyAllSelect({id}) {
+    const token = window.localStorage.getItem(storageTokenKey);
+    return request(`/api/article/destroyAllSelect`, {
+        method: 'POST',
+        headers: new Headers({
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json; charset=utf-8"
+        }),
+        body: JSON.stringify({id})
     });
 }
 export function delComment({id}) {

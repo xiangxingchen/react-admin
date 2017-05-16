@@ -18,6 +18,8 @@ router.put('/updateArticle/:id', auth.hasRole('admin'), controller.updateArticle
 
 //删除文章
 router.delete('/deleteArticle/:id', auth.hasRole('admin'), controller.destroy);
+// destroyAllSelect
+router.post('/destroyAllSelect', auth.hasRole('admin'), controller.destroyAllSelect);
 
 //获取单个文章
 router.get('/getArticle/:id', auth.hasRole('admin'), controller.getArticle);
@@ -39,10 +41,11 @@ router.get('/getArticleByUserId/:id', controller.getArticleByUserId);
 router.get('/getImageList',controller.getImageList);
 router.get('/getFrontArticleList',controller.getFrontArticleList);
 router.get('/getFrontArticleCount',controller.getFrontArticleCount);
+router.get('/getFrontArticle/:id',controller.getFrontArticle);
 //获取首页图片
 router.get('/getIndexImage',controller.getIndexImage);
 //用户喜欢文章
-router.put('/:id/toggleLike',auth.isAuthenticated(),controller.toggleLike);
+router.put('/toggleLike/:id',auth.isAuthenticated(),controller.toggleLike);
 //获取上一篇和下一篇
 router.get('/getPrenext/:id',controller.getPrenext);
 module.exports = router;
