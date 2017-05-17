@@ -15,7 +15,7 @@ exports.upload = function (req,res) {
    var form = new formidable.IncomingForm();
    form.uploadDir = path.normalize(__dirname + "/../../avatar");
    form.parse(req, function(err, fields, files) {
-      console.log(files)
+      // console.log(files)
       var oldpath = files.file.path;
       var newpath = path.normalize(__dirname + "/../../avatar") + "/" + files.file.name;
       fs.rename(oldpath, newpath, function(err) {
@@ -49,7 +49,7 @@ exports.upload = function (req,res) {
 exports.getImageList = function (req,res) {
    fs.readdir(__dirname + "/../../avatar", (err, files) => {
       if (err) throw err;
-      console.log(files);
+      // console.log(files);
       res.status(200).json({data:files})
    });
    //getAllAlbums((err,files) => {
@@ -66,7 +66,7 @@ getAllAlbums = (callback) =>{
       (function iterator(i){
          if(i == files.length){
             //遍历结束
-            console.log(allAlbums);
+            // console.log(allAlbums);
             callback(null,allAlbums);
             return;
          }
@@ -95,7 +95,7 @@ exports.getAllImagesByAlbumName = function(albumName,callback){
       (function iterator(i){
          if(i == files.length){
             //遍历结束
-            console.log(allImages);
+            // console.log(allImages);
             callback(null,allImages);
             return;
          }

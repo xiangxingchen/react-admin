@@ -225,8 +225,6 @@ exports.searchArticle = function (req, res, next) {
         $or: [ //多条件，数组
             {title: {$regex: reg}},
             {author: {$regex: reg}},
-            {author_id: {$regex: reg}},
-            {category: {$regex: reg}}
         ]
     }).sort('updated').then(function (article) {
         return res.status(200).json({success: true, data: article});

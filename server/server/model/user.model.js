@@ -19,6 +19,7 @@ var UserSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Article'
     }],
+    phone:String,
     hashedPassword: String,
     salt: String,
     role: {

@@ -6,6 +6,7 @@ import PostsList from './routes/admin/article/list';
 import PostsDetail from './routes/admin/article/detail';
 import AddPost from './routes/admin/article/add';
 import EditPost from './routes/admin/article/edit';
+import Add from './routes/front/content/add';
 import adminApp from './routes/admin/app';
 import Error from './routes/admin/error';
 import Dashboard from './routes/admin/dashboard';
@@ -19,8 +20,8 @@ import Search from './routes/admin/ui/search';
 import MenuHeader from './routes/front/header/header';
 import Content from './routes/front/content/content';
 import Book from './routes/front/content/book';
-import System from './routes/front/content/system';
-import Tools from './routes/front/content/tools';
+import Setting from './routes/front/content/setting';
+import Tags from './routes/front/content/tags';
 import userCenter from './routes/front/content/userCenter';
 
 function RouterConfig({ history, app }) {
@@ -39,11 +40,11 @@ function RouterConfig({ history, app }) {
                 <IndexRoute component={Content}/>
                 <Route path="home" component={Content}/>
                 <Route path="book" component={Book}/>
-                <Route path="system" component={System}/>
-                <Route path="tool" component={Tools}/>
+                <Route path="user/setting" component={Setting}/>
+                <Route path="tags/:id" component={Tags}/>
                 <Route path="post/:id" component={PostsDetail}/>
                 <Route path="user/:id" component={userCenter}/>
-                <Route path="add" component={AddPost}/>
+                <Route path="add" component={Add}/>
             </Route>
             <Route path="/menu" component={MenuHeader}/>
             <Route path="/login" component={Login}/>

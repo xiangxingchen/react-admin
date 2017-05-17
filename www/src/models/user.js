@@ -1,4 +1,4 @@
-import { auth, fetchUser, getUserList, createUser, remove, getUserInfo } from '../services/user';
+import { auth, fetchUser, getUserList, createUser, remove, getUserInfo,updateUser,updateAvatar } from '../services/user';
 import {routerRedux} from 'dva/router';
 import {message} from 'antd';
 
@@ -46,6 +46,26 @@ export default {
                 }
             } catch (error) {
                 message.error('Wrong Username or Password.. :(', 4);
+            }
+        },
+        updateUser: function *({payload}, {put, call}) {
+            const {values,id} = payload;
+            const {data} = yield call(updateUser, {values,id});
+            console.log(data.success)
+            if (data.success) {
+                // yield put({type: 'enterAuth'});
+                message.success('修改成功');
+            }
+        },
+        updateAvatar: function *({payload}, {put, call}) {
+            const {values,id} = payload;
+            const {data} = yield call(updateAvatar, {values,id});
+            if (data.success) {
+                yield put({
+                    type: 'queryUserSuccess',
+                    payload: {account: data.user}
+                });
+                message.success('修改成功');
             }
         },
         enterAuth: function*({payload, onComplete}, {put, take}) {

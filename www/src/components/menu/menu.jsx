@@ -25,6 +25,12 @@ class MenuHeader extends React.Component {
             current: e.key,
         });
     };
+    onSearch = (v) => {
+        this.props.dispatch({
+            type: 'posts/searchArticle',
+            payload: {pageInfo: {limit: 10, page: 1},search:v}
+        });
+    };
     getMenuItems = (tagCats) => {
         const items=[];
         tagCats.map(cat=>{
@@ -46,8 +52,7 @@ class MenuHeader extends React.Component {
         const content = (
                 <ul className={style.user}>
                     <a href={`/f/user/${user.account._id}`}><li><Icon type="user" /> 我的主页</li></a>
-                    <a href={`/f/tags`}><li><Icon type="tags-o" /> 标签管理</li></a>
-                    <a href={`/user/setting`}><li><Icon type="setting" /> 信息设置</li></a>
+                    <a href={`/f/user/setting`}><li><Icon type="setting" /> 信息设置</li></a>
                     <a href={`/f/about`}><li><Icon type="team" /> 关于我们</li></a>
                     <a href={`/f/user`}><li><Icon type="logout" /> 安全退出</li></a>
                 </ul>
@@ -65,18 +70,15 @@ class MenuHeader extends React.Component {
                 <Item key="column">
                     <Link to={'/f/book'}><Icon type="book" />专栏</Link>
                 </Item>
-                <Item key="mail">
-                    <Link to={'/f/follow'}><Icon type="usergroup-add" />关注</Link>
-                </Item>
                 <Item className={style.search}>
                     <Search
                         placeholder="搜索"
                         style={{ width: 200 }}
-                        onSearch={value => console.log(value)}
+                        onSearch={value => this.onSearch(value)}
                     />
                 </Item>
                 {user.account._id ?<Item key="blog" className={style.right}>
-                    <a href="/add"><Button >写文章</Button></a>
+                    <a href="/f/add"><Button >写文章</Button></a>
                 </Item> : ''
                 }
                 {user.account._id ?<Item key="user" className={style.right} >

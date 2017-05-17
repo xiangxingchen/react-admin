@@ -10,7 +10,8 @@ router.get('/getUserInfo/:id', auth.hasRole('admin'),controller.getUserInfo);
 router.get('/getUserList', auth.hasRole('admin'),controller.getUserList);
 router.post('/addUser',controller.addUser);
 router.delete('/:id',controller.destroy);
-router.put('/:id/updateUser', auth.hasRole('admin'), controller.updateUser);
+router.put('/updateUser/:id', controller.updateUser);
+router.put('/updateAvatar/:id', controller.updateAvatar);
 //前台用户更新信息
 router.put('/mdUser', auth.isAuthenticated(), controller.mdUser);
 router.get('/getUserProvider',auth.isAuthenticated(), controller.getUserProvider);

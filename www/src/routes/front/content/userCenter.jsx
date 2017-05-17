@@ -11,10 +11,11 @@ moment.locale(window.navigator.language);
 
 class userCenter extends React.Component {
     componentWillMount() {
-        const {dispatch,user} = this.props;
+        const {dispatch,params} = this.props;
+        console.log(this.props);
         dispatch({
             type: 'posts/getArticleByUserId',
-            payload: {id:user.account._id}
+            payload: {id:params.id}
         });
     }
     getContent = (items) => {

@@ -63,12 +63,16 @@ export default {
     },
     effects: {
         createPost: function*({payload}, {call, put}) {
-            //const {title, content} = payload;
-            const {data} = yield call(createPost, payload);
+            const {type,value,id} = payload;
+            console.log(type,value,id)
+            const {data} = yield call(createPost, value);
             if (data.success) {
-                const {success} = data;
+                if(type ==='f'){
+                    yield put(routerRedux.push(`/f/user/${id}`));
+                } else {
+                    yield put(routerRedux.push(`/article/list`));
+                }
                 message.success('创建文章成功 :)');
-                yield put(routerRedux.push(`/article/list`));
             }
         },
         updatePost: function*({payload}, {call, put}) {

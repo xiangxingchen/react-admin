@@ -39,6 +39,22 @@ exports.getUserList = function (req,res,next) {
 	})
 
 }
+//更新博客
+exports.updateAvatar = function (req, res, next) {
+    var id = req.params.id;
+    console.log(req.body,id);
+	User.findByIdAndUpdateAsync(id, req.body, {new: true}).then(function (user) {
+        // Logs.createAsync({
+        //     uid:user._id,
+        //     name:user.nickname,
+        //     content:user.nickname+'修改了文章'+article.title,
+        //     type:'article'
+        // });
+        return res.status(200).json({success: true, user});
+    }).catch(function (err) {
+        return next(err);
+    });
+}
 //后台获取单个用户信息
 exports.getUserInfo = function (req,res,next) {
 	var id = req.query.id;
@@ -139,7 +155,7 @@ exports.updateUser = function (req,res) {
   		}
   		return user.saveAsync().then(function (user) {
   				Logs.create({
-  					email:req.user._id,
+  					email:user._id,
   					content:"编辑用户"+ (user.email || user.nickname),
   					type:"user"
   				});

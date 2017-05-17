@@ -11,7 +11,24 @@ export function createUser({payload}) {
         body: JSON.stringify({...payload.values})
     });
 }
-
+export function updateUser({values,id}) {
+    return request(`/api/users/updateUser/${id}`, {
+        method: 'PUT',
+        headers: new Headers({
+            "Content-Type": "application/json; charset=utf-8"
+        }),
+        body: JSON.stringify({...values})
+    });
+}
+export function updateAvatar({values,id}) {
+    return request(`/api/users/updateAvatar/${id}`, {
+        method: 'PUT',
+        headers: new Headers({
+            "Content-Type": "application/json; charset=utf-8"
+        }),
+        body: JSON.stringify({...values})
+    });
+}
 export async function remove ({id}) {
     const token = window.localStorage.getItem(storageTokenKey);
     return request(`/api/users/${id}`, {
