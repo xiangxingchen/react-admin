@@ -18,7 +18,7 @@ import Ico from './routes/admin/ui/ico';
 import Search from './routes/admin/ui/search';
 import MenuHeader from './routes/front/header/header';
 import Content from './routes/front/content/content';
-import Language from './routes/front/content/language';
+import Book from './routes/front/content/book';
 import System from './routes/front/content/system';
 import Tools from './routes/front/content/tools';
 import userCenter from './routes/front/content/userCenter';
@@ -38,7 +38,7 @@ function RouterConfig({ history, app }) {
             <Route path="/f" component={MenuHeader} onEnter={requireAuth}>
                 <IndexRoute component={Content}/>
                 <Route path="home" component={Content}/>
-                <Route path="language" component={Language}/>
+                <Route path="book" component={Book}/>
                 <Route path="system" component={System}/>
                 <Route path="tool" component={Tools}/>
                 <Route path="post/:id" component={PostsDetail}/>

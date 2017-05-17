@@ -51,7 +51,7 @@ class PostsDetail extends React.Component {
                     <Row className={styles.prevNext}>
                         <Col span={10}>
                             {
-                                preNext.prev.title ? <Link to={`/post/${preNext.prev._id}`}>
+                                preNext.prev.title ? <Link to={`/f/post/${preNext.prev._id}`}>
                                     <div className={styles.prev}>
                                         <Icon type="arrow-left" />
                                         <span>上篇：{preNext.prev.title}</span>
@@ -61,7 +61,7 @@ class PostsDetail extends React.Component {
                         </Col>
                         <Col span={10} offset={4}>
                             {
-                                preNext.next.title ? <Link to={`/post/${preNext.next._id}`}>
+                                preNext.next.title ? <Link to={`/f/post/${preNext.next._id}`}>
                                     <div className={styles.next}>
                                         <span>下篇：{preNext.next.title}</span>
                                         <Icon type="arrow-right" />

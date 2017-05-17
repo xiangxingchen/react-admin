@@ -63,7 +63,7 @@ class List extends React.Component {
                     </Col>
                     <Col span='20' offset="1">
                         <p className={style.commentList_author}>
-                            <Link to={`/user/${record.user_id._id}`}>
+                            <Link to={`/f/user/${record.user_id._id}`}>
                                 <em>{record.user_id.nickname}</em>
                             </Link>, {moment(record.created).fromNow()}
                         </p>

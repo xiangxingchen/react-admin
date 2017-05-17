@@ -22,6 +22,7 @@ import {
     getPrenext,
     getArticleByUserId,
     toggleLike,
+    getFrontArticleList,
 } from '../services/posts';
 import {message} from 'antd';
 import pathToRegExp from 'path-to-regexp';
@@ -144,6 +145,17 @@ export default {
                     payload: {hotData}
                 });
             }
+            if (data) {
+                yield put({
+                    type: 'savePostsList',
+                    payload: {data}
+                });
+            }
+        },
+        getFrontArticleList: function *({payload}, {call, put}) {
+            const {pageInfo,condition} = payload;
+            const sort={sortName:'publish_time',sortOrder:false};
+            const {data} = yield call(getFrontArticleList, {pageInfo,sort,condition});
             if (data) {
                 yield put({
                     type: 'savePostsList',

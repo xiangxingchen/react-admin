@@ -168,7 +168,6 @@ exports.updateArticle = function (req, res, next) {
 exports.getArticle = function (req, res) {
     var id = req.params.id;
     var cookie = req.cookies;
-    console.log(req.cookies, req.session);
     Article.findOne({_id: id}).populate({
         path: 'author_id',
         select: 'nickname avatar'
@@ -190,7 +189,6 @@ exports.getArticle = function (req, res) {
             return res.status(200).json({data: article});
         // }
     }).then(null, function (err) {
-        console.log(err)
         return res.status(500).send();
     });
 }
@@ -227,7 +225,8 @@ exports.searchArticle = function (req, res, next) {
         $or: [ //多条件，数组
             {title: {$regex: reg}},
             {author: {$regex: reg}},
-            {author_id: {$regex: reg}}
+            {author_id: {$regex: reg}},
+            {category: {$regex: reg}}
         ]
     }).sort('updated').then(function (article) {
         return res.status(200).json({success: true, data: article});
@@ -289,8 +288,12 @@ exports.getFrontArticleList = function (req, res, next) {
         var tagId = String(req.query.tagId);
         condition = _.defaults(condition, {tags: {$elemMatch: {$eq: tagId}}});
     }
+    if(req.query.category){
+        var category = String(req.query.category);
+        condition = _.defaults(condition, {category: category});
+    }
     Article.find(condition)
-        .select('title images visit_count comment_count like_count publish_time')
+        .select('title images visit_count comment_count like_count publish_time tags author author_id')
         .skip(startRow)
         .limit(itemsPerPage)
         .sort(sort)

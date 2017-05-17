@@ -42,11 +42,11 @@ class preView extends React.Component {
         );
         return (<div className={style.preView}>
             <Row key={data._id} >
-            <Link to={`f/post/${data._id}`}>
+            <Link to={`/f/post/${data._id}`}>
                 <Col span={20}>
                     <Row>
                         <Col span={2} key={data.author}>
-                            <Link to={`f/user/${data.author_id}`}>{data.author}</Link>
+                            <Link to={`/f/user/${data.author_id}`}>{data.author}</Link>
                         </Col>
                         <Col span={2} key={data.tags[0].id}>
                             <Popover content={cont}>
@@ -55,7 +55,7 @@ class preView extends React.Component {
                         </Col>
                         <span>{moment(data.publish_time).fromNow()} </span>
                     </Row>
-                    <a href={`f/post/${data._id}`}>
+                    <a href={`/f/post/${data._id}`}>
                         <h1>{data.title}</h1>
                     </a>
                 </Col>

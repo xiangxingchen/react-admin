@@ -3,11 +3,12 @@ import {connect} from 'dva';
 import { Link } from 'dva/router';
 import moment from 'moment';
 import style from '../header/header.less';
-import { Row, Col, Carousel, Tabs, Card, Layout, Icon, Badge,Tag } from 'antd';
+import { Row, Col, Carousel, Tabs, Card, Layout, Tag } from 'antd';
 import PreContent from './preView';
 const { Content } = Layout;
 const TabPane = Tabs.TabPane;
 moment.locale(window.navigator.language);
+const color=['pink','red','orange','green','cyan','blue','purple'];
 
 class content extends React.Component {
     state = {
@@ -19,6 +20,7 @@ class content extends React.Component {
             payload: {pageInfo: {limit: 10, page: 1},type:'hot'}
         });
         this.props.dispatch({type: 'posts/getImageList'});
+        this.props.dispatch({type: 'posts/getFrontTagList'});
     }
     handleClick = (e) => {
         console.log('click ', e);
@@ -46,7 +48,7 @@ class content extends React.Component {
     getNewContent = (items) => {
         return (items||[]).slice(0,5).map((data,index)=> {
                 return <div key={index} className={style.new}>
-                    <Link to={`f/post/${data._id}`}>
+                    <Link to={`/f/post/${data._id}`}>
                         {data.title.slice(0,9)}
                         {data.title.slice(9,20)? '...': ''}
                         <span className={style.time}>{moment(data.publish_time).format("YYYY-MM-DD")}</span>
@@ -58,7 +60,7 @@ class content extends React.Component {
 
     render() {
         const {posts,likeList}=this.props;
-        const {imagePostList,hotList,postsList} = posts
+        const {imagePostList,hotList,postsList,tags} = posts
         const datasource = postsList.data;
         const hotData = this.getHotContent(hotList.data);
         const content = this.getContent(datasource,likeList);
@@ -66,12 +68,17 @@ class content extends React.Component {
 
         const items=[];
         imagePostList.map(item => {
-            items.push(<Link to={`f/post/${item._id}`} key={item._id}>
+            items.push(<Link to={`/f/post/${item._id}`} key={item._id}>
                 <img src={item.images[0].url} className={style.image}/>
                 <div className={style.title}>
                 <h3>{item.title}</h3>
                 </div>
             </Link>)
+        })
+        const hotTag=[];
+        tags.map(tag =>{
+            let i=parseInt(Math.random()*7)
+            hotTag.push(<Tag color={color[i]} className={style.tag} key={tag._id}>{tag.name}</Tag>);
         })
 
         return (
@@ -104,10 +111,10 @@ class content extends React.Component {
                                 </Tabs>
                             </Row>
                             <Row>
-                                <Card title="热门标签" extra={<a href="#">更多</a>}>
-                                    <p>Card content</p>
-                                    <p>Card content</p>
-                                    <p>Card content</p>
+                                <Card title="热门标签" extra={<a href="#">更多</a>} bodyStyle={{ padding: '10px' }}>
+                                    <div className={style.tagWrap}>
+                                    {hotTag}
+                                    </div>
                                 </Card>
                             </Row>
                             <Row>

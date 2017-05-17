@@ -11,6 +11,15 @@ export function fetchPosts({pageInfo,sort,hotSort}) {
         })
     });
 }
+export function getFrontArticleList({pageInfo,sort,hotSort,condition}) {
+    const token = window.localStorage.getItem(storageTokenKey);
+    return request(`/api/article/getFrontArticleList?${stringify({...pageInfo, ...sort,...hotSort,...condition })}`, {
+        method: 'get',
+        headers: new Headers({
+            "Authorization": `Bearer ${token}`
+        })
+    });
+}
 export function getAllCommentList({pageInfo}) {
     const token = window.localStorage.getItem(storageTokenKey);
     return request(`/api/comment/getAllCommentList?${stringify({...pageInfo})}`, {
