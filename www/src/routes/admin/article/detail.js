@@ -41,7 +41,7 @@ class PostsDetail extends React.Component {
                         </Col>
                         <Col span={20}>
                             <div className={styles.title_author}>
-                                <p>{article.author_id && article.author_id.nickname}</p>
+                                <a href={`/f/user/${article.author_id && article.author_id._id}`}>{article.author_id && article.author_id.nickname}</a>
                                 <p>{moment(styles.publish_time).format("YYYY-MM-DD")}</p>
                             </div>
                         </Col>

@@ -138,12 +138,13 @@ export default {
         },
         getPostsList: function *({payload}, {call, put}) {
             const {pageInfo,type} = payload;
+
             const hotSort={sortName:'visit_count',sortOrder:false};
             const sort={sortName:'publish_time',sortOrder:false};
             const {data} = yield call(fetchPosts, {pageInfo,sort});
             if(type === 'hot') {
                 const hotData = yield call(fetchPosts, {pageInfo,hotSort});
-                console.log(hotData);
+                // console.log(hotData);
                 yield put({
                     type: 'saveHotPostsList',
                     payload: {hotData}
@@ -152,7 +153,7 @@ export default {
             if (data) {
                 yield put({
                     type: 'savePostsList',
-                    payload: {data}
+                    payload: {data,type}
                 });
             }
         },
@@ -168,8 +169,8 @@ export default {
             }
         },
         getArticleByUserId:function *({payload}, {call, put}) {
-            const {id} = payload;
-            const {data} = yield call(getArticleByUserId, {id});
+            const {id,status} = payload;
+            const {data} = yield call(getArticleByUserId, {id,status});
             if (data) {
                 yield put({
                     type: 'savePostsList',
@@ -304,11 +305,26 @@ export default {
             };
         },
         savePostsList: function (state, {payload}) {
-            const {data} = payload;
-            return {
-                ...state,
-                postsList: data,
-            };
+            const {data,type} = payload;
+            const oldData = state.postsList.data||[];
+            data.data.map(item=>{
+                oldData.push(item);
+            })
+            if(type === 'more'){
+                return {
+                    ...state,
+                    postsList: {
+                        currentPage:data.currentPage,
+                        count:data.count,
+                        data: oldData,
+                    },
+                };
+            } else{
+                return {
+                    ...state,
+                    postsList: data,
+                };
+            }
         },
         saveHotPostsList: function (state, {payload}) {
             const {hotData} = payload;

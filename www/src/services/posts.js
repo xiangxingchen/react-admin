@@ -267,13 +267,14 @@ export function getPrenext({id}) {
         })
     });
 }
-export function getArticleByUserId({id}) {
+export function getArticleByUserId({id,status}) {
     const token = window.localStorage.getItem(storageTokenKey);
-    return request(`/api/article/getArticleByUserId/${id}`, {
+    return request(`/api/article/getArticleByUserId/${id}?status=${status}`, {
         method: 'get',
         headers: new Headers({
             "Authorization": `Bearer ${token}`
-        })
+        }),
+
     });
 }
 export function deleteComment({comment_id}) {

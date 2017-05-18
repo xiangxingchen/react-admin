@@ -42,6 +42,9 @@ class MenuHeader extends React.Component {
         });
         return items;
     };
+    logout = () => {
+        this.props.dispatch({type: 'user/logout'})
+    }
 
     render() {
         const {posts,user} = this.props;
@@ -54,7 +57,7 @@ class MenuHeader extends React.Component {
                     <a href={`/f/user/${user.account._id}`}><li><Icon type="user" /> 我的主页</li></a>
                     <a href={`/f/user/setting`}><li><Icon type="setting" /> 信息设置</li></a>
                     <a href={`/f/about`}><li><Icon type="team" /> 关于我们</li></a>
-                    <a href={`/f/user`}><li><Icon type="logout" /> 安全退出</li></a>
+                    <a onClick={this.logout}><li><Icon type="logout" /> 安全退出</li></a>
                 </ul>
         );
         return (

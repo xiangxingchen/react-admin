@@ -57,11 +57,19 @@ class content extends React.Component {
             }
         );
     };
+    getMore = () => {
+        const postsList =this.props.posts.postsList;
+        this.props.dispatch({
+            type: 'posts/getPostsList',
+            payload: {pageInfo: {limit: 10, page: ++ postsList.currentPage},type:'more'}
+        });
+    }
 
     render() {
         const {posts,likeList}=this.props;
         const {imagePostList,hotList,postsList,tags} = posts
         const datasource = postsList.data;
+        console.log(datasource);
         const hotData = this.getHotContent(hotList.data);
         const content = this.getContent(datasource,likeList);
         const newcontent = this.getNewContent(datasource);
@@ -94,8 +102,9 @@ class content extends React.Component {
                                 </Card>
                             </Row>
                             <Row>
-                                <Card title="新闻" extra={<a href="#">更多</a>} bodyStyle={{ padding: 0 }}>
+                                <Card title="文章" bodyStyle={{ padding: 0 }}>
                                     {datasource && datasource.length > 0 ? content : <div></div>}
+                                    <div className={style.more} onClick={this.getMore}><a>更多...</a></div>
                                 </Card>
                             </Row>
                         </Col>
@@ -111,14 +120,14 @@ class content extends React.Component {
                                 </Tabs>
                             </Row>
                             <Row>
-                                <Card title="热门标签" extra={<a href="#">更多</a>} bodyStyle={{ padding: '10px' }}>
+                                <Card title="热门标签" bodyStyle={{ padding: '10px' }}>
                                     <div className={style.tagWrap}>
                                     {hotTag}
                                     </div>
                                 </Card>
                             </Row>
                             <Row>
-                                <Card title="友情链接" extra={<a href="#">更多</a>}>
+                                <Card title="友情链接">
                                     <p>Card content</p>
                                     <p>Card content</p>
                                     <p>Card content</p>

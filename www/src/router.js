@@ -23,6 +23,7 @@ import Book from './routes/front/content/book';
 import Setting from './routes/front/content/setting';
 import Tags from './routes/front/content/tags';
 import userCenter from './routes/front/content/userCenter';
+import About from './routes/front/content/about';
 
 function RouterConfig({ history, app }) {
 
@@ -45,6 +46,7 @@ function RouterConfig({ history, app }) {
                 <Route path="post/:id" component={PostsDetail}/>
                 <Route path="user/:id" component={userCenter}/>
                 <Route path="add" component={Add}/>
+                <Route path="about" component={About}/>
             </Route>
             <Route path="/menu" component={MenuHeader}/>
             <Route path="/login" component={Login}/>

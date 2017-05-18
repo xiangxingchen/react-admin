@@ -69,6 +69,10 @@ exports.getArticleList = function (req, res, next) {
 
 
     Article.find()
+        .populate({
+            path: 'author_id',
+            select: 'nickname avatar _id'
+        })
         .skip(startRow)
         .limit(itemsPerPage)
         .sort(sortName)
@@ -235,7 +239,14 @@ exports.searchArticle = function (req, res, next) {
 //根据用户id查询
 exports.getArticleByUserId = function (req, res, next) {
     const id = req.params.id; //从URL中传来的 keyword参数
-    Article.find({author_id:id}).sort('updated').then(function (article) {
+    const status = req.query.status;
+    console.log(req.query);
+    Article.find({author_id:id,status})
+        .populate({
+            path: 'author_id',
+            select: 'nickname avatar _id'
+        })
+        .sort('updated').then(function (article) {
         return res.status(200).json({success: true, data: article});
     }).catch(function (err) {
         return next(err);
@@ -249,7 +260,10 @@ exports.getFrontArticle = function (req,res,next) {
         html:true //启用html标记转换
     });
     //每次获取之后,将阅读数加1
-    return Article.findByIdAsync(id,'-images').then(function(result) {
+    return Article.findOne({_id: id}).populate({
+        path: 'author_id',
+        select: 'nickname avatar _id'
+    }).then(function(result) {
         //将content markdown文档转成HTML
         result.content = md.render(result.content);
         result.visit_count++;
@@ -292,6 +306,10 @@ exports.getFrontArticleList = function (req, res, next) {
     }
     Article.find(condition)
         .select('title images visit_count comment_count like_count publish_time tags author author_id')
+        .populate({
+            path: 'author_id',
+            select: 'nickname avatar _id'
+        })
         .skip(startRow)
         .limit(itemsPerPage)
         .sort(sort)

@@ -44,6 +44,13 @@ class book extends React.Component {
         })
         return tags;
     }
+    getMore = () => {
+        const postsList =this.props.posts;
+        this.props.dispatch({
+            type: 'posts/getPostsList',
+            payload: {pageInfo: {limit: 10, page: ++ postsList.currentPage},type:'more'}
+        });
+    }
     render() {
         const {posts,likeList,tagCat}=this.props;
         const content = this.getContentView(posts.data,likeList);
@@ -56,6 +63,7 @@ class book extends React.Component {
                             <Row>
                                 <Card title={title}>
                                     {posts.data && posts.data.length > 0 ? content : <div></div>}
+                                    <div className={style.more} onClick={this.getMore}><a>更多...</a></div>
                                 </Card>
                             </Row>
                         </Col>

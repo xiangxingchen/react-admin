@@ -6,7 +6,7 @@ import { Row, Col, Card, Icon, Popover } from 'antd';
 import _ from 'lodash';
 moment.locale(window.navigator.language);
 
-class preView extends React.Component {
+class preUserView extends React.Component {
     state={
         isLike:false
     };
@@ -75,4 +75,4 @@ class preView extends React.Component {
     }
 }
 
-export default preView;
+export default preUserView;
