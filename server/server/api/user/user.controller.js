@@ -88,7 +88,7 @@ exports.addUser = function (req,res) {
 	}
 
   var newUser = new User(req.body);
-  newUser.role = 'user';
+  // newUser.role = 'user';
 
   newUser.saveAsync().then(function(user) {
 		return res.status(200).json({success:true,user_id:user._id});
@@ -119,6 +119,39 @@ exports.destroy = function (req,res,next) {
 			return next(err);
 		});
 	//}
+}
+//批量删除
+exports.destroyAllUserSelect = function (req, res, next) {
+    const user = req.user;
+    var id = req.body.id;
+    User.remove({"_id":{ $in: id}}).then(function (article) {
+        // Logs.createAsync({
+        //     uid:user._id,
+        //     name:user.nickname,
+        //     content:user.nickname+'删除了文章'+article.title,
+        //     type:'article'
+        // });
+        // return Comment.remove({aid: { $in: id}}).then(function () {
+            return res.status(200).send({success: true});
+        // });
+    }).catch(function (err) {
+        return next(err);
+    });
+};
+//条件查询
+exports.searchUser = function (req, res, next) {
+    const search = req.body.search; //从URL中传来的 keyword参数
+    const reg = new RegExp(search, 'i') //不区分大小写
+    User.find({
+        $or: [ //多条件，数组
+            {email: {$regex: reg}},
+            {nickname: {$regex: reg}},
+        ]
+    }).sort('updated').then(function (article) {
+        return res.status(200).json({success: true, data: article});
+    }).catch(function (err) {
+        return next(err);
+    });
 }
 
 //更新用户

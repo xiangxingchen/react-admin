@@ -65,9 +65,6 @@ exports.getArticleList = function (req, res, next) {
     if (sortOrder === 'false') {
         sortName = "-" + sortName;
     }
-    console.log(req.query)
-
-
     Article.find()
         .populate({
             path: 'author_id',
@@ -135,7 +132,6 @@ exports.destroyAllSelect = function (req, res, next) {
 exports.updateArticle = function (req, res, next) {
     const user = req.user;
     var id = req.params.id;
-    console.log(id,req.body);
     if (req.body._id) {
         delete req.body._id;
     }
@@ -232,6 +228,9 @@ exports.searchArticle = function (req, res, next) {
             {title: {$regex: reg}},
             {author: {$regex: reg}},
         ]
+    }).populate({
+        path: 'author_id',
+        select: 'nickname avatar _id'
     }).sort('updated').then(function (article) {
         return res.status(200).json({success: true, data: article});
     }).catch(function (err) {
@@ -242,7 +241,6 @@ exports.searchArticle = function (req, res, next) {
 exports.getArticleByUserId = function (req, res, next) {
     const id = req.params.id; //从URL中传来的 keyword参数
     const status = req.query.status;
-    console.log(req.query);
     Article.find({author_id:id,status})
         .populate({
             path: 'author_id',

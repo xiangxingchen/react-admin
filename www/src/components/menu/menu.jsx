@@ -48,6 +48,7 @@ class MenuHeader extends React.Component {
 
     render() {
         const {posts,user} = this.props;
+        console.log(user)
         const {tagCat} = posts;
         const mainMenu = this.getMenuItems(tagCat.slice(0,3));
         const otherMenu = this.getMenuItems(tagCat.slice(3,tagCat.length));

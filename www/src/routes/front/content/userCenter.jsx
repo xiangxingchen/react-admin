@@ -11,12 +11,17 @@ moment.locale(window.navigator.language);
 
 class userCenter extends React.Component {
     componentWillMount() {
+        const {dispatch,params} = this.props;
+        dispatch({
+            type: 'user/userInfo',
+            payload: {id:params.id}
+        });
         this.getAll(1);
     }
     getContent = (items) => {
-        const {dispatch,likeList,params} = this.props;
+        const {dispatch,likeList,params,user} = this.props;
         return (items||[]).map((data,index)=> {
-            return <PreContent data={data} dispatch={dispatch} likeList={likeList} _id={params.id}/>
+            return <PreContent data={data} dispatch={dispatch} likeList={likeList} _id={params.id} show={user.account.email===user.UserInfo.email}/>
         })
     };
     getAll=(status) => {
@@ -37,8 +42,8 @@ class userCenter extends React.Component {
         </div>
         return (
             <div className={style.user}>
-                <div className={style.avatar}><img src={`http://localhost:9000/avatar/7.jpg`}/></div>
-                <h1 className={style.name}>{user.account.nickname}</h1>
+                <div className={style.avatar}><img src={`http://localhost:9000/avatar/${user.UserInfo.avatar}`}/></div>
+                <h1 className={style.name}>{user.UserInfo.nickname}</h1>
                 <Card title={title}  bodyStyle={{ padding: 0 }}>
                     {datasource && datasource.length > 0 ? content : <div></div>}
                 </Card>

@@ -50,7 +50,7 @@ class preUserView extends React.Component {
     }
 
     render() {
-        const {data}=this.props;
+        const {data,show}=this.props;
         const {isLike,count}=this.state;
         const that = this;
         // console.log(this.props);
@@ -81,10 +81,11 @@ class preUserView extends React.Component {
                 <Col span={4}>
                     {data.images[0] && <img src={data.images[0].url} className={style.contentImage}/>}
                 </Col>
-                <Col span={2}>
+                { show ? <Col span={2}>
                     <a href={`/f/edit/${data._id}`}><Icon type="edit" />编辑</a>
                     <a onClick={() =>this.showConfirm(data._id)}><Icon type="delete" />删除</a>
-                </Col>
+                </Col> : ''}
+
         </Row>
             <div className={style.like}>
                 {isLike?

@@ -212,7 +212,7 @@ export default {
                 message.success('评论设置成功');
             }
         },
-        searchArticle: function*({payload}, {call, put, select}) {
+        searchArticleBack: function*({payload}, {call, put, select}) {
             const {search} = payload;
             const {data} = yield call(searchArticle, {search});
             if (data.success) {

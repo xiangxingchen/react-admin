@@ -23,7 +23,7 @@ class PostsListPage extends React.Component {
             const { search } = values;
             if (!error) {
                 dispatch({
-                    type: 'posts/searchArticle',
+                    type: 'posts/searchArticleBack',
                     payload: {search}
                 });
             }
@@ -76,7 +76,10 @@ class PostsListPage extends React.Component {
         }, {
             title: '作者',
             dataIndex: 'author',
-            key: 'author'
+            key: 'author',
+            render: (text, record) => {
+                return record.author_id.nickname
+            }
         }, {
             title: '状态',
             dataIndex: 'status',
@@ -114,16 +117,7 @@ class PostsListPage extends React.Component {
                 const id =record._id;
                 return <Switch defaultChecked={text} onChange={(checked) =>{this.onChange(checked,id)}} />;
             }
-        }
-        //    , {
-        //    title: '标签',
-        //    dataIndex: 'tags',
-        //    key: 'tags',
-        //    render: (text,record) => {
-        //        return <Tag>{text[0].name}</Tag>
-        //    }
-        //}
-            , {
+        }, {
             title: '创建时间',
             dataIndex: 'created',
             key: 'created',

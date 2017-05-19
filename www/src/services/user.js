@@ -20,6 +20,28 @@ export function updateUser({values,id}) {
         body: JSON.stringify({...values})
     });
 }
+export function destroyAllSelect({id}) {
+    const token = window.localStorage.getItem(storageTokenKey);
+    return request(`/api/users/destroyAllUserSelect`, {
+        method: 'POST',
+        headers: new Headers({
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json; charset=utf-8"
+        }),
+        body: JSON.stringify({id})
+    });
+}
+export function searchUser({search}){
+    const token = window.localStorage.getItem(storageTokenKey);
+    return request(`/api/users/searchUser`, {
+        method: 'POST',
+        headers: new Headers({
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json; charset=utf-8"
+        }),
+        body: JSON.stringify({search})
+    });
+}
 export function updateAvatar({values,id}) {
     return request(`/api/users/updateAvatar/${id}`, {
         method: 'PUT',

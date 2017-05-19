@@ -10,21 +10,25 @@ class RegistrationForm extends React.Component {
     };
 
     componentWillMount() {
-        //const id = this.props.routeParams.id;
-        //if(id){
-        //    this.props.dispatch({
-        //        type: 'user/userInfo',
-        //        payload: {id}
-        //    })
-        //}
+        const {dispatch,params} = this.props;
+        if(params.id){
+            dispatch({
+                type: 'user/userInfo',
+                payload: {id: params.id}
+            })
+        }
     }
 
     handleSubmit = (e) => {
+        const {dispatch,params} = this.props;
         e.preventDefault();
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
-                console.log(values);
-                this.props.dispatch({type: 'user/register', payload: {values}});
+                if(params.id){
+                    this.props.dispatch({type: 'user/updateUser', payload: {values,id:params.id}});
+                } else {
+                    this.props.dispatch({type: 'user/register', payload: {values}});
+                }
             }
         });
     }
@@ -67,7 +71,7 @@ class RegistrationForm extends React.Component {
                     hasFeedback
                 >
                     {getFieldDecorator('password', {
-                        initialValue: 0,
+                        initialValue: '',
                         rules: [{
                             required: true, message: 'Please input your password!',
                         }, {
@@ -94,13 +98,13 @@ class RegistrationForm extends React.Component {
                     label="Role"
                     hasFeedback
                 >
-                    {getFieldDecorator('Role', {
-                        initialValue: userInfo.role === undefined ? 0: userInfo.role,
-                        rules: [{ type: 'number', required: true }],
+                    {getFieldDecorator('role', {
+                        initialValue: userInfo.role === undefined ? 'user': userInfo.role,
+                        rules: [{ required: true }],
                     })(
                         <RadioGroup>
-                            <Radio value={0}>user</Radio>
-                            <Radio value={1}>super</Radio>
+                            <Radio value='user'>user</Radio>
+                            <Radio value='admin'>admin</Radio>
                         </RadioGroup>
                     )}
                 </FormItem>

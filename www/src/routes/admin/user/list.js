@@ -2,13 +2,13 @@ import React, { PropTypes } from 'react'
 import { routerRedux, Link } from 'dva/router'
 import { connect } from 'dva'
 import moment from 'moment';
-import { Table, Dropdown, Menu, Button, Icon, Modal } from 'antd';
-import styles from './list.less'
-import classnames from 'classnames'
-import TableBodyWrapper from '../../../components/admin/common/TableBodyWrapper'
+import { Table, Dropdown, Menu, Button, Icon, Modal,Row,Col,Form,Input } from 'antd';
 const confirm = Modal.confirm;
 
 class UserList extends React.Component {
+    state={
+        selectedRowKeys:[]
+    }
 
     componentWillMount() {
         this.props.dispatch({
@@ -16,14 +16,27 @@ class UserList extends React.Component {
             payload: {currentPage: 0}
         });
     }
-
+    handleSubmit = (e)=>{
+        e.preventDefault();
+        console.log(1)
+        const {dispatch,form}=this.props;
+        form.validateFields((error, values) => {
+            const { search } = values;
+            if (!error) {
+                dispatch({
+                    type: 'user/searchUser',
+                    payload: {search}
+                });
+            }
+        });
+    }
     handleMenuClick = (record, e) => {
         const that = this;
         if (e.key === '1') {
-            this.props.dispatch({
-                type: 'user/userInfo',
-                payload: {id: record._id}
-            })
+            // this.props.dispatch({
+            //     type: 'user/userInfo',
+            //     payload: {id: record._id}
+            // })
         } else if (e.key === '2') {
             confirm({
                 title: '您确定要删除这条记录吗?',
@@ -36,9 +49,26 @@ class UserList extends React.Component {
             })
         }
     }
+    onSelectChange = (selectedRowKeys) => {
+        console.log('selectedRowKeys changed: ', selectedRowKeys);
+        this.setState({ selectedRowKeys });
+    }
+    delSelect = ()=> {
+        const {selectedRowKeys} = this.state;
+        this.props.dispatch({
+            type: 'user/destroyAllSelect',
+            payload: {id:selectedRowKeys}
+        });
+    }
 
     render() {
         const { userList, loading  }= this.props.users;
+        const {selectedRowKeys} = this.state;
+        const {getFieldDecorator} =this.props.form;
+        const rowSelection = {
+            selectedRowKeys,
+            onChange: this.onSelectChange,
+        };
         const columns = [{
             title: '昵称',
             dataIndex: 'nickname',
@@ -84,6 +114,24 @@ class UserList extends React.Component {
         }]
 
         return (
+            <div>
+            <Row>
+                <Col span={2}>
+                    <Button disabled={!selectedRowKeys.length > 0} onClick={this.delSelect}>批量删除</Button>
+                </Col>
+                <Form onSubmit={this.handleSubmit}>
+                    <Col span={6} offset="13">
+                        <Form.Item>
+                            {getFieldDecorator('search')(<Input type="text" placeholder="请输入标题或作者名字"/>)}
+                        </Form.Item>
+                    </Col>
+                    <Col span={1} offset="1">
+                        <Form.Item>
+                            <Button htmlType="submit" type="primary">搜索</Button>
+                        </Form.Item>
+                    </Col>
+                </Form>
+            </Row>
             <Table
                 bordered
                 scroll={{ x: 1200 }}
@@ -92,7 +140,9 @@ class UserList extends React.Component {
                 loading={loading}
                 simple
                 rowKey={record => record._id}
+                rowSelection={rowSelection}
             />
+            </div>
         )
     }
 }
@@ -106,5 +156,5 @@ function mapStateToProps(state, ownProps) {
         users: state.user,
     };
 }
-
+UserList = Form.create()(UserList);
 export default connect(mapStateToProps)(UserList);
