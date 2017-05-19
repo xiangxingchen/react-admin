@@ -38,10 +38,10 @@ export default {
                         type: 'authSuccess',
                         payload: {user}
                     });
-                    if (user.role=='super'||user.role=='admin') {
-                        yield put(routerRedux.push('/dashboard'));
+                    if (user.role=='admin') {
+                        yield put(routerRedux.push('/'));
                     } else {
-                        yield put(routerRedux.push('/posts'));
+                        yield put(routerRedux.push('/f'));
                     }
                 }
             } catch (error) {

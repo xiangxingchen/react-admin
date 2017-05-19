@@ -11,7 +11,7 @@ var router = express.Router();
 router.post('/addArticle',auth.hasRole('admin'),controller.addArticle);
 
 //获取文章列表
-router.get('/getArticleList',auth.hasRole('admin'),controller.getArticleList);
+router.get('/getArticleList',controller.getArticleList);
 
 //更新文章
 router.put('/updateArticle/:id', auth.hasRole('admin'), controller.updateArticle);

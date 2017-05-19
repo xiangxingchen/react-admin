@@ -7,7 +7,7 @@ var auth = require('../../auth/auth.service');
 var router = express.Router();
 
 router.post('/addTagCat',auth.hasRole('admin'),controller.addTagCat);
-router.get('/getTagCatList',auth.hasRole('admin'),controller.getTagCatList);
+router.get('/getTagCatList',controller.getTagCatList);
 router.put('/:id/updateTagCat', auth.hasRole('admin'), controller.updateTagCat);
 router.delete('/:id', auth.hasRole('admin'), controller.delTagCat);
 router.get('/:id/getTagList', auth.hasRole('admin'), controller.getTagList);

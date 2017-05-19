@@ -42,7 +42,6 @@ class preView extends React.Component {
         );
         return (<div className={style.preView}>
             <Row key={data._id} >
-            <Link to={`/f/post/${data._id}`}>
                 <Col span={20}>
                     <Row>
                         <Col span={2} key={data.author}>
@@ -62,7 +61,6 @@ class preView extends React.Component {
                 <Col span={4}>
                     {data.images[0] && <img src={data.images[0].url} className={style.contentImage}/>}
                 </Col>
-            </Link>
         </Row>
             <div className={style.like}>
                 {isLike?

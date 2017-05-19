@@ -46,6 +46,7 @@ function RouterConfig({ history, app }) {
                 <Route path="post/:id" component={PostsDetail}/>
                 <Route path="user/:id" component={userCenter}/>
                 <Route path="add" component={Add}/>
+                <Route path="edit/:id" component={Add}/>
                 <Route path="about" component={About}/>
             </Route>
             <Route path="/menu" component={MenuHeader}/>

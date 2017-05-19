@@ -69,7 +69,6 @@ class content extends React.Component {
         const {posts,likeList}=this.props;
         const {imagePostList,hotList,postsList,tags} = posts
         const datasource = postsList.data;
-        console.log(datasource);
         const hotData = this.getHotContent(hotList.data);
         const content = this.getContent(datasource,likeList);
         const newcontent = this.getNewContent(datasource);
@@ -86,7 +85,7 @@ class content extends React.Component {
         const hotTag=[];
         tags.map(tag =>{
             let i=parseInt(Math.random()*7)
-            hotTag.push(<Tag color={color[i]} className={style.tag} key={tag._id}>{tag.name}</Tag>);
+            hotTag.push(<Link to={{ pathname: `/f/tags/${tag._id}`, query: { name: tag.name } }} key={tag._id}><Tag color={color[i]} className={style.tag}>{tag.name}</Tag></Link>);
         })
 
         return (

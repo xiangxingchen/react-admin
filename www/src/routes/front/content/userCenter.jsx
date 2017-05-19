@@ -14,8 +14,9 @@ class userCenter extends React.Component {
         this.getAll(1);
     }
     getContent = (items) => {
+        const {dispatch,likeList,params} = this.props;
         return (items||[]).map((data,index)=> {
-            return <PreContent data={data} />
+            return <PreContent data={data} dispatch={dispatch} likeList={likeList} _id={params.id}/>
         })
     };
     getAll=(status) => {
@@ -49,6 +50,7 @@ function mapStateToProps(state, ownProps) {
     return {
         user: state.user,
         posts: state.posts,
+        likeList:state.user.account.likeList
     };
 }
 

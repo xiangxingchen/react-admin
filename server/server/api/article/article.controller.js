@@ -135,6 +135,7 @@ exports.destroyAllSelect = function (req, res, next) {
 exports.updateArticle = function (req, res, next) {
     const user = req.user;
     var id = req.params.id;
+    console.log(id,req.body);
     if (req.body._id) {
         delete req.body._id;
     }
@@ -157,6 +158,7 @@ exports.updateArticle = function (req, res, next) {
     }
 
     Article.findByIdAndUpdateAsync(id, req.body, {new: true}).then(function (article) {
+        console.log(article);
         Logs.createAsync({
             uid:user._id,
             name:user.nickname,
@@ -265,7 +267,7 @@ exports.getFrontArticle = function (req,res,next) {
         select: 'nickname avatar _id'
     }).then(function(result) {
         //将content markdown文档转成HTML
-        result.content = md.render(result.content);
+        // result.content = md.render(result.content);
         result.visit_count++;
         Article.findByIdAndUpdateAsync(id,{$inc:{visit_count:1}});
         return res.status(200).json({data:result.info});

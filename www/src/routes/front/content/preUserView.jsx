@@ -2,13 +2,14 @@ import React, { PropTypes } from 'react';
 import { Link } from 'dva/router';
 import moment from 'moment';
 import style from '../header/header.less';
-import { Row, Col, Card, Icon, Popover } from 'antd';
+import { Row, Col, Card, Icon, Popover,Modal } from 'antd';
 import _ from 'lodash';
+const confirm = Modal.confirm;
 moment.locale(window.navigator.language);
 
 class preUserView extends React.Component {
     state={
-        isLike:false
+        isLike:false,
     };
     componentWillMount() {
         const {data,likeList}=this.props;
@@ -26,7 +27,26 @@ class preUserView extends React.Component {
         });
         const data = isLike ? count-1 : count+1;
         this.setState({isLike:!isLike,count:data});
-
+    }
+    showConfirm = (id)=> {
+        const {dispatch,_id}=this.props;
+        confirm({
+            title: '确定要删除这篇文章吗?',
+            content: '',
+            onOk() {
+                dispatch({
+                    type: 'posts/deletePost',
+                    payload: {id,type:'f'}
+                });
+                dispatch({
+                    type: 'posts/getArticleByUserId',
+                    payload: {id:_id,status:1}
+                });
+            },
+            onCancel() {
+                console.log(id);
+            },
+        });
     }
 
     render() {
@@ -42,8 +62,7 @@ class preUserView extends React.Component {
         );
         return (<div className={style.preView}>
             <Row key={data._id} >
-            <Link to={`/f/post/${data._id}`}>
-                <Col span={20}>
+                <Col span={18}>
                     <Row>
                         <Col span={2} key={data.author}>
                             <Link to={`/f/user/${data.author_id._id}`}>{data.author_id.nickname}</Link>
@@ -62,7 +81,10 @@ class preUserView extends React.Component {
                 <Col span={4}>
                     {data.images[0] && <img src={data.images[0].url} className={style.contentImage}/>}
                 </Col>
-            </Link>
+                <Col span={2}>
+                    <a href={`/f/edit/${data._id}`}><Icon type="edit" />编辑</a>
+                    <a onClick={() =>this.showConfirm(data._id)}><Icon type="delete" />删除</a>
+                </Col>
         </Row>
             <div className={style.like}>
                 {isLike?

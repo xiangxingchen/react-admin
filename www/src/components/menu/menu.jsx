@@ -14,13 +14,13 @@ class MenuHeader extends React.Component {
         this.props.dispatch({type: 'posts/getTagCatList'});
     };
     handleClick = (e) => {
-        console.log('click ', e);
+        // console.log('click ', e);
         this.setState({
             current: e.key,
         });
     };
     onClick = (e) => {
-        console.log('click ', e);
+        // console.log('click ', e);
         this.setState({
             current: e.key,
         });
@@ -86,7 +86,7 @@ class MenuHeader extends React.Component {
                 }
                 {user.account._id ?<Item key="user" className={style.right} >
                     <Popover placement="bottomRight" content={content} trigger="hover">
-                        <img src={`http://localhost:9000/avatar/7.jpg`} className={style.avatar} />
+                        <img src={`http://localhost:9000/avatar/${user.account.avatar}`} className={style.avatar} />
                     </Popover>
                 </Item> : <Item key="login" className={style.right} >
                         <Icon type="appstore" />登陆

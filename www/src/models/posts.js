@@ -76,12 +76,15 @@ export default {
             }
         },
         updatePost: function*({payload}, {call, put}) {
-            const {title, content,id} = payload;
-            const {data} = yield call(updatePost, {title, content, id});
+            const {value,id,type} = payload;
+            const {data} = yield call(updatePost, {value,id});
             if (data.success) {
-                const {id} = data;
-                message.success('创建文章成功 :)');
-                yield put(routerRedux.push(`/article/detail/${id}`));
+                if(type ==='f'){
+                    yield put(routerRedux.push(`/f/post/${id}`));
+                } else {
+                    yield put(routerRedux.push(`/article/list`));
+                }
+                message.success('更新文章成功');
             }
         },
         toggleLike: function*({payload}, {call, put}) {
@@ -93,11 +96,15 @@ export default {
             }
         },
         deletePost: function*({payload}, {call, put}) {
-            const {id} = payload;
+            const {id,type} = payload;
             const {data} = yield call(deletePost, {id});
             if (data.success) {
                 message.success('删除文章成功 :)');
-                yield put(routerRedux.push(`/article/list`));
+                if(type==='f'){
+                    console.log('success');
+                } else{
+                    yield put(routerRedux.push(`/article/list`));
+                }
             }
         },
         destroyAllSelect: function*({payload}, {call, put}) {

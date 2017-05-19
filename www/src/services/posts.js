@@ -61,7 +61,7 @@ export function createPost(payload) {
         body: JSON.stringify(payload)
     });
 }
-export function updatePost({id,title, content}) {
+export function updatePost({value,id}) {
     const token = window.localStorage.getItem(storageTokenKey);
     return request(`/api/article/updateArticle/${id}`, {
         method: 'PUT',
@@ -69,9 +69,7 @@ export function updatePost({id,title, content}) {
             "Authorization": `Bearer ${token}`,
             "Content-Type": "application/json; charset=utf-8"
         }),
-        body: JSON.stringify({
-            title, content
-        })
+        body: JSON.stringify({...value})
     });
 }
 export function toggleLike({id}) {

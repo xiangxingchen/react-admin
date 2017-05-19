@@ -37,6 +37,7 @@ class List extends React.Component {
         });
     };
     onClick = (index,id) => {
+        console.log(index);
         this.setState({visitable:true,currentIndex:index,id})
     }
     onCancel = (index) => {
@@ -59,7 +60,7 @@ class List extends React.Component {
             commentTable.push (<div key={index}>
                 <Row key={index} className={style.commentsList}>
                     <Col span="1">
-                        <img src={`http://localhost:9000/avatar/default.jpg`} className={style.img}/>
+                        <img src={`http://localhost:9000/avatar/${record.user_id.avatar}`} className={style.img}/>
                     </Col>
                     <Col span='20' offset="1">
                         <p className={style.commentList_author}>
@@ -69,9 +70,9 @@ class List extends React.Component {
                         </p>
                         <div className={style.commentList_content}>{record.content}</div>
                     </Col>
-                    {article.author_id === user._id ? <Col span="2">
+                    {record.user_id._id === user._id ? '' :<Col span="2">
                         <a onClick={()=>{that.onClick(index,record._id)}}>回复</a>
-                    </Col> : ''}
+                    </Col>}
                 </Row>
                 {record.replys.map((reply,index) =>{
                     return <Row key={index} className={style.commentsList}>

@@ -16,22 +16,37 @@ class PostEditor extends React.Component {
     }
 
     componentWillMount() {
-        this.props.dispatch({type: 'posts/getTagCatList'});
-        this.props.dispatch({type: 'posts/getFrontTagList'});
+        const { dispatch, params } = this.props;
+        if(params.id){
+            dispatch({
+                type: 'posts/getPost',
+                payload: {id: params.id, isEdit: true}
+            });
+        }
+        // dispatch({type: 'posts/getTagCatList'});
+        dispatch({type: 'posts/getFrontTagList'});
     }
 
     handleSubmit = (e) => {
         e.preventDefault();
         this.setState({visible:false})
-        const {dispatch,form,id}=this.props;
+        const {dispatch,form,id,params}=this.props;
         const tags = this.state.selectedTags;
         form.validateFields((error, values) => {
             const value = {...values,tags};
             if (!error) {
-                dispatch({
-                    type: 'posts/createPost',
-                    payload: {value,type:'f',id}
-                });
+                if(!params.id){
+                    dispatch({
+                        type: 'posts/createPost',
+                        payload: {value,type:'f',id}
+                    });
+                } else {
+                    dispatch({
+                        type: 'posts/updatePost',
+                        payload: {value,type:'f',id:params.id}
+                    });
+                }
+
             }
         });
     }
@@ -71,7 +86,6 @@ class PostEditor extends React.Component {
         tagCat.map(cat=>{
             options.push(<Option value={cat._id} key={cat._id}>{cat.desc}</Option>)
         });
-        console.log(tags);
         tags.map(item=>{
             tag.push(<CheckableTag
                         key={item._id}
@@ -97,7 +111,7 @@ class PostEditor extends React.Component {
                     //console.log(info.file, info.fileList);
                 }
                 if (info.file.status === 'done') {
-                    console.log(info.file.name);
+                    // console.log(info.file.name);
                     dispatch({
                         type: 'posts/uploadImage',
                         payload: {name: info.file.name}
@@ -166,7 +180,7 @@ class PostEditor extends React.Component {
                                     initialValue: "1",
                                     rules: [{required: true, message: '请选择分类'}]
                                 })( <Select style={{ width: 240 }} onChange={this.onCheck}>
-                                    <Option value="1" key={1}>请选择分类</Option>
+                                    <Option value="1" key={1} disabled>请选择分类</Option>
                                     {options}
                                 </Select>)
                                 }
@@ -248,7 +262,6 @@ function mapStateToProps(state, ownProps) {
 }
 
 function onFieldsChange(props, fields) {
-    console.log(fields);
     props.dispatch({
         type: 'posts/changeFields',
         payload: {fields}
