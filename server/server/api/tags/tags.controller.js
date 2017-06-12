@@ -7,15 +7,16 @@ const Tag = mongoose.model('Tag');
 
 //添加添签分类.
 exports.addTagCat = function (req, res, next) {
-    const catName = req.body.category;
-    if (!catName) {
+    console.log(req.body)
+    const {name,desc}= req.body;
+    if (!name) {
         return res.status(422).send({error_msg: "标签分类名称不能为空."});
     }
-    TagCategory.findOneAsync({name: catName}).then(function (cat) {
+    TagCategory.findOneAsync({name}).then(function (cat) {
         if (cat) {
             return res.status(403).send({error_msg: "分类名称已经存在."});
         } else {
-            return TagCategory.createAsync({name: catName}).then(function (result) {
+            return TagCategory.createAsync({name,desc}).then(function (result) {
                 return res.status(200).json({success: true, cat_id: result._id});
             });
         }
@@ -129,7 +130,7 @@ exports.updateTag = function (req, res, next) {
 }
 //前台数据
 exports.getFrontTagList = function (req, res, next) {
-    Tag.findAsync({is_show: true}, {}, {sort: {'sort': -1}}).then(function (result) {
+    Tag.findAsync({}, {}, {sort: {'sort': -1}}).then(function (result) {
         return res.status(200).json({data: result});
     }).catch(function (err) {
         return next(err);

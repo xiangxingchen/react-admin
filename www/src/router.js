@@ -5,18 +5,19 @@ import Register from './routes/Register/Register';
 import PostsList from './routes/admin/article/list';
 import PostsDetail from './routes/admin/article/detail';
 import AddPost from './routes/admin/article/add';
-import EditPost from './routes/admin/article/edit';
 import Add from './routes/front/content/add';
 import adminApp from './routes/admin/app';
 import Error from './routes/admin/error';
 import Dashboard from './routes/admin/dashboard';
 import Comment from './routes/admin/comment';
+import Tag from './routes/admin/tag/tags';
+import Category from './routes/admin/tag/category';
+import Addcategory from './routes/admin/tag/addcategory';
+import Addtag from './routes/admin/tag/addtag';
 import PictureList from './routes/admin/picture/list';
 import AddPicture from './routes/admin/picture/add';
 import AddUser from './routes/admin/user/add';
 import UserList from './routes/admin/user/list';
-import Ico from './routes/admin/ui/ico';
-import Search from './routes/admin/ui/search';
 import MenuHeader from './routes/front/header/header';
 import Content from './routes/front/content/content';
 import Book from './routes/front/content/book';
@@ -55,10 +56,6 @@ function RouterConfig({ history, app }) {
                 <IndexRoute component={Dashboard}/>
                 <Route path="dashboard" component={Dashboard}/>
                 <Route path="picture/addpic" component={AddPicture}/>
-                <Route path="ui">
-                    <Route path="ico" component={Ico}/>
-                    <Route path="search" component={Search}/>
-                </Route>
                 <Route path="picture">
                     <Route path="addpic" component={AddPicture}/>
                     <Route path="piclist" component={PictureList}/>
@@ -74,7 +71,17 @@ function RouterConfig({ history, app }) {
                     <Route path="edituser/:id" component={AddUser}/>
                     <Route path="userlist" component={UserList}/>
                 </Route>
+                <Route path="tag">
+                    <Route path="addtag" component={Addtag}/>
+                    <Route path="taglist" component={Tag}/>
+                </Route>
+                <Route path="category">
+                    <Route path="addcategory" component={Addcategory}/>
+                    <Route path="categorylist" component={Category}/>
+                </Route>
                 <Route path="comment" component={Comment}/>
+                <Route path="tags" component={Tag}/>
+                <Route path="category" component={Category}/>
                 <Route path="*" component={Error}/>
             </Route>
             <Route path="/register" component={Register}/>

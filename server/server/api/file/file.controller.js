@@ -39,7 +39,22 @@ exports.upload = function (req,res) {
       });
    });
 }
+exports.delImg = function (req,res) {
+    var file = req.params.file;
+    if(!file){
+        return res.status(500).send("文件名不能为空");
+    }
+    var newpath = path.normalize(__dirname + "/../../avatar") + "/" + file;
+    fs.unlink(newpath,function (err) {
+        if (err) {
+            console.log("删除失败");
+            return res.status(500).send(err);
 
+        }
+        return res.status(200).json({success:true});
+        console.log("删除成功")
+    })
+}
 /**
  *上传图片
  * @param req

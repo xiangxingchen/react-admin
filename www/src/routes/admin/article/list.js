@@ -205,7 +205,7 @@ class PostsListPage extends React.Component {
                 </Row>
                 <Table
                     bordered
-                    scroll={{ x: 1200 }}
+                    scroll={{ x: 1100 }}
                     columns={columns}
                     dataSource={postsList.data}
                     simple

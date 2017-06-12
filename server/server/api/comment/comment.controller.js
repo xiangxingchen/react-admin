@@ -45,6 +45,10 @@ exports.addNewComment = function (req, res, next) {
 exports.getCommentList = function (req, res, next) {
     var aid = req.params.id;
     Comment.find({aid: aid, status: {$eq: 1}})
+        .populate({
+            path: 'user_id',
+            select: 'nickname avatar _id'
+        })
         .sort('created')
         .populate({
             path: 'user_id',
@@ -53,6 +57,40 @@ exports.getCommentList = function (req, res, next) {
         .exec().then(function (commentList) {
         return res.status(200).json({data: commentList});
     }).then(null, function (err) {
+        return next(err);
+    });
+};
+//条件查询
+exports.searchComment = function (req, res, next) {
+    const search = req.body.search; //从URL中传来的 keyword参数
+    const reg = new RegExp(search, 'i') //不区分大小写
+    Comment.find({
+        $or: [ //多条件，数组
+            {title: {$regex: reg}},
+            {content: {$regex: reg}},
+            {nickname: {$regex: reg}},
+        ]
+    }).populate({
+        path: 'user_id',
+        select: 'nickname avatar _id'
+    }).sort('updated').then(function (article) {
+        return res.status(200).json({success: true, data: article});
+    }).catch(function (err) {
+        return next(err);
+    });
+}
+exports.destroyAllCommentSelect = function (req, res, next) {
+    const user = req.user;
+    var id = req.body.id;
+    Comment.remove({"_id":{ $in: id}}).then(function (article) {
+        // Logs.createAsync({
+        //     uid:user._id,
+        //     name:user.nickname,
+        //     content:user.nickname+'删除了文章'+article.title,
+        //     type:'article'
+        // });
+        return res.status(200).send({success: true});
+    }).catch(function (err) {
         return next(err);
     });
 };

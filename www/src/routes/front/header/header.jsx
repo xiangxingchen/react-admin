@@ -29,7 +29,7 @@ class Headers extends React.Component {
                 <div>{children}</div>
                 <Footer style={{ textAlign: 'center' }}>
                     <div>
-                        <span>Ant Design ©2016 Created by</span>
+                        <span>企业后台管理系统©2017 Created by</span>
                         <a href="https://github.com/xiangxingchen"><Icon type="github"/><em>chen xiang</em></a>
                     </div>
                 </Footer>

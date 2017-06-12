@@ -27,7 +27,7 @@ class MenuHeader extends React.Component {
     };
     onSearch = (v) => {
         this.props.dispatch({
-            type: 'posts/searchArticle',
+            type: 'posts/searchArticleBack',
             payload: {pageInfo: {limit: 10, page: 1},search:v}
         });
     };
@@ -48,7 +48,6 @@ class MenuHeader extends React.Component {
 
     render() {
         const {posts,user} = this.props;
-        console.log(user)
         const {tagCat} = posts;
         const mainMenu = this.getMenuItems(tagCat.slice(0,3));
         const otherMenu = this.getMenuItems(tagCat.slice(3,tagCat.length));

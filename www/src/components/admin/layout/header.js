@@ -2,6 +2,7 @@ import React, {PropTypes} from 'react'
 import { Menu, Icon, Popover } from 'antd'
 import styles from './main.less'
 import Menus from './menu'
+import {Link} from 'dva/router';
 
 const SubMenu = Menu.SubMenu
 
@@ -34,6 +35,9 @@ function Header ({user, logout, switchSider, siderFold, isNavbar, menuPopoverVis
             <a>注销</a>
           </Menu.Item>
         </SubMenu>
+        <Menu.Item style={{float: 'right' }}>
+            <Link to={`/f`}>前台</Link>
+        </Menu.Item>
       </Menu>
     </div>
   )

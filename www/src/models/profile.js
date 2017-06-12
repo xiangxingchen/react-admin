@@ -2,7 +2,8 @@ import {
     fetchPosts,
     setVisibilityOfPost,
     deletePost,
-    fetchImageList
+    fetchImageList,
+    delImg,
 } from '../services/posts';
 
 import {
@@ -64,6 +65,17 @@ export default {
                     type: 'savePostsList',
                     payload: data
                 });
+            }
+        },
+        delImg: function *({payload}, {call, put}) {
+            const {file, index} = payload;
+            const {data} = yield call(delImg, {file});
+            if (data.success) {
+                yield put({
+                    type: 'afterDelImg',
+                    payload: {index}
+                });
+                message.success('删除图片成功');
             }
         },
         fetchUserInfo: function*({payload}, {call, put, select}) {
@@ -146,7 +158,18 @@ export default {
                 ...state,
                 files: data.data
             }
-        }
+        },
+        afterDelImg(state, {payload}){
+            const {index} = payload;
+            const {files} = state;
+            return {
+                ...state,
+                files: [
+                    ...files.slice(0, index),
+                    ...files.slice(index + 1),
+                ]
+            }
+        },
     },
     subscriptions: {},
 }

@@ -9,6 +9,8 @@ var router = express.Router();
 router.delete('/delComment/:id',auth.hasRole('admin'),controller.delComment);
 router.put('/:id/delReply', auth.hasRole('admin'), controller.delReply);
 router.get('/getAllCommentList',auth.hasRole('admin'),controller.getAllCommentList);
+router.post('/searchComment', auth.hasRole('user'), controller.searchComment);
+router.post('/destroyAllCommentSelect', auth.hasRole('user'), controller.destroyAllCommentSelect);
 
 //前台获取
 router.post('/addNewComment',auth.isAuthenticated(),controller.addNewComment);

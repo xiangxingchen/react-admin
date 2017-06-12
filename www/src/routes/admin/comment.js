@@ -2,11 +2,14 @@ import React, {PropTypes} from 'react';
 import {connect} from 'dva';
 import {Link} from 'dva/router';
 import moment from 'moment';
-import {Button, Icon,Table, Dropdown, Menu, Modal,Form,Row,Col,Input,Switch,Tag } from 'antd';
+import {Button, Table, Modal,Form,Row,Col,Input,Switch,Tag } from 'antd';
 import deepEqual from '../../utils/deepEqual';
 
 const confirm = Modal.confirm;
-class PostsListPage extends React.Component {
+class comment extends React.Component {
+    state={
+        selectedRowKeys:[]
+    }
 
     componentWillMount() {
         this.props.dispatch({
@@ -14,14 +17,14 @@ class PostsListPage extends React.Component {
             payload: {pageInfo: {limit: 10, page: 1}}
         });
     }
-    shouldComponentUpdate(nextProps, nextState) {
-        const fields = ['allComment'];
-        var b = deepEqual(this.props, nextProps, fields);
-        if (b) {
-            return false;
-        }
-        return true;
-    }
+    // shouldComponentUpdate(nextProps, nextState) {
+    //     const fields = ['allComment'];
+    //     var b = deepEqual(this.props, nextProps, fields);
+    //     if (b) {
+    //         return false;
+    //     }
+    //     return true;
+    // }
     handleSubmit = (e)=>{
         e.preventDefault();
         const {dispatch,form}=this.props;
@@ -29,7 +32,7 @@ class PostsListPage extends React.Component {
             const { search } = values;
             if (!error) {
                 dispatch({
-                    type: 'posts/searchArticle',
+                    type: 'posts/searchComment',
                     payload: {search}
                 });
             }
@@ -53,11 +56,27 @@ class PostsListPage extends React.Component {
             }
         })
     };
+    onSelectChange = (selectedRowKeys) => {
+        console.log('selectedRowKeys changed: ', selectedRowKeys);
+        this.setState({ selectedRowKeys });
+    }
+    delSelect = ()=> {
+        const {selectedRowKeys} = this.state;
+        this.props.dispatch({
+            type: 'posts/destroyAllCommentSelect',
+            payload: {id:selectedRowKeys}
+        });
+    }
 
     render() {
         const {allComment,dispatch,form}= this.props;
-        console.log(allComment);
+        console.log(allComment)
         const {getFieldDecorator} =form;
+        const {selectedRowKeys} = this.state;
+        const rowSelection = {
+            selectedRowKeys,
+            onChange: this.onSelectChange,
+        };
         const columns = [{
             title: '文章标题',
             dataIndex: 'title',
@@ -129,9 +148,12 @@ class PostsListPage extends React.Component {
 
         return (
             <div>
-                <Form onSubmit={this.handleSubmit}>
-                    <Row>
-                        <Col span={6} offset="14">
+                <Row>
+                    <Col span={2}>
+                        <Button disabled={!selectedRowKeys.length > 0} onClick={this.delSelect}>批量删除</Button>
+                    </Col>
+                    <Form onSubmit={this.handleSubmit}>
+                        <Col span={6} offset="13">
                             <Form.Item>
                                 {getFieldDecorator('search')(<Input type="text" placeholder="请输入标题或作者名字"/>)}
                             </Form.Item>
@@ -141,16 +163,17 @@ class PostsListPage extends React.Component {
                                 <Button htmlType="submit" type="primary">搜索</Button>
                             </Form.Item>
                         </Col>
-                    </Row>
-                </Form>
+                    </Form>
+                </Row>
                 <Table
                     bordered
-                    scroll={{ x: 1200 }}
+                    scroll={{ x: 1100 }}
                     columns={columns}
                     dataSource={allComment.data}
                     simple
                     rowKey={record => record._id}
                     pagination={pagination}
+                    rowSelection={rowSelection}
                 />
             </div>
         );
@@ -164,5 +187,5 @@ function mapStateToProps(state, ownProps) {
     };
 }
 
-PostsListPage = Form.create()(PostsListPage);
-export default connect(mapStateToProps)(PostsListPage);
+comment = Form.create()(comment);
+export default connect(mapStateToProps)(comment);

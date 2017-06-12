@@ -128,6 +128,17 @@ export function destroyAllSelect({id}) {
         body: JSON.stringify({id})
     });
 }
+export function destroyAllCommentSelect({id}) {
+    const token = window.localStorage.getItem(storageTokenKey);
+    return request(`/api/comment/destroyAllCommentSelect`, {
+        method: 'POST',
+        headers: new Headers({
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json; charset=utf-8"
+        }),
+        body: JSON.stringify({id})
+    });
+}
 export function delComment({id}) {
     const token = window.localStorage.getItem(storageTokenKey);
     return request(`/api/comment/delComment/${id}`, {
@@ -190,6 +201,17 @@ export function searchArticle({search}){
         body: JSON.stringify({search})
     });
 }
+export function searchComment({search}){
+    const token = window.localStorage.getItem(storageTokenKey);
+    return request(`/api/comment/searchComment`, {
+        method: 'POST',
+        headers: new Headers({
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json; charset=utf-8"
+        }),
+        body: JSON.stringify({search})
+    });
+}
 
 export function createComment({aid, commentInput}) {
     const token = window.localStorage.getItem(storageTokenKey);
@@ -217,7 +239,7 @@ export function addNewReply({id, content}) {
     });
 }
 
-export function createCategory({category}) {
+export function createCategory({values}) {
     const token = window.localStorage.getItem(storageTokenKey);
     return request(`/api/tags/addTagCat`, {
         method: 'post',
@@ -225,7 +247,18 @@ export function createCategory({category}) {
             "Authorization": `Bearer ${token}`,
             "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
         }),
-        body: stringify({category})
+        body: stringify({...values})
+    });
+}
+export function createTag({values}) {
+    const token = window.localStorage.getItem(storageTokenKey);
+    return request(`/api/tags/addTag`, {
+        method: 'post',
+        headers: new Headers({
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
+        }),
+        body: stringify({...values})
     });
 }
 export function getTagCatList() {
@@ -243,6 +276,33 @@ export function getFrontTagList() {
         method: 'get',
         headers: new Headers({
             "Authorization": `Bearer ${token}`
+        })
+    });
+}
+export function deleteTag({id}) {
+    const token = window.localStorage.getItem(storageTokenKey);
+    return request(`/api/tags/deleteTag/${id}`, {
+        method: 'DELETE',
+        headers: new Headers({
+            "Authorization": `Bearer ${token}`,
+        })
+    });
+}
+export function delImg({file}) {
+    const token = window.localStorage.getItem(storageTokenKey);
+    return request(`/api/file/delImg/${file}`, {
+        method: 'DELETE',
+        headers: new Headers({
+            "Authorization": `Bearer ${token}`,
+        })
+    });
+}
+export function delTagCat({id}) {
+    const token = window.localStorage.getItem(storageTokenKey);
+    return request(`/api/tags/delTagCat/${id}`, {
+        method: 'DELETE',
+        headers: new Headers({
+            "Authorization": `Bearer ${token}`,
         })
     });
 }

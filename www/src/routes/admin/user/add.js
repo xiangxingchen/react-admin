@@ -51,15 +51,15 @@ class RegistrationForm extends React.Component {
             <Form onSubmit={this.handleSubmit}>
                 <FormItem
                     {...formItemLayout}
-                    label="E-mail"
+                    label="邮箱"
                     hasFeedback
                 >
                     {getFieldDecorator('email', {
                         initialValue: userInfo.email === undefined ? '': userInfo.email,
                         rules: [{
-                            type: 'email', message: 'The input is not valid E-mail!',
+                            type: 'email', message: '邮箱格式不正确!',
                         }, {
-                            required: true, message: 'Please input your E-mail!',
+                            required: true, message: '请输入邮箱!',
                         }],
                     })(
                         <Input />
@@ -67,13 +67,13 @@ class RegistrationForm extends React.Component {
                 </FormItem>
                 <FormItem
                     {...formItemLayout}
-                    label="Password"
+                    label="密码"
                     hasFeedback
                 >
                     {getFieldDecorator('password', {
                         initialValue: '',
                         rules: [{
-                            required: true, message: 'Please input your password!',
+                            required: true, message: '请输入密码!',
                         }, {
                             validator: this.checkConfirm,
                         }],
@@ -83,19 +83,19 @@ class RegistrationForm extends React.Component {
                 </FormItem>
                 <FormItem
                     {...formItemLayout}
-                    label="Nickname"
+                    label="昵称"
                     hasFeedback
                 >
                     {getFieldDecorator('nickname', {
                         initialValue: userInfo.nickname === undefined ? '': userInfo.nickname,
-                        rules: [{ required: true, message: 'Please input your nickname!' }],
+                        rules: [{ required: true, message: '请输入昵称!' }],
                     })(
                         <Input />
                     )}
                 </FormItem>
                 <FormItem
                     {...formItemLayout}
-                    label="Role"
+                    label="角色"
                     hasFeedback
                 >
                     {getFieldDecorator('role', {
@@ -103,8 +103,8 @@ class RegistrationForm extends React.Component {
                         rules: [{ required: true }],
                     })(
                         <RadioGroup>
-                            <Radio value='user'>user</Radio>
-                            <Radio value='admin'>admin</Radio>
+                            <Radio value='user'>普通用户</Radio>
+                            <Radio value='admin'>管理员</Radio>
                         </RadioGroup>
                     )}
                 </FormItem>

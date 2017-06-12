@@ -25,8 +25,7 @@ function Login({loading,dispatch,form:{getFieldDecorator,validateFields}}) {
         <LoginLayout>
             <div className={styles.container}>
                 <div className={styles.logo}>
-                    <img className={styles.logoImg} src={blogLogo} alt="my blog"/>
-                    <span>My Blog!</span>
+                    <span>企业信息门户管理系统</span>
                 </div>
                 <Form onSubmit={handleSubmit}>
                     <Form.Item>
@@ -54,13 +53,6 @@ function Login({loading,dispatch,form:{getFieldDecorator,validateFields}}) {
                         }
                     </Form.Item>
                     <Form.Item>
-                        {
-                            getFieldDecorator('remember', {
-                                valuePropName: 'checked',
-                                initialValue: true
-                            })(<Checkbox disabled>Remember me</Checkbox>)
-                        }
-                        <span className={styles.toOther }>Or <Link to="/register">register now!</Link></span>
                         <Button
                             type="primary"
                             htmlType="submit"

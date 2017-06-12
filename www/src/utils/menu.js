@@ -52,22 +52,43 @@ module.exports = [
         name: '文章列表'
       }
     ]
-  },{
+  },
+    {
     key: 'comment',
     name: '评论管理',
     icon: 'message',
     clickable: false,
-  }
-  ,{
-    key: 'category',
-    name: '分类管理',
-    icon: 'book',
-    clickable: false,
-  }
-  ,{
-    key: 'tags',
-    name: '标签管理',
-    icon: 'tags',
-    clickable: false,
-  }
+  },
+    {
+        key: 'tag',
+        name: '标签管理',
+        icon: 'tag',
+        clickable: false,
+        child: [
+            {
+                key: 'addtag',
+                name: '添加标签'
+            },
+            {
+                key: 'taglist',
+                name: '标签列表'
+            }
+        ]
+    },
+    {
+        key: 'category',
+        name: '分类管理',
+        icon: 'bars',
+        clickable: false,
+        child: [
+            {
+                key: 'addcategory',
+                name: '添加分类'
+            },
+            {
+                key: 'categorylist',
+                name: '分类列表'
+            }
+        ]
+    }
 ]

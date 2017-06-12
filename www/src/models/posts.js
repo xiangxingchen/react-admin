@@ -15,6 +15,8 @@ import {
     createCategory,
     getTagCatList,
     getFrontTagList,
+    deleteTag,
+    delTagCat,
     getAllCommentList,
     delComment,
     addNewReply,
@@ -23,6 +25,9 @@ import {
     getArticleByUserId,
     toggleLike,
     getFrontArticleList,
+    searchComment,
+    destroyAllCommentSelect,
+    createTag,
 } from '../services/posts';
 import {message} from 'antd';
 import pathToRegExp from 'path-to-regexp';
@@ -32,22 +37,22 @@ export default {
     namespace: 'posts',
     state: {
         post: {
-            title:  undefined,
+            title: undefined,
             post_id: undefined,
-            content:  undefined,
+            content: undefined,
             author: {},
             created_at: null
         },
         isNew: true,
         article: {},
         postsList: [],
-        hotList:[],
+        hotList: [],
         descendants: [],
-        allComment:{data:[]},
-        tagCat:[],
-        tags:[],
-        imagePostList:[],
-        preNext:{next:{},prev:{}},
+        allComment: {data: []},
+        tagCat: [],
+        tags: [],
+        imagePostList: [],
+        preNext: {next: {}, prev: {}},
     },
     subscriptions: {
         //setup: function ({history, dispatch}) {
@@ -63,11 +68,11 @@ export default {
     },
     effects: {
         createPost: function*({payload}, {call, put}) {
-            const {type,value,id} = payload;
-            console.log(type,value,id)
+            const {type, value, id} = payload;
+            console.log(type, value, id)
             const {data} = yield call(createPost, value);
             if (data.success) {
-                if(type ==='f'){
+                if (type === 'f') {
                     yield put(routerRedux.push(`/f/user/${id}`));
                 } else {
                     yield put(routerRedux.push(`/article/list`));
@@ -76,10 +81,10 @@ export default {
             }
         },
         updatePost: function*({payload}, {call, put}) {
-            const {value,id,type} = payload;
-            const {data} = yield call(updatePost, {value,id});
+            const {value, id, type} = payload;
+            const {data} = yield call(updatePost, {value, id});
             if (data.success) {
-                if(type ==='f'){
+                if (type === 'f') {
                     yield put(routerRedux.push(`/f/post/${id}`));
                 } else {
                     yield put(routerRedux.push(`/article/list`));
@@ -96,13 +101,13 @@ export default {
             }
         },
         deletePost: function*({payload}, {call, put}) {
-            const {id,type} = payload;
+            const {id, type} = payload;
             const {data} = yield call(deletePost, {id});
             if (data.success) {
                 message.success('删除文章成功 :)');
-                if(type==='f'){
+                if (type === 'f') {
                     console.log('success');
-                } else{
+                } else {
                     yield put(routerRedux.push(`/article/list`));
                 }
             }
@@ -113,6 +118,14 @@ export default {
             if (data.success) {
                 message.success('删除文章成功 :)');
                 yield put(routerRedux.push(`/article/list`));
+            }
+        },
+        destroyAllCommentSelect: function*({payload}, {call, put}) {
+            const {id} = payload;
+            const {data} = yield call(destroyAllCommentSelect, {id});
+            if (data.success) {
+                message.success('删除评论成功 :)');
+                yield put(routerRedux.push(`/comment`));
             }
         },
         getPost: function *({payload}, {call, put}) {
@@ -144,13 +157,13 @@ export default {
             }
         },
         getPostsList: function *({payload}, {call, put}) {
-            const {pageInfo,type} = payload;
+            const {pageInfo, type} = payload;
 
-            const hotSort={sortName:'visit_count',sortOrder:false};
-            const sort={sortName:'publish_time',sortOrder:false};
-            const {data} = yield call(fetchPosts, {pageInfo,sort});
-            if(type === 'hot') {
-                const hotData = yield call(fetchPosts, {pageInfo,hotSort});
+            const hotSort = {sortName: 'visit_count', sortOrder: false};
+            const sort = {sortName: 'publish_time', sortOrder: false};
+            const {data} = yield call(fetchPosts, {pageInfo, sort});
+            if (type === 'hot') {
+                const hotData = yield call(fetchPosts, {pageInfo, hotSort});
                 // console.log(hotData);
                 yield put({
                     type: 'saveHotPostsList',
@@ -160,14 +173,14 @@ export default {
             if (data) {
                 yield put({
                     type: 'savePostsList',
-                    payload: {data,type}
+                    payload: {data, type}
                 });
             }
         },
         getFrontArticleList: function *({payload}, {call, put}) {
-            const {pageInfo,condition} = payload;
-            const sort={sortName:'publish_time',sortOrder:false};
-            const {data} = yield call(getFrontArticleList, {pageInfo,sort,condition});
+            const {pageInfo, condition} = payload;
+            const sort = {sortName: 'publish_time', sortOrder: false};
+            const {data} = yield call(getFrontArticleList, {pageInfo, sort, condition});
             if (data) {
                 yield put({
                     type: 'savePostsList',
@@ -175,9 +188,9 @@ export default {
                 });
             }
         },
-        getArticleByUserId:function *({payload}, {call, put}) {
-            const {id,status} = payload;
-            const {data} = yield call(getArticleByUserId, {id,status});
+        getArticleByUserId: function *({payload}, {call, put}) {
+            const {id, status} = payload;
+            const {data} = yield call(getArticleByUserId, {id, status});
             if (data) {
                 yield put({
                     type: 'savePostsList',
@@ -195,7 +208,7 @@ export default {
             }
         },
         createComment: function*({payload}, {call, put}) {
-            const {commentInput,id} = payload;
+            const {commentInput, id} = payload;
             const {data} = yield call(createComment, {commentInput, aid: id});
             if (data) {
                 yield put({
@@ -206,7 +219,7 @@ export default {
             }
         },
         changeComment: function*({payload}, {call}) {
-            const {checked,id} = payload;
+            const {checked, id} = payload;
             const {data} = yield call(changeComment, {checked, id});
             if (data.success) {
                 message.success('评论设置成功');
@@ -216,31 +229,70 @@ export default {
             const {search} = payload;
             const {data} = yield call(searchArticle, {search});
             if (data.success) {
-                yield put({ type: 'savePostsList', payload: {data}});
+                yield put({type: 'savePostsList', payload: {data}});
+            }
+        },
+        searchComment: function*({payload}, {call, put, select}) {
+            const {search} = payload;
+            const data = yield call(searchComment, {search});
+            if (data) {
+                yield put({type: 'saveAllComment', payload: {data}});
             }
         },
         createCategory: function*({payload}, {call, put, select}) {
-            const {category} = payload;
-            const {data} = yield call(createCategory, {category});
+            const {values} = payload;
+            const {data} = yield call(createCategory, {values});
             if (data.success) {
-                yield put({ type: 'savePostsList', payload: {data}});
+                yield put(routerRedux.push(`/category/categorylist`));
+                message.success('添加分类成功');
+            }
+        },
+        createTag: function*({payload}, {call, put, select}) {
+            const {values} = payload;
+            const {data} = yield call(createTag, {values});
+            if (data.success) {
+                yield put(routerRedux.push(`/tag/taglist`));
+                message.success('添加标签成功');
             }
         },
         getTagCatList: function*({payload}, {call, put, select}) {
             const {data} = yield call(getTagCatList);
             if (data) {
-                yield put({ type: 'saveTagCat', payload: {data}});
+                yield put({type: 'saveTagCat', payload: {data}});
             }
         },
         getFrontTagList: function*({payload}, {call, put, select}) {
             const {data} = yield call(getFrontTagList);
             if (data) {
-                yield put({ type: 'saveTags', payload: {data}});
+                yield put({type: 'saveTags', payload: {data}});
+            }
+        },
+        deleteTag: function *({payload}, {call, put}) {
+            const {id, index} = payload;
+            const {data} = yield call(deleteTag, {id});
+            if (data.success) {
+                yield put({
+                    type: 'afterDelTag',
+                    payload: {index}
+                });
+                message.success('删除标签成功');
+            }
+        },
+        delTagCat: function *({payload}, {call, put}) {
+            const {id, index} = payload;
+            const {data} = yield call(delTagCat, {id});
+            if (data.success) {
+                yield put({
+                    type: 'afterDelTagCat',
+                    payload: {index}
+                });
+                message.success('删除分类成功');
             }
         },
         getAllCommentList: function *({payload}, {call, put}) {
             const {pageInfo} = payload;
-            const data= yield call(getAllCommentList, {pageInfo});
+            const data = yield call(getAllCommentList, {pageInfo});
+
             if (data) {
                 yield put({
                     type: 'saveAllComment',
@@ -249,7 +301,7 @@ export default {
             }
         },
         delComment: function *({payload}, {call, put}) {
-            const {id,index} = payload;
+            const {id, index} = payload;
             const {data} = yield call(delComment, {id});
             if (data.success) {
                 yield put({
@@ -260,8 +312,8 @@ export default {
             }
         },
         addNewReply: function *({payload}, {call, put}) {
-            const {id,content} = payload;
-            const {data} = yield call(addNewReply, {id,content});
+            const {id, content} = payload;
+            const {data} = yield call(addNewReply, {id, content});
             if (data.success) {
                 yield put({
                     type: 'afterDelComment',
@@ -312,21 +364,21 @@ export default {
             };
         },
         savePostsList: function (state, {payload}) {
-            const {data,type} = payload;
-            const oldData = state.postsList.data||[];
-            data.data.map(item=>{
+            const {data, type} = payload;
+            const oldData = state.postsList.data || [];
+            data.data.map(item => {
                 oldData.push(item);
             })
-            if(type === 'more'){
+            if (type === 'more') {
                 return {
                     ...state,
                     postsList: {
-                        currentPage:data.currentPage,
-                        count:data.count,
+                        currentPage: data.currentPage,
+                        count: data.count,
                         data: oldData,
                     },
                 };
-            } else{
+            } else {
                 return {
                     ...state,
                     postsList: data,
@@ -383,7 +435,7 @@ export default {
             }
         },
         uploadImage(state, {payload}){
-            const {name}=payload;
+            const {name} = payload;
             const content = state.post.content;
             return {
                 ...state,
@@ -396,50 +448,72 @@ export default {
         saveAllComment(state, {payload}){
             return {
                 ...state,
-                allComment:payload.data.data
+                allComment: payload.data.data
             }
         },
-        afterDelComment(state, {payload}){
-            const {index}=payload;
-            const {allComment}=state;
+        afterDel(state, {payload}){
+            const {index} = payload;
+            const {allComment} = state;
             return {
                 ...state,
-                allComment:{
+                allComment: {
                     ...allComment,
-                    count:allComment.count-1,
-                    data:[
-                        ...allComment.data.slice(0,index),
+                    count: allComment.count - 1,
+                    data: [
+                        ...allComment.data.slice(0, index),
                         ...allComment.data.slice(index + 1),
                     ]
                 }
             }
         },
-        saveTagCat(state, {payload}){
-            const {data}=payload;
+        afterDelTagCat(state, {payload}){
+            const {index} = payload;
+            const {tagCat} = state;
             return {
                 ...state,
-                tagCat:data.data
+                tagCat: [
+                    ...tagCat.slice(0, index),
+                    ...tagCat.slice(index + 1),
+                ]
+            }
+        },
+        afterDelTag(state, {payload}){
+            const {index} = payload;
+            const {tags} = state;
+            return {
+                ...state,
+                tags: [
+                    ...tags.slice(0, index),
+                    ...tags.slice(index + 1),
+                ]
+            }
+        },
+        saveTagCat(state, {payload}){
+            const {data} = payload;
+            return {
+                ...state,
+                tagCat: data.data
             }
         },
         saveTags(state, {payload}){
-            const {data}=payload;
+            const {data} = payload;
             return {
                 ...state,
-                tags:data.data
+                tags: data.data
             }
         },
         saveImagePostsList(state, {payload}){
-            const {data}=payload;
+            const {data} = payload;
             return {
                 ...state,
-                imagePostList:data.data
+                imagePostList: data.data
             }
         },
         savePrenext(state, {payload}){
-            const {data}=payload;
+            const {data} = payload;
             return {
                 ...state,
-                preNext:data.data
+                preNext: data.data
             }
         },
     }
