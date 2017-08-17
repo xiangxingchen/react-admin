@@ -89,17 +89,10 @@ class content extends React.Component {
         })
 
         return (
-            <Layout style={{ height: '100vh' }}>
-                <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
+            <Layout style={{ height: '100vh'}}>
+                <Content className={style.layout}>
                     <Row className={style.content}>
-                        <Col span={12} offset={3}>
-                            <Row>
-                                <Card bodyStyle={{ padding: 0 }}>
-                                    <Carousel autoplay>
-                                        {posts.imagePostList.length > 0 ? items : <div></div>}
-                                    </Carousel>
-                                </Card>
-                            </Row>
+                        <Col span={17}>
                             <Row>
                                 <Card title="文章" bodyStyle={{ padding: 0 }}>
                                     {datasource && datasource.length > 0 ? content : <div></div>}
@@ -107,7 +100,7 @@ class content extends React.Component {
                                 </Card>
                             </Row>
                         </Col>
-                        <Col span={5} offset={1}>
+                        <Col span={6} offset={1}>
                             <Row>
                                 <Tabs className={style.tabs}>
                                     <TabPane tab="最热动态" key="1">

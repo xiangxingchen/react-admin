@@ -21,6 +21,7 @@ import UserList from './routes/admin/user/list';
 import MenuHeader from './routes/front/header/header';
 import Content from './routes/front/content/content';
 import Book from './routes/front/content/book';
+import Archives from './routes/front/archives/archives';
 import Setting from './routes/front/content/setting';
 import Tags from './routes/front/content/tags';
 import userCenter from './routes/front/content/userCenter';
@@ -42,6 +43,7 @@ function RouterConfig({ history, app }) {
                 <IndexRoute component={Content}/>
                 <Route path="home" component={Content}/>
                 <Route path="book" component={Book}/>
+                <Route path="archives" component={Archives}/>
                 <Route path="user/setting" component={Setting}/>
                 <Route path="tags/:id" component={Tags}/>
                 <Route path="post/:id" component={PostsDetail}/>

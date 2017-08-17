@@ -33,6 +33,7 @@ class preView extends React.Component {
         const {data}=this.props;
         const {isLike,count}=this.state;
         const that = this;
+        console.log(data);
         // console.log(this.props);
         const cont=(
             <div>
@@ -47,9 +48,9 @@ class preView extends React.Component {
                         <Col span={2} key={data.author}>
                             <Link to={`/f/user/${data.author_id._id}`}>{data.author_id.nickname}</Link>
                         </Col>
-                        <Col span={2} key={data.tags[0].id}>
+                        <Col span={2} key={data.tags[0] && data.tags[0].id}>
                             <Popover content={cont}>
-                                {data.tags[0].name}
+                                {data.tags[0] && data.tags[0].name}
                             </Popover>
                         </Col>
                         <span>{moment(data.publish_time).fromNow()} </span>

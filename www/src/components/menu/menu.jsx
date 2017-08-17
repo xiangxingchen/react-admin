@@ -70,28 +70,18 @@ class MenuHeader extends React.Component {
                 <Item key="index">
                     <Link to={'/f/home'}><Icon type="home" />首页</Link>
                 </Item>
-                <Item key="column">
-                    <Link to={'/f/book'}><Icon type="book" />专栏</Link>
+                <Item key="archives">
+                    <Link to={'/f/archives'}><Icon type="folder" />归档</Link>
                 </Item>
-                <Item className={style.search}>
-                    <Search
-                        placeholder="搜索"
-                        style={{ width: 200 }}
-                        onSearch={value => this.onSearch(value)}
-                    />
+                <Item key="category">
+                    <Link to={'/f/category'}><Icon type="tag-o" />分类</Link>
                 </Item>
-                {user.account._id ?<Item key="blog" className={style.right}>
-                    <a href="/f/add"><Button >写文章</Button></a>
-                </Item> : ''
-                }
-                {user.account._id ?<Item key="user" className={style.right} >
-                    <Popover placement="bottomRight" content={content} trigger="hover">
-                        <img src={`http://localhost:9000/avatar/${user.account.avatar}`} className={style.avatar} />
-                    </Popover>
-                </Item> : <Item key="login" className={style.right} >
-                        <Icon type="appstore" />登陆
-                    </Item>
-                }
+                <Item key="project">
+                    <Link to={'/f/project'}><Icon type="book" />项目</Link>
+                </Item>
+                <Item key="about">
+                    <Link to={'/f/about'}><Icon type="contacts" />关于</Link>
+                </Item>
             </Menu>
         );
     }
