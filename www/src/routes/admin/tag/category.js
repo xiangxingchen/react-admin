@@ -27,7 +27,6 @@ class category extends React.Component {
 
     render() {
         const {tagCat}= this.props;
-        console.log(tagCat);
         const columns = [{
             title: '分类',
             dataIndex: 'name',

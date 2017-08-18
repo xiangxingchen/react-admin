@@ -68,7 +68,6 @@ export default {
         updateUser: function *({payload}, {put, call}) {
             const {values,id} = payload;
             const {data} = yield call(updateUser, {values,id});
-            console.log(data.success)
             if (data.success) {
                 message.success('修改成功');
             }
@@ -105,7 +104,6 @@ export default {
         },
         queryUser: function *({payload}, {put, call}) {
             const {data} = yield call(fetchUser);
-            //console.log(data);
             if (data) {
                 yield put({
                     type: 'queryUserSuccess',

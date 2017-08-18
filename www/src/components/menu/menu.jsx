@@ -14,13 +14,11 @@ class MenuHeader extends React.Component {
         this.props.dispatch({type: 'posts/getTagCatList'});
     };
     handleClick = (e) => {
-        // console.log('click ', e);
         this.setState({
             current: e.key,
         });
     };
     onClick = (e) => {
-        // console.log('click ', e);
         this.setState({
             current: e.key,
         });
@@ -68,7 +66,7 @@ class MenuHeader extends React.Component {
                 className={style.horizontal}
             >
                 <Item key="index">
-                    <Link to={'/f/home'}><Icon type="home" />首页</Link>
+                    <Link to={'/f'}><Icon type="home" />首页</Link>
                 </Item>
                 <Item key="archives">
                     <Link to={'/f/archives'}><Icon type="folder" />归档</Link>

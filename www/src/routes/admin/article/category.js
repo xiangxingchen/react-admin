@@ -7,7 +7,6 @@ class Category extends React.Component {
     componentWillMount() {
     }
     handleSubmit = (e) => {
-        console.log()
         e.preventDefault();
         const {dispatch,form}=this.props;
         form.validateFields((error, values) => {

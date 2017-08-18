@@ -49,6 +49,16 @@ export function fetchComments({post_id}) {
         })
     });
 }
+export function getArchivesArticle() {
+    const token = window.localStorage.getItem(storageTokenKey);
+    return request(`/api/article/getArchivesArticle`, {
+        method: 'get',
+        headers: new Headers({
+            "Authorization": `Bearer ${token}`
+        })
+    });
+}
+
 
 export function createPost(payload) {
     const token = window.localStorage.getItem(storageTokenKey);

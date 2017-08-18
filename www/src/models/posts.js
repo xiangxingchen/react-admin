@@ -28,6 +28,7 @@ import {
     searchComment,
     destroyAllCommentSelect,
     createTag,
+  getArchivesArticle,
 } from '../services/posts';
 import {message} from 'antd';
 import pathToRegExp from 'path-to-regexp';
@@ -69,7 +70,6 @@ export default {
     effects: {
         createPost: function*({payload}, {call, put}) {
             const {type, value, id} = payload;
-            console.log(type, value, id)
             const {data} = yield call(createPost, value);
             if (data.success) {
                 if (type === 'f') {
@@ -79,6 +79,13 @@ export default {
                 }
                 message.success('创建文章成功 :)');
             }
+        },
+        getArchivesArticle: function*({payload}, {call, put}) {
+            const {data} = yield call(getArchivesArticle);
+            yield put({
+                type: 'savePostsList',
+                payload: {data}
+            });
         },
         updatePost: function*({payload}, {call, put}) {
             const {value, id, type} = payload;
@@ -106,7 +113,6 @@ export default {
             if (data.success) {
                 message.success('删除文章成功 :)');
                 if (type === 'f') {
-                    console.log('success');
                 } else {
                     yield put(routerRedux.push(`/article/list`));
                 }
@@ -164,7 +170,6 @@ export default {
             const {data} = yield call(fetchPosts, {pageInfo, sort});
             if (type === 'hot') {
                 const hotData = yield call(fetchPosts, {pageInfo, hotSort});
-                // console.log(hotData);
                 yield put({
                     type: 'saveHotPostsList',
                     payload: {hotData}

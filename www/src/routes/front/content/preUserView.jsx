@@ -44,7 +44,6 @@ class preUserView extends React.Component {
                 });
             },
             onCancel() {
-                console.log(id);
             },
         });
     }
@@ -53,7 +52,6 @@ class preUserView extends React.Component {
         const {data,show}=this.props;
         const {isLike,count}=this.state;
         const that = this;
-        // console.log(this.props);
         const cont=(
             <div>
                 <p>Content</p>

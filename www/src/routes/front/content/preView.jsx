@@ -33,8 +33,6 @@ class preView extends React.Component {
         const {data}=this.props;
         const {isLike,count}=this.state;
         const that = this;
-        console.log(data);
-        // console.log(this.props);
         const cont=(
             <div>
                 <p>Content</p>

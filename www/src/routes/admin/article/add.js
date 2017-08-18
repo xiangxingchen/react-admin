@@ -30,7 +30,7 @@ class PostEditor extends React.Component {
             if (!error) {
                 dispatch({
                     type: 'posts/createPost',
-                    payload: value
+                    payload: {value}
                 });
             }
         });
@@ -71,7 +71,6 @@ class PostEditor extends React.Component {
         tagCat.map(cat=>{
             options.push(<Option value={cat._id} key={cat._id}>{cat.desc}</Option>)
         });
-        console.log(tags);
         tags.map(item=>{
             tag.push(<CheckableTag
                         key={item._id}
@@ -94,10 +93,8 @@ class PostEditor extends React.Component {
             showUploadList: false,
             onChange(info) {
                 if (info.file.status !== 'uploading') {
-                    //console.log(info.file, info.fileList);
                 }
                 if (info.file.status === 'done') {
-                    console.log(info.file.name);
                     dispatch({
                         type: 'posts/uploadImage',
                         payload: {name: info.file.name}
@@ -247,7 +244,6 @@ function mapStateToProps(state, ownProps) {
 }
 
 function onFieldsChange(props, fields) {
-    console.log(fields);
     props.dispatch({
         type: 'posts/changeFields',
         payload: {fields}

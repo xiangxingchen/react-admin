@@ -28,7 +28,6 @@ class PictureList extends React.Component {
 
     render() {
         const files = this.props.files;
-        console.log(files);
         return (
             <div>
                 {files.map((file, index)=> {

@@ -18,7 +18,6 @@ class UserList extends React.Component {
     }
     handleSubmit = (e)=>{
         e.preventDefault();
-        console.log(1)
         const {dispatch,form}=this.props;
         form.validateFields((error, values) => {
             const { search } = values;
@@ -50,7 +49,6 @@ class UserList extends React.Component {
         }
     }
     onSelectChange = (selectedRowKeys) => {
-        console.log('selectedRowKeys changed: ', selectedRowKeys);
         this.setState({ selectedRowKeys });
     }
     delSelect = ()=> {

@@ -36,11 +36,9 @@ class PostEditor extends React.Component {
     }
 
     onSelect(selectedKeys, info) {
-        console.log('selected', selectedKeys, info);
     }
 
     onCheck(checkedKeys, info) {
-        console.log('onCheck', checkedKeys, info);
     }
 
     render() {
@@ -58,10 +56,8 @@ class PostEditor extends React.Component {
             showUploadList:false,
             onChange(info) {
                 if (info.file.status !== 'uploading') {
-                    //console.log(info.file, info.fileList);
                 }
                 if (info.file.status === 'done') {
-                    console.log(info.file.name);
                     dispatch({
                         type: 'posts/uploadImage',
                         payload: {name:info.file.name}
@@ -165,7 +161,6 @@ function mapStateToProps(state, ownProps) {
 }
 
 function onFieldsChange(props, fields) {
-    console.log(fields);
     props.dispatch({
         type: 'posts/changeFields',
         payload: {fields}

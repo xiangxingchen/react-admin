@@ -40,6 +40,7 @@ router.get('/getArticleByUserId/:id', controller.getArticleByUserId);
  */
 router.get('/getImageList',controller.getImageList);
 router.get('/getFrontArticleList',controller.getFrontArticleList);
+router.get('/getArchivesArticle',controller.getArchivesArticle);
 router.get('/getFrontArticleCount',controller.getFrontArticleCount);
 router.get('/getFrontArticle/:id',controller.getFrontArticle);
 //获取首页图片

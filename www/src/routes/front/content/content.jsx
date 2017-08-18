@@ -23,7 +23,6 @@ class content extends React.Component {
         this.props.dispatch({type: 'posts/getFrontTagList'});
     }
     handleClick = (e) => {
-        console.log('click ', e);
         this.setState({
             current: e.key,
         });

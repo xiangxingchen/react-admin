@@ -37,7 +37,6 @@ class List extends React.Component {
         });
     };
     onClick = (index,id) => {
-        console.log(index);
         this.setState({visitable:true,currentIndex:index,id})
     }
     onCancel = (index) => {

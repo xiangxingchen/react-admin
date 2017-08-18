@@ -16,7 +16,6 @@ class setting extends React.Component {
         e.preventDefault();
         form.validateFieldsAndScroll((err, values) => {
             if (!err) {
-                console.log(values);
                 dispatch({type: 'user/updateUser', payload: {values,id:user._id}});
             }
         });
@@ -25,7 +24,6 @@ class setting extends React.Component {
         const {dispatch,user}= this.props;
         const status = info.file.status;
         if (status !== 'uploading') {
-            console.log(info.file, info.fileList);
         }
         if (status === 'done') {
             dispatch({type: 'user/updateAvatar', payload: {values:{avatar:info.file.name},id:user._id}});

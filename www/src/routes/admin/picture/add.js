@@ -23,7 +23,6 @@ class Add extends React.Component {
 
     handleChange = ({ fileList }) => this.setState({ fileList })
     handleChange1 = (v) => {
-        console.log(v);
     }
 
 
@@ -36,10 +35,8 @@ class Add extends React.Component {
             listType:"picture-card",
             action: '//jsonplaceholder.typicode.com/posts/',
             onChange(info) {
-                console.log(info);
                 const status = info.file.status;
                 if (status !== 'uploading') {
-                    console.log(info.file, info.fileList);
                 }
                 if (status === 'done') {
                     message.success(`${info.file.name} file uploaded successfully.`, 3);

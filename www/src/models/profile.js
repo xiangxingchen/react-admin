@@ -152,7 +152,6 @@ export default {
             };
         },
         initFiles: function (state,{payload}){
-            console.log(payload)
             const {data} = payload;
             return {
                 ...state,

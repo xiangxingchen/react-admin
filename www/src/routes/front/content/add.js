@@ -108,10 +108,8 @@ class PostEditor extends React.Component {
             showUploadList: false,
             onChange(info) {
                 if (info.file.status !== 'uploading') {
-                    //console.log(info.file, info.fileList);
                 }
                 if (info.file.status === 'done') {
-                    // console.log(info.file.name);
                     dispatch({
                         type: 'posts/uploadImage',
                         payload: {name: info.file.name}

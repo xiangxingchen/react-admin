@@ -129,12 +129,12 @@ var Promise = require('bluebird');
 					Article.createAsync({
 						title:'第' + (index + indexOne) + '篇文章',
 						content:'<p>我第' + (index + indexOne) + '次爱你.</p>',
-						tags:[{id:tag._id,name:tag.name}],
+						tags:[tag._id],
 						status:1
 					},{
 						title:'第' + (index + indexTwo) + '篇文章',
 						content:'<p>我第' + (index + indexTwo) + '次爱你.</p>',
-						tags:[{id:tag._id,name:tag.name}],
+						tags:[tag._id],
 						status:1
 					})
 				});

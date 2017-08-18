@@ -319,6 +319,20 @@ exports.getFrontArticleList = function (req, res, next) {
         return next(err);
     });
 }
+exports.getArchivesArticle = function (req, res, next) {
+    Article.find({})
+      .select('title images visit_count comment_count like_count publish_time tags author author_id')
+      .populate({
+          path: 'author_id',
+          select: 'nickname avatar _id'
+      }).populate('tags', 'name _id')
+      .sort('publish_time')
+      .exec().then(function (list) {
+        return res.status(200).json({data: list});
+    }).then(null, function (err) {
+        return next(err);
+    });
+}
 //前台获取上一篇和下一篇
 exports.getPrenext = function (req, res, next) {
     var id = req.params.id;

@@ -15,8 +15,7 @@ class archives extends React.Component {
   }
   getAll=() => {
     this.props.dispatch({
-      type: 'posts/getPostsList',
-      payload: {pageInfo: {limit: 10, page: 1}}
+      type: 'posts/getArchivesArticle',
     });
   };
 

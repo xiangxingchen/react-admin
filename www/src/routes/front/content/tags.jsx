@@ -16,7 +16,6 @@ class tools extends React.Component {
     }
     getContentView = (items,likeList) => {
         const {dispatch}=this.props;
-        console.log(items,likeList)
         return (items||[]).map((data,index)=> {
             return <PreContent data={data} key={index} likeList={likeList} dispatch={dispatch}/>
         })

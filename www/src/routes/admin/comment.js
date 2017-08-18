@@ -57,7 +57,6 @@ class comment extends React.Component {
         })
     };
     onSelectChange = (selectedRowKeys) => {
-        console.log('selectedRowKeys changed: ', selectedRowKeys);
         this.setState({ selectedRowKeys });
     }
     delSelect = ()=> {
@@ -70,7 +69,6 @@ class comment extends React.Component {
 
     render() {
         const {allComment,dispatch,form}= this.props;
-        console.log(allComment)
         const {getFieldDecorator} =form;
         const {selectedRowKeys} = this.state;
         const rowSelection = {
