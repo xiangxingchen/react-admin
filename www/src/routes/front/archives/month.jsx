@@ -2,7 +2,6 @@ import React from 'react';
 import {connect} from 'dva';
 import moment from 'moment';
 import {Link} from 'dva/router';
-import { Row, Col } from 'antd';
 
 function Tags({tags}){
   return (

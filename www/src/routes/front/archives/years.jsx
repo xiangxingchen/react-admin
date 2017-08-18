@@ -1,7 +1,6 @@
 import React from 'react';
 import {connect} from 'dva';
 import moment from 'moment';
-import { Row, Col } from 'antd';
 import Month from './month';
 
 class years extends React.Component {
