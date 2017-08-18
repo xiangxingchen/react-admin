@@ -11,7 +11,8 @@ class years extends React.Component {
     _.forInRight(month, function(value, key) {
       component.push(<Month month={key} arti={value} key={key}/>);
     });
-    return (<div>{year}
+    return (<div>
+      <h1>{year}</h1><hr/>
       {component}
     </div>);
   }
